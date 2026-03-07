@@ -6,9 +6,17 @@
   date: [Sommersemester 2026],
 )
 
-TUTORIUM: Friday, 20.03.2026.
+#align(right)[
+  #text(
+    font: "Hiragino Sans",
+    size: 7.8pt,
+    weight: "medium",
+    tracking: 0.16em,
+    fill: accent,
+  )[TUTORIUM: Friday, 20.03.2026.]
+]
 
-= 1. Getting familiar with the Density of States
+#major-section([01], [Getting familiar with the Density of States])
 
 The calculation of thermodynamic quantities, response functions and Feynman diagrams in QFT for condensed matter systems often requires the evaluation of integrals or sums over all momenta $vb(k)$ (typically over the first Brillouin Zone). An important simplification of these $vb(k)$-summations is possible, however, when the integrand $cal(F)$ depends on the *energy only*. In this case the integration/sum is best performed by using the energy $epsilon$ as a variable. In the case of a cubic lattice of volume $L^d$ in $d$ dimensions, for a given observable $F$, we have:
 
@@ -105,40 +113,43 @@ $
     ],
 
     [
-      #plot(
-        xmin: 0.0,
-        xmax: 4.0,
-        ymin: 0.0,
-        ymax: 2.4,
+      #align(center)[
+        #plot(
+          xmin: 0.0,
+          xmax: 4.0,
+          ymin: 0.0,
+          ymax: 2.4,
+          show-grid: "none",
 
-        xlabel: $frac(epsilon, epsilon_0, style: "horizontal")$,
-        ylabel: $frac(cal(N) (epsilon), cal(N)(epsilon_0), style: "horizontal")$,
+          xlabel: $frac(epsilon, epsilon_0, style: "horizontal")$,
+          ylabel: $frac(cal(N) (epsilon), cal(N)(epsilon_0), style: "horizontal")$,
 
-        (
-          fn: x => 1.0 / calc.sqrt(x),
-          domain: (0.1, 4.0),
-          stroke: blue,
-          label: $d=1$,
-          label-pos: 1,
-          label-side: "right",
-        ),
-        (
-          fn: x => 1.0,
-          domain: (0.1, 4.0),
-          stroke: red,
-          label: $d=2$,
-          label-pos: 1,
-          label-side: "right",
-        ),
-        (
-          fn: x => calc.sqrt(x),
-          domain: (0.1, 4.0),
-          stroke: green,
-          label: $d=3$,
-          label-pos: 1,
-          label-side: "right",
-        ),
-      )
+          (
+            fn: x => 1.0 / calc.sqrt(x),
+            domain: (0.1, 4.0),
+            stroke: accent,
+            label: $d=1$,
+            label-pos: 1,
+            label-side: "right",
+          ),
+          (
+            fn: x => 1.0,
+            domain: (0.1, 4.0),
+            stroke: soft,
+            label: $d=2$,
+            label-pos: 1,
+            label-side: "right",
+          ),
+          (
+            fn: x => calc.sqrt(x),
+            domain: (0.1, 4.0),
+            stroke: plot-gray,
+            label: $d=3$,
+            label-pos: 1,
+            label-side: "right",
+          ),
+        )
+      ]
     ],
   )
 ]
@@ -211,7 +222,7 @@ $
   $
   The density of states is therefore
   $
-    cal(N)_d(epsilon)
+    cal(N)_d (epsilon)
     = 1/(2 pi)^d
     integral_([0, 2 pi / a]^d) dd(k, [d]) delta(epsilon - epsilon_(vb(k))).
   $
@@ -347,50 +358,52 @@ $
   #let c2 = load-curve("dos-data/dos_2d.csv")
   #let c3 = load-curve("dos-data/dos_3d.csv")
 
-  #plot(
-    width: 8,
-    height: 5,
+  #align(center)[
+    #plot(
+      width: 7.7,
+      height: 4.7,
 
-    xmin: -3.2,
-    xmax: 3.2,
-    ymin: 0,
-    ymax: 0.32,
-    ytick-step: 0.1,
-    show-grid: "major",
-    axis-y-pos: "left",
-    axis-x-extend: 0,
-    axis-y-extend: 0,
+      xmin: -3.2,
+      xmax: 3.2,
+      ymin: 0,
+      ymax: 0.52,
+      ytick-step: 0.1,
+      show-grid: "none",
+      axis-y-pos: "left",
+      axis-x-extend: 0,
+      axis-y-extend: 0,
 
-    xlabel: $epsilon$,
-    ylabel: $cal(N)(epsilon)$,
+      xlabel: $epsilon / 2$,
+      ylabel: $cal(N)(epsilon)$,
 
-    line-plot(
-      c1,
-      stroke: blue,
-      mark: "none",
-      label: $d = 1$,
-      label-pos: 0.95,
-    ),
+      line-plot(
+        c1,
+        stroke: accent,
+        mark: "none",
+        label: $d = 1$,
+        label-pos: 0.95,
+      ),
 
-    line-plot(
-      c2,
-      stroke: red,
-      mark: "none",
-      label: $d = 2$,
-      label-pos: 0.95,
-    ),
+      line-plot(
+        c2,
+        stroke: soft,
+        mark: "none",
+        label: $d = 2$,
+        label-pos: 0.95,
+      ),
 
-    line-plot(
-      c3,
-      stroke: green,
-      mark: "none",
-      label: $d = 3$,
-      label-pos: 0.95,
-    ),
-  )
+      line-plot(
+        c3,
+        stroke: plot-gray,
+        mark: "none",
+        label: $d = 3$,
+        label-pos: 0.95,
+      ),
+    )
+  ]
 ]
 
-= 2. Screened and Unscreened Coulomb Potentials
+#major-section([02], [Screened and Unscreened Coulomb Potentials])
 
 == a)
 
@@ -399,41 +412,90 @@ $
   $
     delta(vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r))
   $
-  and the fact that the Coulomb potential $phi.alt(vb(r)) = -e / abs(vb(r))$ satisfies Poisson's equation,
+  and the fact that the Coulomb potential $phi.alt(vb(r)) = -e \/ r$ satisfies Poisson's equation,
   $
-    -#laplacian phi.alt(vb(r)) = -4 pi e delta(vb(r)),
+    -laplacian phi.alt(vb(r)) = -4 pi e delta(vb(r)),
   $
-  show that the electronic pair potential, $V(vb(r)) = -e phi.alt(vb(r)) = e^2 / abs(vb(r))$, can be written in the form
+  show that the electronic pair potential, $V(vb(r)) = -e phi.alt(vb(r)) = e^2 \/ r$, can be written in the form
   $
     V(vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V(vb(k)),
   $
   where the Fourier transform $V(vb(k))$ is given by
   $
-    V(vb(k)) = 4 pi e^2 / vb(k)^2.
+    V(vb(k)) = (4 pi e^2) / k^2.
   $
 ]
 
 #solution[
-  _Write your solution here._
+  Assume the Coulomb potential admits the Fourier representation
+  $
+    phi.alt(vb(r))
+    = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) phi.alt(vb(k)).
+  $
+  Applying $-laplacian$ gives
+  $
+    -laplacian phi.alt(vb(r))
+    = integral dd(k, 3) / (2 pi)^3 (-laplacian e^(i vb(k) dot vb(r))) phi.alt(vb(k))
+    = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) k^2 phi.alt(vb(k)),
+  $
+  since
+  $
+    -laplacian e^(i vb(k) dot vb(r)) = k^2 e^(i vb(k) dot vb(r)).
+  $
+  On the other hand, Poisson's equation gives
+  $
+    -laplacian phi.alt(vb(r))
+    = -4 pi e delta(vb(r))
+    = -4 pi e integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)).
+  $
+  Comparing the Fourier coefficients of $e^(i vb(k) dot vb(r))$, we obtain
+  $
+    k^2 phi.alt(vb(k)) = -4 pi e,
+  $
+  hence
+  $
+    phi.alt(vb(k)) = - (4 pi e) / k^2.
+  $
+  Therefore
+  $
+    V(vb(k)) = -e phi.alt(vb(k)) = (4 pi e^2) / k^2.
+  $
+  Thus
+  $
+    V(vb(r))
+    = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V(vb(k)),
+  $
+  with
+  $
+    V(vb(k)) = (4 pi e^2) / k^2.
+  $
 ]
 
 == b)
 
 #statement[
-  Show that the Fourier transform of the screened Coulomb interaction $V_s(vb(r)) = (e^2 / abs(vb(r))) e^(-k_"TF" abs(vb(r)))$ is
+  Show that the Fourier transform of the screened Coulomb interaction $V_s (vb(r)) = (e^2 \/ r) e^(-k_"TF" r)$ is
   $
-    V_s(vb(k)) = 4 pi e^2 / (vb(k)^2 + k_"TF"^2)
+    V_s (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2)
   $
   by substituting this expression into the Fourier integral
   $
-    V_s(vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V_s(vb(k)),
+    V_s (vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V_s (vb(k)),
   $
-  and evaluating that integral in spherical coordinates (Hint: The radial integral is best done as a contour integral.). Finally, deduce that $V_s(vb(r))$ satisfies
+  and evaluating that integral in spherical coordinates (_Hint:_ The radial integral is best done as a contour integral.). Finally, deduce that $V_s (vb(r))$ satisfies
   $
-    (-#laplacian + k_"TF"^2) V_s(vb(r)) = 4 pi e^2 delta(vb(r)).
+    (-laplacian + k_"TF"^2) V_s (vb(r)) = 4 pi e^2 delta(vb(r)).
   $
 ]
 
 #solution[
-  _Write your solution here._
+  We proceed as suggested by substituting the Fourier transform of the screened Coulomb interaction into the Fourier integral
+  $
+    V_s (vb(r)) & = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V_s (vb(k)) \
+                & = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) (4 pi e^2) / (k^2 + k_"TF"^2)
+  $
+  and go to spherical coordinates
+  $
+    V_s (vb(r)) &= integral (k^2 sin theta dd(k) dd(theta) dd(phi)) / (2 pi)^3 e^(i k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2)
+  $
 ]
