@@ -1,4 +1,6 @@
-#import "@preview/physica:0.9.5": vb, dd, laplacian, hbar
+#import "@preview/physica:0.9.5": dd, grad, hbar, ket, laplacian, vb
+#import "@preview/simple-plot:0.3.0": line-plot, plot
+// #import "@preview/lilaq:0.5.0" as lq
 
 #set page(
   paper: "a4",
@@ -13,7 +15,9 @@
 #let warm = rgb("#c97c5d")
 #let warm-soft = rgb("#fcf2ee")
 #let warm-line = rgb("#d9a08c")
-#let vec = vb
+
+// https://forum.typst.app/t/how-to-transform-all-math-cases-with-its-children-to-be-in-math-display-mode/3615/4
+#let dcases(..args) = math.cases(..args.pos().map(math.display), ..args.named())
 
 #set text(
   font: "Libertinus Serif",
@@ -63,23 +67,39 @@
 
 #let statement(body) = block(
   below: 0.35em,
+  width: 100%,
   inset: (x: 0.95em, y: 0.75em),
-  radius: 10pt,
   fill: accent-soft,
-  stroke: (paint: accent-line, thickness: 0.9pt),
+  stroke: (
+    left: (paint: accent, thickness: 2.2pt),
+  ),
 )[
-  #text(size: 9pt, weight: "bold", tracking: 0.08em, fill: accent)[TASK]
+  #box(
+    inset: (x: 0.5em, y: 0.2em),
+    radius: 99pt,
+    fill: accent,
+  )[
+    #text(size: 8.5pt, weight: "bold", tracking: 0.08em, fill: white)[TASK]
+  ]
   #v(0.25em)
   #body
 ]
 
 #let solution(body) = block(
+  width: 100%,
   inset: (x: 0.95em, y: 0.75em),
-  radius: 10pt,
   fill: warm-soft,
-  stroke: (paint: warm-line, thickness: 0.9pt),
+  stroke: (
+    left: (paint: warm, thickness: 2.2pt),
+  ),
 )[
-  #text(size: 9pt, weight: "bold", tracking: 0.08em, fill: warm)[SOLUTION]
+  #box(
+    inset: (x: 0.5em, y: 0.2em),
+    radius: 99pt,
+    fill: warm,
+  )[
+    #text(size: 8.5pt, weight: "bold", tracking: 0.08em, fill: white)[SOLUTION]
+  ]
   #v(0.25em)
   #body
 ]
