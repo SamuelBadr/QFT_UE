@@ -1,4 +1,4 @@
-#import "@preview/physica:0.9.5": dd, grad, hbar, ket, laplacian, vb
+#import "@preview/physica:0.9.5": dd, dv, grad, hbar, ket, laplacian, pdv, vb
 #import "@preview/simple-plot:0.3.0": line-plot, plot
 
 #let paper = rgb("#f8f6f1")
@@ -131,16 +131,40 @@
   )[
     #vertical-label([PART], fill: soft)
   ][
-      #text(
-        font: "Hiragino Sans",
-        size: 14.5pt,
-        weight: "medium",
-        fill: ink,
-      )[#it.body]
+    #text(
+      font: "Hiragino Sans",
+      size: 14.5pt,
+      weight: "medium",
+      fill: ink,
+    )[#it.body]
   ][
     #line(length: 100%, stroke: (paint: rule, thickness: 0.7pt))
   ]
   #v(0.26em)
+]
+
+#show heading.where(level: 3): it => [
+  #v(0.8em)
+  #grid(
+    columns: (0.9cm, auto, 1fr),
+    gutter: 0.55em,
+    align: center + horizon,
+  )[
+    #align(center)[
+      #sun(size: 0.13cm, fill: accent-soft)
+    ]
+  ][
+    #text(
+      font: "Hiragino Sans",
+      size: 11pt,
+      weight: "medium",
+      tracking: 0.06em,
+      fill: soft,
+    )[#it.body]
+  ][
+    #line(length: 100%, stroke: (paint: rule, thickness: 0.65pt))
+  ]
+  #v(0.18em)
 ]
 
 #let statement(body) = block(width: 100%)[
