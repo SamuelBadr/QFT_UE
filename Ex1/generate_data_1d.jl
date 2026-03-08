@@ -102,7 +102,7 @@ end
     write_dos_csv(path, dos, cutoff; n=4000, margin=1e-4) -> Nothing
 
 Sample `dos` on `n` evenly spaced energy values inside the band edge `cutoff`
-and write a CSV with `x = epsilon / 2` and `rho = dos(epsilon)`.
+and write a CSV with `x = epsilon` and `rho = dos(epsilon)`.
 """
 function write_dos_csv(path, dos, cutoff; n=4000, margin=1e-4)
     x = range(-cutoff * (1 - margin), cutoff * (1 - margin); length=n)

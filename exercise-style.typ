@@ -1,6 +1,4 @@
-#import "@preview/physica:0.9.5": dd, dv, grad, hbar, ket, laplacian, pdv, vb
-#import "@preview/simple-plot:0.3.0": line-plot, plot
-
+#import "@preview/physica:0.9.5": dd, dv, grad, hbar, laplacian, vb
 #let paper = rgb("#f8f6f1")
 #let ink = rgb("#181615")
 #let soft = rgb("#867d73")
@@ -8,9 +6,6 @@
 #let accent = rgb("#c8422b")
 #let accent-soft = rgb("#eadfd0")
 #let plot-gray = rgb("#666b72")
-
-// https://forum.typst.app/t/how-to-transform-all-math-cases-with-its-children-to-be-in-math-display-mode/3615/4
-#let dcases(..args) = math.cases(..args.pos().map(math.display), ..args.named())
 
 #set page(
   paper: "a4",
@@ -210,4 +205,23 @@
       #body
     ]
   ]
+]
+
+#let tutorium_note(body) = align(right)[
+  #text(
+    font: "Hiragino Sans",
+    size: 7.8pt,
+    weight: "medium",
+    tracking: 0.16em,
+    fill: accent,
+  )[#body]
+]
+
+#let two_panel(left, right, gutter: 0em) = grid(
+  columns: (auto, auto),
+  gutter: gutter,
+)[
+  #left
+][
+  #right
 ]

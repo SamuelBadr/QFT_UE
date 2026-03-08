@@ -1,49 +1,37 @@
 #import "../exercise-style.typ": *
+#import "./ex1-figures.typ": *
 
 #sheet-header(
   [QFT for Many-Body Systems],
-  [1. Exercise Sheet Solutions],
+  [1#super[st] Exercise Sheet Solutions],
   date: [Sommersemester 2026],
 )
 
-#align(right)[
-  #text(
-    font: "Hiragino Sans",
-    size: 7.8pt,
-    weight: "medium",
-    tracking: 0.16em,
-    fill: accent,
-  )[TUTORIUM: Friday, 20.03.2026.]
-]
+#tutorium_note[TUTORIUM: Friday, 20.03.2026.]
 
 #major-section([01], [Getting familiar with the Density of States])
 
-The calculation of thermodynamic quantities, response functions and Feynman diagrams in QFT for condensed matter systems often requires the evaluation of integrals or sums over all momenta $vb(k)$ (typically over the first Brillouin Zone). An important simplification of these $vb(k)$-summations is possible, however, when the integrand $cal(F)$ depends on the *energy only*. In this case the integration/sum is best performed by using the energy $epsilon$ as a variable. In the case of a cubic lattice of volume $L^d$ in $d$ dimensions, for a given observable $F$, we have:
-
-$
-  F = 1 / L^d sum_(vb(k)) cal(F)(epsilon_(vb(k)))
-  = 1/(2 pi)^d (2 pi)^d / (L^d) sum_(vb(k)) cal(F)(epsilon_(vb(k)))
-  = integral dd(epsilon) cal(N)(epsilon) cal(F)(epsilon),
-$
-
-or, for the continuous case,
-
-$
-  F = 1 / (2 pi)^d integral dd(k, [d]) cal(F)(epsilon_(vb(k)))
-  = integral dd(epsilon) cal(N)(epsilon) cal(F)(epsilon),
-$
-
-where $cal(N)(epsilon)$, i.e. the so-called Density of States (DOS), can be defined by comparison of the different expressions as
-
-$
-  cal(N)(epsilon) = 1 / L^d sum_(vb(k)) delta(epsilon - epsilon_(vb(k))),
-$
-
-or, for the continuous case,
-
-$
-  cal(N)(epsilon) = 1 / (2 pi)^d integral dd(k, [d]) delta(epsilon - epsilon_(vb(k))).
-$
+#statement[
+  The calculation of thermodynamic quantities, response functions and Feynman diagrams in QFT for condensed matter systems often requires the evaluation of integrals or sums over all momenta $vb(k)$ (typically over the first Brillouin Zone). An important simplification of these $vb(k)$-summations is possible, however, when the integrand $cal(F)$ depends on the *energy only*. In this case the integration/sum is best performed by using the energy $epsilon$ as a variable. In the case of a cubic lattice of volume $L^d$ in $d$ dimensions, for a given observable $F$, we have:
+  $
+    F = 1 / L^d sum_(vb(k)) cal(F)(epsilon_(vb(k)))
+    = 1/(2 pi)^d (2 pi)^d / (L^d) sum_(vb(k)) cal(F)(epsilon_(vb(k)))
+    = integral dd(epsilon) cal(N)(epsilon) cal(F)(epsilon),
+  $
+  or, for the continuous case,
+  $
+    F = 1 / (2 pi)^d integral dd(k, [d]) cal(F)(epsilon_(vb(k)))
+    = integral dd(epsilon) cal(N)(epsilon) cal(F)(epsilon),
+  $
+  where $cal(N)(epsilon)$, i.e. the so-called Density of States (DOS), can be defined by comparison of the different expressions as
+  $
+    cal(N)(epsilon) = 1 / L^d sum_(vb(k)) delta(epsilon - epsilon_(vb(k))),
+  $
+  or, for the continuous case,
+  $
+    cal(N)(epsilon) = 1 / (2 pi)^d integral dd(k, [d]) delta(epsilon - epsilon_(vb(k))).
+  $
+]
 
 == a)
 
@@ -60,11 +48,22 @@ $
   $
     cal(N)(epsilon) = 1 / (2 pi)^d integral_([-pi/a, pi/a]^d) dd(k, [d]) delta(epsilon - epsilon_(vb(k))).
   $
-  Finally, for a one-dimensional finite lattice ($N$ lattice points, spacing $a$) with periodic boundary conditions, the sum runs over a discrete set of allowed momenta:
+  Finally, for a one-dimensional finite lattice of length $L = N a$ with periodic boundary conditions, the sum runs over a discrete set of allowed momenta satisfying
   $
-    cal(N)(epsilon) = 1 / N sum_(k in K) delta(epsilon - epsilon_k),
+    e^(i k L) = 1,
   $
-  with $K = {-pi/a + frac(2pi, N a) j | j = 0, dots, N-1}$.
+  i.e. over the $N$ distinct momenta
+  $
+    K = {k in [-pi/a, pi/a) | e^(i k N a) = 1}.
+  $
+  Keeping the DOS normalized per unit length, one obtains
+  $
+    cal(N)(epsilon) = 1 / L sum_(k in K) delta(epsilon - epsilon_k) = 1 / (N a) sum_(k in K) delta(epsilon - epsilon_k).
+  $
+  If one instead wants the DOS per lattice site, this is simply multiplied by $a$:
+  $
+    cal(N)_"site"(epsilon) = 1 / N sum_(k in K) delta(epsilon - epsilon_k).
+  $
 ]
 
 == b)
@@ -78,6 +77,7 @@ $
     cal(N)(epsilon) = 1 / (2 pi)^d integral_(RR^d) dd(k, [d]) delta(epsilon - epsilon_(vb(k))),
   $
   with $epsilon_(vb(k)) = frac(hbar^2 k^2, 2 m)$.
+  Since $epsilon_(vb(k)) = frac(hbar^2 k^2, 2 m) >= 0$, there are no states at negative energy, so the formulas below are understood to vanish for $epsilon < 0$.
   For a given energy $epsilon > 0$, the corresponding constant-energy shell is a sphere of radius
   $
     k_(epsilon) = frac(sqrt(2 m epsilon), hbar).
@@ -92,10 +92,7 @@ $
   $
   where $S^(d-1) (k)$ denotes the radius-$k$ sphere in $d$ dimensions. At $epsilon = epsilon_"F"$, $k_(epsilon)$ becomes the Fermi momentum $k_"F"$, and the constant-energy shell becomes the Fermi surface.
 
-  #grid(
-    columns: (auto, auto),
-    // gutter: 0em,
-
+  #two_panel(
     [
       - $d=1$: $|S^0(k)| = 2$, hence
       $
@@ -112,49 +109,7 @@ $
           cal(N)(epsilon) = 1/(2 pi^2) m/hbar^2 sqrt(2m epsilon)/hbar.
         $
     ],
-
-    [
-      #align(center)[
-        #plot(
-          width: 6,
-          height: 4,
-          xmin: 0.0,
-          xmax: 4.0,
-          ymin: 0.0,
-          ymax: 2.4,
-          show-grid: "none",
-
-          // Here epsilon_0 > 0 is an arbitrary reference energy used for normalization.
-          xlabel: $frac(epsilon, epsilon_0, style: "horizontal")$,
-          ylabel: $frac(cal(N) (epsilon), cal(N)(epsilon_0), style: "horizontal")$,
-
-          (
-            fn: x => 1.0 / calc.sqrt(x),
-            domain: (0.1, 4.0),
-            stroke: accent,
-            label: $d=1$,
-            label-pos: 1,
-            label-side: "right",
-          ),
-          (
-            fn: x => 1.0,
-            domain: (0.1, 4.0),
-            stroke: soft,
-            label: $d=2$,
-            label-pos: 1,
-            label-side: "right",
-          ),
-          (
-            fn: x => calc.sqrt(x),
-            domain: (0.1, 4.0),
-            stroke: plot-gray,
-            label: $d=3$,
-            label-pos: 1,
-            label-side: "right",
-          ),
-        )
-      ]
-    ],
+    [#continuum_dos_plot()],
   )
   At $epsilon = epsilon_"F"$, these constant-energy shells become the Fermi surfaces: two points in $d = 1$, a circle in $d = 2$, and a sphere in $d = 3$.
 ]
@@ -180,19 +135,28 @@ $
   $
   and invert it to express the real-space operators in terms of momentum-space operators:
   $
-    c^dagger_(i, sigma) & = 1 / sqrt(N) sum_k e^(i k x_i) c^dagger_(k, sigma) \
-           c_(i, sigma) & = 1 / sqrt(N) sum_k e^(-i k x_i) c_(k, sigma).
+    c^dagger_(i, sigma) & = 1 / sqrt(N) sum_(k in K) e^(i k x_i) c^dagger_(k, sigma) \
+           c_(i, sigma) & = 1 / sqrt(N) sum_(k in K) e^(-i k x_i) c_(k, sigma).
   $
-  For periodic boundary conditions, the allowed momenta are
+  For periodic boundary conditions, the allowed momenta satisfy
   $
-    k = -pi/a + frac(2pi, N a) n, quad n = 0, dots, N-1.
+    e^(i k N a) = 1,
+  $
+  i.e.
+  $
+    k = frac(2 pi, N a) n, quad n in ZZ,
+  $
+  taken modulo the reciprocal lattice vector $2 pi / a$. Choosing one representative from each equivalence class inside the first Brillouin zone gives the $N$ allowed momenta collected in the set
+  $
+    K = {k in [-pi/a, pi/a) | e^(i k N a) = 1}.
   $
   With this discrete set of momenta, the finite geometric sum in the Hamiltonian becomes the Kronecker delta appearing below.
+  Since $sum_(chevron.l i, j chevron.r)$ counts each nearest-neighbor bond once, in one dimension we may write it as a sum over $j$ with the neighbor $j+1$ understood modulo $N$.
   Substituting this into the Hamiltonian, we obtain (here $j+1$ is understood modulo $N$ because of the periodic boundary conditions)
   $
     H &= -t sum_(j, sigma) (c^dagger_(j, sigma) c_(j+1, sigma) + "h.c.") \
-    &= -t sum_(j, sigma) (1 / sqrt(N) sum_k e^(i k x_j) c^dagger_(k, sigma) 1 / sqrt(N) sum_k' e^(-i k' x_(j+1)) c_(k', sigma) + "h.c.") \
-    &= -t 1/N sum_(k,k') sum_(j, sigma) (e^(i k j a - i k' (j+1) a) c^dagger_(k, sigma) c_(k', sigma) + "h.c."),
+    &= -t sum_(j, sigma) (1 / sqrt(N) sum_(k in K) e^(i k x_j) c^dagger_(k, sigma) 1 / sqrt(N) sum_(k' in K) e^(-i k' x_(j+1)) c_(k', sigma) + "h.c.") \
+    &= -t 1/N sum_(k in K, k' in K) sum_(j, sigma) (e^(i k j a - i k' (j+1) a) c^dagger_(k, sigma) c_(k', sigma) + "h.c."),
   $
   Using the identity
   $
@@ -200,10 +164,10 @@ $
   $
   we find
   $
-    H & = -t sum_(k,k') sum_(sigma) (e^(-i k' a) delta_(k,k') c^dagger_(k, sigma) c_(k', sigma) + "h.c.") \
-      & = -t sum_(k,sigma) (e^(-i k a) c^dagger_(k, sigma) c_(k, sigma) + "h.c.") \
-      & = -t sum_(k,sigma) (e^(-i k a) c^dagger_(k, sigma) c_(k, sigma) + e^(i k a) c^dagger_(k, sigma) c_(k, sigma)) \
-      & = sum_(k,sigma) epsilon_k c^dagger_(k, sigma) c_(k, sigma)
+    H & = -t sum_(k in K, k' in K) sum_(sigma) (e^(-i k' a) delta_(k,k') c^dagger_(k, sigma) c_(k', sigma) + "h.c.") \
+      & = -t sum_(k in K, sigma) (e^(-i k a) c^dagger_(k, sigma) c_(k, sigma) + "h.c.") \
+      & = -t sum_(k in K, sigma) (e^(-i k a) c^dagger_(k, sigma) c_(k, sigma) + e^(i k a) c^dagger_(k, sigma) c_(k, sigma)) \
+      & = sum_(k in K, sigma) epsilon_k c^dagger_(k, sigma) c_(k, sigma)
   $
   Thus the eigenenergies are
   $
@@ -211,7 +175,7 @@ $
   $
   and the corresponding eigenstates are
   $
-    ket((k, sigma)) = c^dagger_(k, sigma) ket(0).
+    lr(|(k, sigma) chevron.r) = c^dagger_(k, sigma) lr(|0 chevron.r).
   $
 ]
 
@@ -230,187 +194,47 @@ $
   $
     epsilon_(vb(k)) = -2 t sum_(i=1)^d cos(k_i a),
   $
+  obtained by applying the same Fourier transform as in 1c) independently in each lattice direction.
   The density of states is therefore
   $
     cal(N)_d (epsilon)
     = 1/(2 pi)^d
     integral_([-pi / a, pi / a]^d) dd(k, [d]) delta(epsilon - epsilon_(vb(k))),
   $
+  For $hbar = m = t = a = 1$, the band runs from $-2d$ to $2d$.
 
-  Using
-  $
-    integral_([-pi / a, pi / a]^d) dd(k, [d]) delta(g(vb(k)))
-    = integral_(g^(-1)(0) inter [-pi/a, pi/a]^d)
-    frac(dd(sigma(vb(k))), abs(grad g)),
-  $
-  with $g(vb(k)) = epsilon - epsilon_(vb(k))$, and setting $hbar = m = t = a = 1$, we obtain
-  $
-    grad g = -2 vec(sin(k_1), dots.v, sin(k_d)),
-    quad
-    abs(grad g) = 2 sqrt(sum_(i=1)^d sin^2(k_i)),
-  $
-
-  - $d = 1$: For $abs(epsilon) < 2$, there are two solutions $plus.minus k_(epsilon)$ with
+  - $d = 1$: evaluating the delta function at the two roots of $epsilon + 2 cos(k) = 0$ gives
     $
-      cos(k_(epsilon)) = -epsilon / 2,
-    $
-    Hence
-    $
-      abs(grad g)
-      = 2 abs(sin(k_(epsilon)))
-      = 2 sqrt(1 - cos^2(k_(epsilon)))
-      = sqrt(4 - epsilon^2),
-    $
-    and therefore
-    $
-      cal(N)_1(epsilon) = dcases(
+      cal(N)_1(epsilon) = cases(
         1/(pi sqrt(4 - epsilon^2)) & "if" abs(epsilon) < 2,
-        0 & "otherwise"
-      ).
-    $
-
-  - $d = 2$: We write
-    $
-      cal(N)_2(epsilon)
-      = 1/(2 pi)^2
-      integral_(-pi)^pi dd(k_x)
-      integral_(-pi)^pi dd(k_y)
-      delta(epsilon + 2 cos(k_x) + 2 cos(k_y)),
-    $
-    For fixed $k_x$, define
-    $
-      A = epsilon + 2 cos(k_x),
-    $
-    Then the inner integral is exactly the $d=1$ result:
-    $
-      integral_(-pi)^pi dd(k_y) delta(A + 2 cos(k_y))
-      = 2 / sqrt(4 - A^2).
-    $
-    Thus
-    $
-      cal(N)_2(epsilon)
-      = 1/(2 pi)^2
-      integral_(-pi)^pi dd(k_x)
-      frac(2, sqrt(4 - (epsilon + 2 cos(k_x))^2)),
-    $
-    With $u = cos(k_x)$ and symmetry, this becomes
-    $
-      cal(N)_2(epsilon)
-      = 1/(pi^2)
-      integral_(-1)^1
-      frac(dd(u), sqrt(1 - u^2) sqrt(4 - (epsilon + 2u)^2)).
-    $
-    This is a complete elliptic integral of the first kind, so
-    $
-      cal(N)_2(epsilon) = dcases(
-        1/(2 pi^2) K(sqrt(1 - epsilon^2 / 16)) & "if" abs(epsilon) < 4,
-        0 & "otherwise"
+        0 & "if" abs(epsilon) > 2
       ),
     $
+    so the DOS diverges at the band edges $epsilon = plus.minus 2$.
 
-  - $d = 3$: Starting from
+  - $d = 2$: the square-lattice DOS can be reduced to a complete elliptic integral. In the parameter convention
     $
-      cal(N)_3(epsilon)
-      = 1/(2 pi)^3
-      integral_(-pi)^pi dd(k_x)
-      integral_(-pi)^pi dd(k_y)
-      integral_(-pi)^pi dd(k_z)
-      delta(epsilon + 2 cos(k_x) + 2 cos(k_y) + 2 cos(k_z)),
+      K(m) = integral_0^(pi/2) frac(dd(phi), sqrt(1 - m sin^2(phi))),
     $
-    we fix $k_z$ and define
+    one finds
     $
-      epsilon' = epsilon + 2 cos(k_z),
+      cal(N)_2(epsilon) = cases(
+        1/(2 pi^2) K(1 - epsilon^2 / 16) & "if" abs(epsilon) < 4,
+        0 & "if" abs(epsilon) > 4
+      ),
     $
-    The remaining $k_x,k_y$ integral is exactly the $d=2$ DOS at energy $epsilon'$:
+    with a logarithmic van Hove singularity at $epsilon = 0$ and the finite band-edge value $cal(N)_2(plus.minus 4) = 1/(4 pi)$.
+
+  - $d = 3$: for the cubic lattice it is convenient to evaluate the DOS numerically via the convolution
     $
       cal(N)_3(epsilon)
       = 1/(2 pi) integral_(-pi)^pi dd(k_z) cal(N)_2(epsilon + 2 cos(k_z)),
     $
-    Inserting the $d=2$ result gives
-    $
-      cal(N)_3(epsilon)
-      = 1/(4 pi^3)
-      integral_(-pi)^pi dd(k_z)
-      K(sqrt(1 - (epsilon + 2 cos(k_z))^2 / 16)),
-    $
-    where the integrand contributes only if
-    $
-      abs(epsilon + 2 cos(k_z)) < 4.
-    $
-    Equivalently, with $u = cos(k_z)$,
-    $
-      cal(N)_3(epsilon)
-      = 1/(2 pi^3)
-      integral_(-1)^1
-      frac(
-        K(sqrt(1 - (epsilon + 2u)^2 / 16)),
-        sqrt(1 - u^2)
-      ) dd(u),
-    $
-    again with the restriction
-    $
-      abs(epsilon + 2u) < 4.
-    $
-    In particular,
-    $
-      cal(N)_3(epsilon) = 0 quad "for" quad abs(epsilon) > 6.
-    $
+    so $cal(N)_3(epsilon) = 0$ for $abs(epsilon) > 6$. This DOS remains finite, but develops non-analytic kinks at $epsilon = plus.minus 2$.
 
-  #let load-curve(path) = {
-    let rows = csv(path, row-type: dictionary)
-    rows.map(r => (
-      float(r.at("x")),
-      float(r.at("rho")),
-    ))
-  }
+  The plotted DOS data were generated with a Julia script: it uses the closed-form $d=1$ result, the elliptic-integral expression for $d=2$, and the $k_z$ integral above for $d=3$.
 
-  #let c1 = load-curve("dos-data/dos_1d.csv")
-  #let c2 = load-curve("dos-data/dos_2d.csv")
-  #let c3 = load-curve("dos-data/dos_3d.csv")
-
-  #align(center)[
-    #plot(
-      width: 7.7,
-      height: 4.7,
-
-      xmin: -6.2,
-      xmax: 6.2,
-      ymin: 0,
-      ymax: 0.32,
-      ytick-step: 0.1,
-      show-grid: "none",
-      axis-y-pos: "left",
-      axis-x-extend: 0.5,
-      axis-y-extend: 0.04,
-
-      xlabel: $epsilon$,
-      ylabel: $cal(N)(epsilon)$,
-
-      line-plot(
-        c1,
-        stroke: accent,
-        mark: "none",
-        label: $d = 1$,
-        label-pos: 0.95,
-      ),
-
-      line-plot(
-        c2,
-        stroke: soft,
-        mark: "none",
-        label: $d = 2$,
-        label-pos: 0.95,
-      ),
-
-      line-plot(
-        c3,
-        stroke: plot-gray,
-        mark: "none",
-        label: $d = 3$,
-        label-pos: 0.95,
-      ),
-    )
-  ]
+  #lattice_dos_plot()
 
   === Prominent Features of the DOS Functions
   - $d = 1$: inverse square root divergence at the band edges $epsilon = plus.minus 2$.
@@ -441,71 +265,7 @@ $
   $
   i.e. a diamond-shaped Fermi surface in the first Brillouin zone.
 
-  #grid(
-    columns: (auto, auto),
-    gutter: 1.1em,
-
-    [
-      #align(center + horizon)[
-        #plot(
-          width: 4.4,
-          height: 1.5,
-          xmin: -3.5,
-          xmax: 3.5,
-          ymin: -1,
-          ymax: 1,
-          axis-y-extend: 0,
-          xtick: (-calc.pi, -calc.pi / 2, calc.pi / 2, calc.pi),
-          xtick-labels: ($-pi$, $-pi/2$, $pi/2$, $pi$),
-          ytick: (),
-          xlabel: $k$,
-
-          line-plot(
-            ((-calc.pi / 2, -0.35), (-calc.pi / 2, 0.35)),
-            stroke: accent,
-            mark: "none",
-          ),
-          line-plot(
-            ((calc.pi / 2, -0.35), (calc.pi / 2, 0.35)),
-            stroke: accent,
-            mark: "none",
-          ),
-        )
-      ]
-      #align(center)[
-        #text(font: "Hiragino Sans", fill: soft)[Fermi surface for $d = 1$ at half filling]
-      ]
-    ],
-
-    [
-      #align(center + horizon)[
-        #plot(
-          width: 4.4,
-          height: 4.4,
-          xmin: -3.5,
-          xmax: 3.5,
-          ymin: -3.5,
-          ymax: 3.5,
-          show-origin: false,
-          xtick: (-calc.pi, -calc.pi / 2, calc.pi / 2, calc.pi),
-          xtick-labels: ($-pi$, $-pi/2$, $pi/2$, $pi$),
-          ytick: (-calc.pi, -calc.pi / 2, calc.pi / 2, calc.pi),
-          ytick-labels: ($-pi$, $-pi/2$, $pi/2$, $pi$),
-          xlabel: $k_x$,
-          ylabel: $k_y$,
-
-          line-plot(
-            ((0.0, calc.pi), (calc.pi, 0.0), (0.0, -calc.pi), (-calc.pi, 0.0), (0.0, calc.pi)),
-            stroke: accent,
-            mark: "none",
-          ),
-        )
-      ]
-      #align(center)[
-        #text(font: "Hiragino Sans", fill: soft)[Fermi surface for $d = 2$ at half filling]
-      ]
-    ],
-  )
+  #half_filled_fermi_surface_pair()
 ]
 
 #major-section([02], [Screened and Unscreened Coulomb Potentials])
