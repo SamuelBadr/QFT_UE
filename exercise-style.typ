@@ -115,30 +115,31 @@
   #v(0.6em)
 ]
 
-#show heading.where(level: 1): it => major-section([00], [#it.body])
-
-#show heading.where(level: 2): it => [
-  #v(1.0em)
-  #grid(
-    columns: (0.9cm, auto, 1fr),
-    gutter: 0.55em,
-    align: bottom,
-  )[
-    #vertical-label([PART], fill: soft)
-  ][
-    #text(
-      font: "Hiragino Sans",
-      size: 14.5pt,
-      weight: "medium",
-      fill: ink,
-    )[#it.body]
-  ][
-    #line(length: 100%, stroke: (paint: rule, thickness: 0.7pt))
-  ]
-  #v(0.26em)
+#let render-major-heading(it) = block(width: 100%)[
+  #counter(heading).step(level: 1)
+  #major-section(context counter(heading).display("01"), [#it.body])
 ]
 
-#show heading.where(level: 3): it => [
+#let render-part-heading(it) = [
+  #counter(heading).step(level: 2)
+  #v(0.35em)
+  #text(
+    font: "Hiragino Sans",
+    size: 11pt,
+    weight: "medium",
+    fill: ink,
+  )[
+    #context numbering("a)", counter(heading).get().last())
+    #if it.body != [] [
+      #h(0.5em)
+      #it.body
+    ]
+  ]
+  #v(0.1em)
+]
+
+#let render-subheading(it) = [
+  #counter(heading).step(level: 3)
   #v(0.8em)
   #grid(
     columns: (0.9cm, auto, 1fr),

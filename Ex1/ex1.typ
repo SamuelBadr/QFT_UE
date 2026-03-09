@@ -1,6 +1,10 @@
 #import "../exercise-style.typ": *
 #import "./ex1-figures.typ": *
 
+#show heading.where(level: 1): render-major-heading
+#show heading.where(level: 2): render-part-heading
+#show heading.where(level: 3): render-subheading
+
 #sheet-header(
   [QFT for Many-Body Systems],
   [1#super[st] Exercise Sheet Solutions],
@@ -9,7 +13,7 @@
 
 #tutorium_note[TUTORIUM: Friday, 20.03.2026.]
 
-#major-section([01], [Getting familiar with the Density of States])
+= Getting Familiar with the Density of States
 
 #statement[
   The calculation of thermodynamic quantities, response functions and Feynman diagrams in QFT for condensed matter systems often requires the evaluation of integrals or sums over all momenta $vb(k)$ (typically over the first Brillouin Zone). An important simplification of these $vb(k)$-summations is possible, however, when the integrand $cal(F)$ depends on the *energy only*. In this case the integration/sum is best performed by using the energy $epsilon$ as a variable. In the case of a cubic lattice of volume $L^d$ in $d$ dimensions, for a given observable $F$, we have:
@@ -33,7 +37,7 @@
   $
 ]
 
-== a)
+==
 
 #statement[
   Consider the two cases of particles which can move freely and particles whose motion is bound to an infinite lattice with lattice spacing $a$. Which of the above expressions do you have to use in the first and second case, respectively? Is the integral/summation restricted to certain $vb(k)$-vectors? How does the result change, if one considers a one-dimensional, finite lattice ($N$ lattice points, lattice spacing $a$) with periodic boundary conditions?
@@ -66,7 +70,7 @@
   $
 ]
 
-== b)
+==
 
 #statement[
   Calculate and plot the explicit expression for $cal(N)(epsilon)$ for free, non-interacting particles of mass $m$ (so that $epsilon_(vb(k)) = frac(hbar^2 k^2, 2 m)$) in one, two and three dimensions. How do the corresponding Fermi surfaces look like in these cases?
@@ -114,7 +118,7 @@
   At $epsilon = epsilon_"F"$, these constant-energy shells become the Fermi surfaces: two points in $d = 1$, a circle in $d = 2$, and a sphere in $d = 3$.
 ]
 
-== c)
+==
 
 #statement[
   Consider the following one-dimensional tight-binding Hamiltonian
@@ -179,7 +183,7 @@
   $
 ]
 
-== d)
+==
 
 #statement[
   How can one extend the results of 1c) to arbitrary dimensions $d > 1$? Plot numerically the DOS $cal(N)(epsilon)$ for the cases $d = 1, 2, 3$ with $#hbar = m = t = a = 1$. Which are the most prominent features of these DOS functions and at which energies $epsilon$ do they occur? How would the corresponding Fermi surfaces look like for the cases $d = 1, 2$, e.g. if one has an average density of one electron per site (_half-filled system_)?
@@ -236,7 +240,7 @@
 
   #lattice_dos_plot()
 
-  === Prominent Features of the DOS Functions
+  *Prominent features of the DOS functions:*
   - $d = 1$: inverse square root divergence at the band edges $epsilon = plus.minus 2$.
   - $d = 2$: logarithmic van Hove singularity at $epsilon = 0$, finite band edges at $epsilon = plus.minus 4$.
   - $d = 3$: non-analytic kinks at $epsilon = plus.minus 2$, band edges at $epsilon = plus.minus 6$. The kinks occur because at $epsilon = plus.minus 2$ the topology of the constant-energy surface changes, so the phase-space measure is non-analytic there even though the DOS remains finite.
@@ -268,9 +272,9 @@
   #half_filled_fermi_surface_pair()
 ]
 
-#major-section([02], [Screened and Unscreened Coulomb Potentials])
+= Screened and Unscreened Coulomb Potentials
 
-== a)
+==
 
 #statement[
   From the integral representation of the delta function,
@@ -336,7 +340,7 @@
   $
 ]
 
-== b)
+==
 
 #statement[
   Show that the Fourier transform of the screened Coulomb interaction $V_s (vb(r)) = (e^2 \/ r) e^(-k_"TF" r)$ is
