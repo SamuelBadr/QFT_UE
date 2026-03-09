@@ -100,7 +100,7 @@
   columns: (auto, auto),
   gutter: 1.1em,
 )[
-  [
+  #block[
     #align(center + horizon)[
       #plot(
         width: 4.4,
@@ -132,7 +132,7 @@
     ]
   ]
 ][
-  [
+  #block[
     #align(center + horizon)[
       #plot(
         width: 4.4,

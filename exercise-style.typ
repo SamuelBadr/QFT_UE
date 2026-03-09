@@ -115,12 +115,12 @@
   #v(0.6em)
 ]
 
-#let render-major-heading(it) = block(width: 100%)[
+#let render-major-heading(it) = block(sticky: true, width: 100%)[
   #counter(heading).step(level: 1)
   #major-section(context counter(heading).display("01"), [#it.body])
 ]
 
-#let render-part-heading(it) = [
+#let render-part-heading(it) = block(sticky: true, width: 100%)[
   #counter(heading).step(level: 2)
   #v(0.35em)
   #text(
@@ -179,8 +179,8 @@
       #line(length: 100%, stroke: (paint: accent, thickness: 0.85pt))
       #v(0.42em)
       #set text(
-        font: ("Hiragino Sans", "Helvetica Neue", "Arial"),
-        size: 9.9pt,
+        font: ("Hiragino Mincho ProN", "Baskerville", "Libertinus Serif"),
+        size: 10pt,
         fill: ink,
       )
       #body
