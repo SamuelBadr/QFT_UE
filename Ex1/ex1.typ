@@ -66,7 +66,7 @@
   $
   If one instead wants the DOS per lattice site, this is simply multiplied by $a$:
   $
-    cal(N)_"site"(epsilon) = 1 / N sum_(k in K) delta(epsilon - epsilon_k).
+    cal(N)_"site" (epsilon) = 1 / N sum_(k in K) delta(epsilon - epsilon_k).
   $
 ]
 
@@ -393,19 +393,19 @@
   $
     I(r) = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k e^(i k r)) / (k^2 + k_"TF"^2),
   $
-  so that $V_s (vb(r)) = "Im" I(r)$.
+  so that $V_s (vb(r)) = im I(r)$.
 
   The integrand of $I(r)$ has poles at $k = plus.minus i k_"TF"$. For $r > 0$, the factor $e^(i k r)$ decays exponentially in the upper half-plane, so we close the contour there and compute the residue
   $
-    "Res"_(k = i k_"TF") (k e^(i k r)) / (k^2 + k_"TF"^2) = lim_(k arrow.r i k_"TF") (k - i k_"TF") (k e^(i k r)) / ((k - i k_"TF")(k + i k_"TF")) = (i k_"TF" e^(-k_"TF" r)) / (2 i k_"TF") = 1/2 e^(-k_"TF" r).
+    op("Res", limits: #true)_(k = i k_"TF") (k e^(i k r)) / (k^2 + k_"TF"^2) = lim_(k arrow.r i k_"TF") (k - i k_"TF") (k e^(i k r)) / ((k - i k_"TF")(k + i k_"TF")) = (i k_"TF" e^(-k_"TF" r)) / (2 i k_"TF") = 1/2 e^(-k_"TF" r).
   $
   This gives
   $
-    I(r) & = (e^2)/(pi r) 2 pi i "Res"_(k = i k_"TF") (k e^(i k r)) / (k^2 + k_"TF"^2) = (e^2)/(r) i e^(-k_"TF" r)
+    I(r) & = (e^2)/(pi r) 2 pi i op("Res", limits: #true)_(k = i k_"TF") (k e^(i k r)) / (k^2 + k_"TF"^2) = (e^2)/(r) i e^(-k_"TF" r)
   $
   and therefore
   $
-    V_s (vb(r)) = "Im" I(r) = (e^2) / r e^(-k_"TF" r)
+    V_s (vb(r)) = im I(r) = (e^2) / r e^(-k_"TF" r)
   $
 
   For the second part, we proceed exactly as in part a) and write the differential equation

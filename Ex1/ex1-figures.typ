@@ -97,10 +97,10 @@
 }
 
 #let half_filled_fermi_surface_pair() = grid(
-  columns: (auto, auto),
+  columns: (1fr, 1fr),
   gutter: 1.1em,
-)[
-  #block[
+
+  block(width: 100%, height: 170pt)[
     #align(center + horizon)[
       #plot(
         width: 4.4,
@@ -127,12 +127,9 @@
         ),
       )
     ]
-    #align(center)[
-      #text(font: "Hiragino Sans", fill: soft)[Fermi surface for $d = 1$ at half filling]
-    ]
-  ]
-][
-  #block[
+  ],
+
+  block(width: 100%, height: 170pt)[
     #align(center + horizon)[
       #plot(
         width: 4.4,
@@ -150,14 +147,17 @@
         ylabel: $k_y$,
 
         line-plot(
-          ((0.0, calc.pi), (calc.pi, 0.0), (0.0, -calc.pi), (-calc.pi, 0.0), (0.0, calc.pi)),
+          (
+            (0.0, calc.pi),
+            (calc.pi, 0.0),
+            (0.0, -calc.pi),
+            (-calc.pi, 0.0),
+            (0.0, calc.pi),
+          ),
           stroke: accent,
           mark: "none",
         ),
       )
     ]
-    #align(center)[
-      #text(font: "Hiragino Sans", fill: soft)[Fermi surface for $d = 2$ at half filling]
-    ]
-  ]
-]
+  ],
+)
