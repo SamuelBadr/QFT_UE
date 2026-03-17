@@ -295,7 +295,7 @@
   Assume that the Coulomb potential has the Fourier representation
   $
     phi.alt(vb(r))
-    = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) phi.alt(vb(k)),
+    = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) phi.alt(vb(k)).
   $
   Applying $-laplacian$ gives
   $
@@ -307,13 +307,13 @@
   $
     -laplacian ee^(ii vb(k) dot vb(r)) = k^2 ee^(ii vb(k) dot vb(r)).
   $
-  On the other hand, Poisson's equation implies
+  Poisson's equation also implies
   $
     -laplacian phi.alt(vb(r))
     = -4 pi e delta(vb(r))
-    = -4 pi e integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)),
+    = -4 pi e integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)).
   $
-  Comparing the Fourier coefficients of $ee^(ii vb(k) dot vb(r))$ gives
+  Comparing Fourier coefficients gives
   $
     k^2 phi.alt(vb(k)) = -4 pi e,
   $
@@ -354,66 +354,66 @@
 ]
 
 #solution[
-  Following the hint, we substitute the Fourier transform of the screened Coulomb interaction into the Fourier integral
+  We substitute the Fourier transform of the screened Coulomb interaction into the Fourier integral
   $
     V_"s" (vb(r)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) V_"s" (vb(k)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) (4 pi e^2) / (k^2 + k_"TF"^2),
   $
-  and pass to spherical coordinates
+  and pass to spherical coordinates,
   $
-    V_"s" (vb(r)) = integral (k^2 sin theta dd(k) dd(theta) dd(phi)) / (2 pi)^3 ee^(ii k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2),
+    V_"s" (vb(r)) = integral (k^2 sin theta dd(k) dd(theta) dd(phi)) / (2 pi)^3 ee^(ii k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2).
   $
-  where we first carry out the trivial $phi$-integral, yielding a factor of $2 pi$,
+  After the trivial $phi$-integral this becomes
   $
     V_"s" (vb(r)) = integral (k^2 sin theta dd(k) dd(theta)) / (2 pi)^2 ee^(ii k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2).
   $
   Since
   $
-    dv(, theta) ee^(ii k r cos theta) = -ee^(ii k r cos theta) ii k r sin theta
+    dv(, theta) ee^(ii k r cos theta) = -ee^(ii k r cos theta) ii k r sin theta,
   $
   we can write
   $
     V_"s" (vb(r)) & = integral (k dd(k) dd(theta)) / (2 pi)^2 (dv(, theta) ee^(ii k r cos theta)) 1/(-ii r) (4 pi e^2) / (k^2 + k_"TF"^2)
   $
-  and then carry out the $theta$-integral:
+  and then integrate over $theta$
   $
     integral_0^pi dd(theta) (dv(, theta) ee^(ii k r cos theta)) = ee^(ii k r cos pi) - ee^(ii k r cos 0) = ee^(-ii k r) - ee^(ii k r) = -2 ii sin(k r),
   $
-  yielding
+  so that
   $
     V_"s" (vb(r)) & = (2e^2)/(pi r) integral_0^infinity dd(k) (k sin(k r)) / (k^2 + k_"TF"^2).
   $
-  This integrand is an even function in $k$, so we can extend it to the whole real axis and write
+  Since the integrand is even,
   $
     V_"s" (vb(r)) & = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k sin(k r)) / (k^2 + k_"TF"^2).
   $
-  To evaluate the radial integral by contour integration, we instead consider
+  To evaluate the radial integral by contour integration, consider
   $
     I(r) = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k ee^(ii k r)) / (k^2 + k_"TF"^2),
   $
   so that $V_"s" (vb(r)) = im I(r)$.
 
-  The integrand of $I(r)$ has poles at $k = plus.minus ii k_"TF"$. For $r > 0$, the factor $ee^(ii k r)$ decays exponentially in the upper half-plane, so we close the contour there and compute the residue
+  The integrand has poles at $k = plus.minus ii k_"TF"$. For $r > 0$, $ee^(ii k r)$ decays in the upper half-plane, so we close the contour there and compute
   $
     op("Res", limits: #true)_(k = ii k_"TF") (k ee^(ii k r)) / (k^2 + k_"TF"^2) = lim_(k arrow.r ii k_"TF") (k - ii k_"TF") (k ee^(ii k r)) / ((k - ii k_"TF")(k + ii k_"TF")) = (ii k_"TF" ee^(-k_"TF" r)) / (2 ii k_"TF") = 1/2 ee^(-k_"TF" r).
   $
-  This gives
+  Hence
   $
-    I(r) & = (e^2)/(pi r) 2 pi ii op("Res", limits: #true)_(k = ii k_"TF") (k ee^(ii k r)) / (k^2 + k_"TF"^2) = (e^2)/(r) ii ee^(-k_"TF" r)
+    I(r) & = (e^2)/(pi r) 2 pi ii op("Res", limits: #true)_(k = ii k_"TF") (k ee^(ii k r)) / (k^2 + k_"TF"^2) = (e^2)/(r) ii ee^(-k_"TF" r),
   $
   and therefore
   $
-    V_"s" (vb(r)) = im I(r) = (e^2) / r e^(-k_"TF" r)
+    V_"s" (vb(r)) = im I(r) = (e^2) / r e^(-k_"TF" r).
   $
 
-  For the second part, we proceed exactly as in part a) and write the differential equation
+  For the second part, Fourier transforming gives
   $
-    (-laplacian + k_"TF"^2) V_"s" (vb(r)) = 4 pi e^2 delta(vb(r))
+    (k^2 + k_"TF"^2) V_"s" (vb(k)) = 4 pi e^2,
   $
-  in Fourier space as
+  which is equivalent to
   $
-    (k^2 + k_"TF"^2) V_"s" (vb(k)) = 4 pi e^2
+    (-laplacian + k_"TF"^2) V_"s" (vb(r)) = 4 pi e^2 delta(vb(r)),
   $
-  which is indeed satisfied by
+  and is indeed satisfied by
   $
     V_"s" (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2).
   $
