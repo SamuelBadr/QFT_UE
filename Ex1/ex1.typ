@@ -390,9 +390,7 @@
   $
     I(r) = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k ee^(ii k r)) / (k^2 + k_"TF"^2),
   $
-  so that $V_"s" (vb(r)) = im I(r)$.
-
-  The integrand has poles at $k = plus.minus ii k_"TF"$. For $r > 0$, $ee^(ii k r)$ decays in the upper half-plane, so we close the contour there and compute
+  so that $V_"s" (vb(r)) = im I(r)$. The integrand has poles at $k = plus.minus ii k_"TF"$. For $r > 0$, $ee^(ii k r)$ decays in the upper half-plane, so we close the contour there and compute
   $
     op("Res", limits: #true)_(k = ii k_"TF") (k ee^(ii k r)) / (k^2 + k_"TF"^2) = lim_(k arrow.r ii k_"TF") (k - ii k_"TF") (k ee^(ii k r)) / ((k - ii k_"TF")(k + ii k_"TF")) = (ii k_"TF" ee^(-k_"TF" r)) / (2 ii k_"TF") = 1/2 ee^(-k_"TF" r).
   $
