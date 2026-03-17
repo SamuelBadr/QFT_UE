@@ -1,20 +1,17 @@
 #import "../exercise-style.typ": *
 #import "./ex1-figures.typ": *
 
-#show heading.where(level: 1): render-major-heading
-#show heading.where(level: 2): render-part-heading
-
-#sheet-header(
-  [QFT for Many-Body Systems],
-  [1#super[st] Exercise Sheet Solutions],
-  date: [Sommersemester 2026],
+#show: exercise-sheet.with(
+  "QFT for Many-Body Systems",
+  1,
+  author: "Samuel Badr",
+  semester: "Sommersemester 2026",
+  tutorial: "TUTORIUM: Friday, 20.03.2026.",
 )
-
-#tutorium_note[TUTORIUM: Friday, 20.03.2026.]
 
 = Getting Familiar with the Density of States
 
-#statement[
+#problem[
   The calculation of thermodynamic quantities, response functions and Feynman diagrams in QFT for condensed matter systems often requires the evaluation of integrals or sums over all momenta $vb(k)$ (typically over the first Brillouin Zone). An important simplification of these $vb(k)$-summations is possible, however, when the integrand $cal(F)$ depends on the *energy only*. In this case the integration/sum is best performed by using the energy $epsilon$ as a variable. In the case of a cubic lattice of volume $L^d$ in $d$ dimensions, for a given observable $F$, we have:
   $
     F = 1 / L^d sum_(vb(k)) cal(F)(epsilon_(vb(k)))
@@ -38,7 +35,7 @@
 
 ==
 
-#statement[
+#problem[
   Consider the two cases of particles which can move freely and particles whose motion is bound to an infinite lattice with lattice spacing $a$. Which of the above expressions do you have to use in the first and second case, respectively? Is the integral/summation restricted to certain $vb(k)$-vectors? How does the result change, if one considers a one-dimensional, finite lattice ($N$ lattice points, lattice spacing $a$) with periodic boundary conditions?
 ]
 
@@ -71,7 +68,7 @@
 
 ==
 
-#statement[
+#problem[
   Calculate and plot the explicit expression for $cal(N)(epsilon)$ for free, non-interacting particles of mass $m$ (so that $epsilon_(vb(k)) = frac(hbar^2 k^2, 2 m)$) in one, two and three dimensions. How do the corresponding Fermi surfaces look like in these cases?
 ]
 
@@ -119,7 +116,7 @@
 
 ==
 
-#statement[
+#problem[
   Consider the following one-dimensional tight-binding Hamiltonian
   $
     H = -t sum_(chevron.l i, j chevron.r, sigma) (c^dagger_(i, sigma) c_(j, sigma) + "h.c.").
@@ -184,7 +181,7 @@
 
 ==
 
-#statement[
+#problem[
   How can one extend the results of 1c) to arbitrary dimensions $d > 1$? Plot numerically the DOS $cal(N)(epsilon)$ for the cases $d = 1, 2, 3$ with $#hbar = m = t = a = 1$. Which are the most prominent features of these DOS functions and at which energies $epsilon$ do they occur? How would the corresponding Fermi surfaces look like for the cases $d = 1, 2$, e.g. if one has an average density of one electron per site (_half-filled system_)?
 ]
 
@@ -272,7 +269,7 @@
 
 ==
 
-#statement[
+#problem[
   From the integral representation of the delta function,
   $
     delta(vb(r)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)),
@@ -338,7 +335,7 @@
 
 ==
 
-#statement[
+#problem[
   Show that the Fourier transform of the screened Coulomb interaction $V_"s" (vb(r)) = (e^2 \/ r) ee^(-k_"TF" r)$ is
   $
     V_"s" (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2),

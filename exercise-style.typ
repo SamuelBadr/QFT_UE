@@ -1,5 +1,4 @@
 #import "@preview/physica:0.9.5": dd, dv, grad, hbar, laplacian, vb
-#let paper = rgb("#f8f6f1")
 #let ink = rgb("#181615")
 #let soft = rgb("#867d73")
 #let rule = rgb("#cfc5b8")
@@ -9,6 +8,26 @@
 
 #let ii = $ upright(i) $
 #let ee = $ upright(e) $
+
+#let ordinal-suffix(number) = {
+  let mod100 = calc.rem(number, 100)
+  let mod10 = calc.rem(number, 10)
+  if mod100 == 11 or mod100 == 12 or mod100 == 13 {
+    "th"
+  } else if mod10 == 1 {
+    "st"
+  } else if mod10 == 2 {
+    "nd"
+  } else if mod10 == 3 {
+    "rd"
+  } else {
+    "th"
+  }
+}
+
+#let sheet-title-text(number, suffix: "Exercise Sheet Solutions") = {
+  str(number) + ordinal-suffix(number) + " " + suffix
+}
 
 #let vertical-label(body, fill: ink) = rotate(-90deg, reflow: true)[
   #text(
@@ -22,7 +41,7 @@
 
 #let sun(size: 0.28cm, fill: accent) = circle(radius: size / 2, fill: fill)
 
-#let sheet-header(title, subtitle, date: none) = [
+#let sheet-banner(course, title, semester: none) = [
   #grid(
     columns: (1fr, auto),
     gutter: 1em,
@@ -34,31 +53,41 @@
         size: 7.8pt,
         tracking: 0.22em,
         fill: soft,
-      )[#title]
+      )[#course]
       #v(0.18em)
       #text(
         font: "Hiragino Mincho ProN",
         size: 25pt,
         weight: "regular",
         fill: ink,
-      )[#subtitle]
+      )[#title]
     ]
   ][
     #align(right)[
       #sun()
-      #if date != none [
+      #if semester != none [
         #v(0.55em)
         #text(
           font: "Hiragino Sans",
           size: 7.6pt,
           tracking: 0.16em,
           fill: accent,
-        )[#date]
+        )[#semester]
       ]
     ]
   ]
   #v(0.55em)
   #line(length: 100%, stroke: (paint: rule, thickness: 0.75pt))
+]
+
+#let tutorial-note(body) = align(right)[
+  #text(
+    font: "Hiragino Sans",
+    size: 7.8pt,
+    weight: "medium",
+    tracking: 0.16em,
+    fill: accent,
+  )[#body]
 ]
 
 #let major-section(number, title) = [
@@ -118,40 +147,90 @@
   #v(0.1em)
 ]
 
-#let render-subheading(it) = [
-  #counter(heading).step(level: 3)
-  #v(0.8em)
-  #grid(
-    columns: (0.9cm, auto, 1fr),
-    gutter: 0.55em,
-    align: center + horizon,
-  )[
-    #align(center)[
-      #sun(size: 0.13cm, fill: accent-soft)
-    ]
-  ][
-    #text(
-      font: "Hiragino Sans",
-      size: 11pt,
-      weight: "medium",
-      tracking: 0.06em,
-      fill: soft,
-    )[#it.body]
-  ][
-    #line(length: 100%, stroke: (paint: rule, thickness: 0.65pt))
-  ]
-  #v(0.18em)
+#let render-problem-heading(it) = block(sticky: true, width: 100%)[
+  #vertical-label([PROBLEM], fill: accent)
+  #sun(size: 0.17cm)
 ]
 
-#let statement(body) = block(width: 100%)[
+#let render-solution-heading(it) = block(sticky: true, width: 100%)[
+  #vertical-label([SOLUTION], fill: soft)
+]
+
+#let exercise-sheet(
+  course,
+  number,
+  author: none,
+  semester: none,
+  tutorial: none,
+  title-suffix: "Exercise Sheet Solutions",
+  pdf-description: auto,
+  pdf-keywords: auto,
+  body,
+) = {
+  show heading.where(level: 1): render-major-heading
+  show heading.where(level: 2): render-part-heading
+  show heading.where(level: 3): render-problem-heading
+  show heading.where(level: 4): render-solution-heading
+  show title: it => []
+
+  let full-title = str(course) + " - " + sheet-title-text(number, suffix: title-suffix)
+  let visible-title = [#number#super[#ordinal-suffix(number)] #title-suffix]
+
+  set document(
+    title: full-title,
+    author: if author != none { (author,) } else { () },
+    description: if pdf-description == auto {
+      let details = ()
+      if semester != none {
+        details.push(semester)
+      }
+      if tutorial != none {
+        details.push(tutorial)
+      }
+      if details.len() == 0 {
+        full-title
+      } else {
+        full-title + " - " + details.join(" - ")
+      }
+    } else {
+      pdf-description
+    },
+    keywords: if pdf-keywords == auto {
+      let keys = (
+        str(course),
+        "Exercise Sheet " + str(number),
+        title-suffix,
+      )
+      if semester != none {
+        keys.push(semester)
+      }
+      if tutorial != none {
+        keys.push(tutorial)
+      }
+      keys
+    } else {
+      pdf-keywords
+    },
+  )
+
+  [
+    #title([#full-title])
+    #sheet-banner(course, visible-title, semester: semester)
+    #if tutorial != none [
+      #tutorial-note([#tutorial])
+    ]
+    #body
+  ]
+}
+
+#let problem(body) = block(width: 100%)[
   #grid(
     columns: (0.9cm, 1fr),
     gutter: 0.7em,
     align: top,
   )[
     #align(center)[
-      #vertical-label([PROBLEM], fill: accent)
-      #sun(size: 0.17cm)
+      #heading(level: 3, numbering: none, outlined: false, bookmarked: false)[Problem]
     ]
   ][
     #block[
@@ -175,7 +254,7 @@
     align: top,
   )[
     #align(center)[
-      #vertical-label([SOLUTION], fill: soft)
+      #heading(level: 4, numbering: none, outlined: false, bookmarked: false)[Solution]
     ]
   ][
     #block[
@@ -184,16 +263,6 @@
       #body
     ]
   ]
-]
-
-#let tutorium_note(body) = align(right)[
-  #text(
-    font: "Hiragino Sans",
-    size: 7.8pt,
-    weight: "medium",
-    tracking: 0.16em,
-    fill: accent,
-  )[#body]
 ]
 
 #let two_panel(left, right, gutter: 0em) = grid(
