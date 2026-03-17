@@ -7,26 +7,8 @@
 #let accent-soft = rgb("#eadfd0")
 #let plot-gray = rgb("#666b72")
 
-#set page(
-  paper: "a4",
-  margin: (left: 2.25cm, right: 1.75cm, top: 1.45cm, bottom: 1.7cm),
-  fill: paper,
-  numbering: "1",
-)
-
-#set text(
-  font: ("Hiragino Mincho ProN", "Baskerville", "Libertinus Serif"),
-  size: 10.7pt,
-  fill: ink,
-)
-
-#set par(
-  justify: true,
-  leading: 0.75em,
-)
-
-#show emph: it => text(fill: accent, style: "italic")[#it.body]
-#show strong: it => text(weight: "medium")[#it.body]
+#let ii = $ upright(i) $
+#let ee = $ upright(e) $
 
 #let vertical-label(body, fill: ink) = rotate(-90deg, reflow: true)[
   #text(
@@ -110,9 +92,7 @@
       #sun(size: 0.18cm, fill: accent-soft)
     ]
   ]
-  #v(0.25em)
-  #line(length: 100%, stroke: (paint: rule, thickness: 0.75pt))
-  #v(0.6em)
+  #v(0.85em)
 ]
 
 #let render-major-heading(it) = block(sticky: true, width: 100%)[
@@ -171,7 +151,6 @@
   )[
     #align(center)[
       #vertical-label([PROBLEM], fill: accent)
-      #v(0.5em)
       #sun(size: 0.17cm)
     ]
   ][
@@ -185,7 +164,6 @@
       )
       #body
       #v(0.24em)
-      #line(length: 100%, stroke: (paint: accent-soft, thickness: 0.75pt))
     ]
   ]
 ]

@@ -3,7 +3,6 @@
 
 #show heading.where(level: 1): render-major-heading
 #show heading.where(level: 2): render-part-heading
-#show heading.where(level: 3): render-subheading
 
 #sheet-header(
   [QFT for Many-Body Systems],
@@ -44,27 +43,27 @@
 ]
 
 #solution[
-  Freely moving particles can have arbitrary momenta, so one integrates over all of momentum space:
+  Freely moving particles can have arbitrary momenta, so one integrates over all of momentum space
   $
     cal(N)(epsilon) = 1 / (2 pi)^d integral_(RR^d) dd(k, [d]) delta(epsilon - epsilon_(vb(k))).
   $
-  Particles bound to an infinite lattice with lattice spacing $a$ can only have momenta within the first Brillouin zone:
+  Particles bound to an infinite lattice with lattice spacing $a$ can only have momenta within the first Brillouin zone
   $
     cal(N)(epsilon) = 1 / (2 pi)^d integral_([-pi/a, pi/a]^d) dd(k, [d]) delta(epsilon - epsilon_(vb(k))).
   $
   Finally, for a one-dimensional finite lattice of length $L = N a$ with periodic boundary conditions, the sum runs over a discrete set of allowed momenta satisfying
   $
-    e^(i k L) = 1,
+    ee^(ii k L) = 1,
   $
   i.e. over the $N$ distinct momenta
   $
-    K = {k in [-pi/a, pi/a) | e^(i k N a) = 1}.
+    K = {k in [-pi/a, pi/a) | ee^(ii k N a) = 1}.
   $
   Keeping the DOS normalized per unit length, one obtains
   $
     cal(N)(epsilon) = 1 / L sum_(k in K) delta(epsilon - epsilon_k) = 1 / (N a) sum_(k in K) delta(epsilon - epsilon_k).
   $
-  If one instead wants the DOS per lattice site, this is simply multiplied by $a$:
+  If one instead wants the DOS per lattice site, this is simply multiplied by $a$
   $
     cal(N)_"site" (epsilon) = 1 / N sum_(k in K) delta(epsilon - epsilon_k).
   $
@@ -127,7 +126,7 @@
   $
   Here the hopping ($t > 0$) is restricted to neighboring sites, where $c^dagger_(i, sigma)$ and $c_(i, sigma)$ are the creation/annihilation operators for one electron with spin $sigma = arrow.t, arrow.b$ at the position $x_i = i a$ with $i = 0, 1, ..., N - 1$ and $a$ being the lattice spacing. Assuming periodic boundary conditions ($x_0 = x_N$), compute the corresponding eigenenergies, e.g. using the following basis transformation (from real to momentum space)
   $
-    c^dagger_(k, sigma) = 1 / sqrt(N) sum_(x_i) e^(-i k x_i) c^dagger_(i, sigma),
+    c^dagger_(k, sigma) = 1 / sqrt(N) sum_(x_i) ee^(-ii k x_i) c^dagger_(i, sigma),
   $
   for the fermionic operators.
 ]
@@ -135,16 +134,16 @@
 #solution[
   We start from the given basis transformation
   $
-    c^dagger_(k, sigma) = 1 / sqrt(N) sum_(x_i) e^(-i k x_i) c^dagger_(i, sigma)
+    c^dagger_(k, sigma) = 1 / sqrt(N) sum_(x_i) ee^(-ii k x_i) c^dagger_(i, sigma)
   $
-  and invert it to express the real-space operators in terms of momentum-space operators:
+  and invert it to express the real-space operators in terms of momentum-space operators
   $
-    c^dagger_(i, sigma) & = 1 / sqrt(N) sum_(k in K) e^(i k x_i) c^dagger_(k, sigma) \
-           c_(i, sigma) & = 1 / sqrt(N) sum_(k in K) e^(-i k x_i) c_(k, sigma).
+    c^dagger_(i, sigma) & = 1 / sqrt(N) sum_(k in K) ee^(ii k x_i) c^dagger_(k, sigma) \
+           c_(i, sigma) & = 1 / sqrt(N) sum_(k in K) ee^(-ii k x_i) c_(k, sigma).
   $
   For periodic boundary conditions, the allowed momenta satisfy
   $
-    e^(i k N a) = 1,
+    ee^(ii k N a) = 1,
   $
   i.e.
   $
@@ -152,26 +151,26 @@
   $
   taken modulo the reciprocal lattice vector $2 pi / a$. Choosing one representative from each equivalence class inside the first Brillouin zone gives the $N$ allowed momenta collected in the set
   $
-    K = {k in [-pi/a, pi/a) | e^(i k N a) = 1}.
+    K = {k in [-pi/a, pi/a) | ee^(ii k N a) = 1}.
   $
   With this discrete set of momenta, the finite geometric sum in the Hamiltonian becomes the Kronecker delta appearing below.
   Since $sum_(chevron.l i, j chevron.r)$ counts each nearest-neighbor bond once, in one dimension we may write it as a sum over $j$ with the neighbor $j+1$ understood modulo $N$.
   Substituting this into the Hamiltonian, we obtain (here $j+1$ is understood modulo $N$ because of the periodic boundary conditions)
   $
     H &= -t sum_(j, sigma) (c^dagger_(j, sigma) c_(j+1, sigma) + "h.c.") \
-    &= -t sum_(j, sigma) (1 / sqrt(N) sum_(k in K) e^(i k x_j) c^dagger_(k, sigma) 1 / sqrt(N) sum_(k' in K) e^(-i k' x_(j+1)) c_(k', sigma) + "h.c.") \
-    &= -t 1/N sum_(k in K, k' in K) sum_(j, sigma) (e^(i k j a - i k' (j+1) a) c^dagger_(k, sigma) c_(k', sigma) + "h.c."),
+    &= -t sum_(j, sigma) (1 / sqrt(N) sum_(k in K) ee^(ii k x_j) c^dagger_(k, sigma) 1 / sqrt(N) sum_(k' in K) ee^(-ii k' x_(j+1)) c_(k', sigma) + "h.c.") \
+    &= -t 1/N sum_(k in K, k' in K) sum_(j, sigma) (e^(ii k j a - ii k' (j+1) a) c^dagger_(k, sigma) c_(k', sigma) + "h.c."),
   $
   Using the identity
   $
-    1/N sum_j e^(i k j a - i k' (j+1) a) = e^(-i k' a) 1/N sum_j e^(i j a (k - k')) = e^(-i k' a) delta_(k, k'),
+    1/N sum_j ee^(ii k j a - ii k' (j+1) a) = ee^(-ii k' a) 1/N sum_j ee^(ii j a (k - k')) = ee^(-ii k' a) delta_(k, k'),
   $
   we find
   $
-    H & = -t sum_(k in K, k' in K) sum_(sigma) (e^(-i k' a) delta_(k,k') c^dagger_(k, sigma) c_(k', sigma) + "h.c.") \
-      & = -t sum_(k in K, sigma) (e^(-i k a) c^dagger_(k, sigma) c_(k, sigma) + "h.c.") \
-      & = -t sum_(k in K, sigma) (e^(-i k a) c^dagger_(k, sigma) c_(k, sigma) + e^(i k a) c^dagger_(k, sigma) c_(k, sigma)) \
-      & = sum_(k in K, sigma) epsilon_k c^dagger_(k, sigma) c_(k, sigma)
+    H & = -t sum_(k in K, k' in K) sum_(sigma) (ee^(-ii k' a) delta_(k,k') c^dagger_(k, sigma) c_(k', sigma) + "h.c.") \
+    & = -t sum_(k in K, sigma) (ee^(-ii k a) c^dagger_(k, sigma) c_(k, sigma) + "h.c.") \
+    & = -t sum_(k in K, sigma) (ee^(-ii k a) c^dagger_(k, sigma) c_(k, sigma) + ee^(ii k a) c^dagger_(k, sigma) c_(k, sigma)) \
+    & = sum_(k in K, sigma) epsilon_k c^dagger_(k, sigma) c_(k, sigma)
   $
   Thus the eigenenergies are
   $
@@ -240,11 +239,6 @@
 
   #lattice_dos_plot()
 
-  *Prominent features of the DOS functions:*
-  - $d = 1$: inverse square root divergence at the band edges $epsilon = plus.minus 2$.
-  - $d = 2$: logarithmic van Hove singularity at $epsilon = 0$, finite band edges at $epsilon = plus.minus 4$.
-  - $d = 3$: non-analytic kinks at $epsilon = plus.minus 2$, band edges at $epsilon = plus.minus 6$. The kinks occur because at $epsilon = plus.minus 2$ the topology of the constant-energy surface changes, so the phase-space measure is non-analytic there even though the DOS remains finite.
-
   For one electron per site (half filling), exactly half of all available single-particle
   states are occupied. Since
   $
@@ -253,26 +247,27 @@
   is particle-hole symmetric on the bipartite hypercubic lattice, the spectrum is symmetric
   around $epsilon = 0$. Therefore at half filling the Fermi energy at $T = 0$ is
   $
-    epsilon_"F" = 0,
+    epsilon_"F" = 0.
   $
-  The Fermi surface is defined by $epsilon_(vb(k)) = epsilon_"F"$, i.e.
-  $
-    -2 sum_(i=1)^d cos(k_i) = 0,
-  $
-  Therefore
-  $
-    d = 1: quad cos(k) = 0 quad arrow.r quad k = plus.minus pi/2,
-  $
-  and
-  $
-    d = 2: quad cos(k_x) + cos(k_y) = 0,
-  $
-  i.e. a diamond-shaped Fermi surface in the first Brillouin zone.
-
-  #half_filled_fermi_surface_pair()
+  #two_panel[
+    The Fermi surface is defined by $epsilon_(vb(k)) = epsilon_"F"$, i.e.
+    $
+      -2 sum_(i=1)^d cos(k_i) = 0.
+    $
+    Therefore
+    $
+      d = 1: quad cos(k) = 0 quad arrow.r quad k = plus.minus pi/2,
+    $
+    and
+    $
+      d = 2: quad cos(k_x) + cos(k_y) = 0,
+    $
+    i.e. a diamond-shaped Fermi surface in the first Brillouin zone.
+  ][
+    #half_filled_fermi_surface_pair()
+  ]
 ]
 
-#pagebreak(weak: true)
 = Screened and Unscreened Coulomb Potentials
 
 ==
@@ -280,7 +275,7 @@
 #statement[
   From the integral representation of the delta function,
   $
-    delta(vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)),
+    delta(vb(r)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)),
   $
   and the fact that the Coulomb potential $phi.alt(vb(r)) = -e \/ r$ satisfies Poisson's equation,
   $
@@ -288,7 +283,7 @@
   $
   show that the electronic pair potential, $V(vb(r)) = -e phi.alt(vb(r)) = e^2 \/ r$, can be written in the form
   $
-    V(vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V(vb(k)),
+    V(vb(r)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) V(vb(k)),
   $
   where the Fourier transform $V(vb(k))$ is given by
   $
@@ -300,25 +295,25 @@
   Assume that the Coulomb potential has the Fourier representation
   $
     phi.alt(vb(r))
-    = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) phi.alt(vb(k)),
+    = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) phi.alt(vb(k)),
   $
   Applying $-laplacian$ gives
   $
     -laplacian phi.alt(vb(r))
-    = integral dd(k, 3) / (2 pi)^3 (-laplacian e^(i vb(k) dot vb(r))) phi.alt(vb(k))
-    = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) k^2 phi.alt(vb(k)),
+    = integral dd(k, 3) / (2 pi)^3 (-laplacian ee^(ii vb(k) dot vb(r))) phi.alt(vb(k))
+    = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) k^2 phi.alt(vb(k)),
   $
   since
   $
-    -laplacian e^(i vb(k) dot vb(r)) = k^2 e^(i vb(k) dot vb(r)).
+    -laplacian ee^(ii vb(k) dot vb(r)) = k^2 ee^(ii vb(k) dot vb(r)).
   $
   On the other hand, Poisson's equation implies
   $
     -laplacian phi.alt(vb(r))
     = -4 pi e delta(vb(r))
-    = -4 pi e integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)),
+    = -4 pi e integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)),
   $
-  Comparing the Fourier coefficients of $e^(i vb(k) dot vb(r))$ gives
+  Comparing the Fourier coefficients of $ee^(ii vb(k) dot vb(r))$ gives
   $
     k^2 phi.alt(vb(k)) = -4 pi e,
   $
@@ -333,7 +328,7 @@
   Thus
   $
     V(vb(r))
-    = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V(vb(k)),
+    = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) V(vb(k)),
   $
   with
   $
@@ -344,80 +339,82 @@
 ==
 
 #statement[
-  Show that the Fourier transform of the screened Coulomb interaction $V_s (vb(r)) = (e^2 \/ r) e^(-k_"TF" r)$ is
+  Show that the Fourier transform of the screened Coulomb interaction $V_"s" (vb(r)) = (e^2 \/ r) ee^(-k_"TF" r)$ is
   $
-    V_s (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2),
+    V_"s" (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2),
   $
   by substituting this expression into the Fourier integral
   $
-    V_s (vb(r)) = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V_s (vb(k)),
+    V_"s" (vb(r)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) V_"s" (vb(k)),
   $
-  and evaluating that integral in spherical coordinates (_Hint:_ The radial integral is best done as a contour integral.). Finally, deduce that $V_s (vb(r))$ satisfies
+  and evaluating that integral in spherical coordinates (_Hint:_ The radial integral is best done as a contour integral.). Finally, deduce that $V_"s" (vb(r))$ satisfies
   $
-    (-laplacian + k_"TF"^2) V_s (vb(r)) = 4 pi e^2 delta(vb(r)).
+    (-laplacian + k_"TF"^2) V_"s" (vb(r)) = 4 pi e^2 delta(vb(r)).
   $
 ]
 
 #solution[
-  Following the hint, we substitute the Fourier transform of the screened Coulomb interaction into the Fourier integral:
+  Following the hint, we substitute the Fourier transform of the screened Coulomb interaction into the Fourier integral
   $
-    V_s (vb(r)) & = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) V_s (vb(k)) \
-                & = integral dd(k, 3) / (2 pi)^3 e^(i vb(k) dot vb(r)) (4 pi e^2) / (k^2 + k_"TF"^2),
+    V_"s" (vb(r)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) V_"s" (vb(k)) = integral dd(k, 3) / (2 pi)^3 ee^(ii vb(k) dot vb(r)) (4 pi e^2) / (k^2 + k_"TF"^2),
   $
-  and pass to spherical coordinates:
+  and pass to spherical coordinates
   $
-    V_s (vb(r)) &= integral (k^2 sin theta dd(k) dd(theta) dd(phi)) / (2 pi)^3 e^(i k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2) \
-    &= integral (k^2 sin theta dd(k) dd(theta)) / (2 pi)^2 e^(i k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2).
+    V_"s" (vb(r)) = integral (k^2 sin theta dd(k) dd(theta) dd(phi)) / (2 pi)^3 ee^(ii k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2),
+  $
+  where we first carry out the trivial $phi$-integral, yielding a factor of $2 pi$,
+  $
+    V_"s" (vb(r)) = integral (k^2 sin theta dd(k) dd(theta)) / (2 pi)^2 ee^(ii k r cos theta) (4 pi e^2) / (k^2 + k_"TF"^2).
   $
   Since
   $
-    dv(, theta) e^(i k r cos theta) = -e^(i k r cos theta) i k r sin theta
+    dv(, theta) ee^(ii k r cos theta) = -ee^(ii k r cos theta) ii k r sin theta
   $
   we can write
   $
-    V_s (vb(r)) & = integral (k dd(k) dd(theta)) / (2 pi)^2 (dv(, theta) e^(i k r cos theta)) 1/(-i r) (4 pi e^2) / (k^2 + k_"TF"^2)
+    V_"s" (vb(r)) & = integral (k dd(k) dd(theta)) / (2 pi)^2 (dv(, theta) ee^(ii k r cos theta)) 1/(-ii r) (4 pi e^2) / (k^2 + k_"TF"^2)
   $
   and then carry out the $theta$-integral:
   $
-    integral_0^pi dd(theta) (dv(, theta) e^(i k r cos theta)) = e^(i k r cos pi) - e^(i k r cos 0) = e^(-i k r) - e^(i k r) = -2 i sin(k r),
+    integral_0^pi dd(theta) (dv(, theta) ee^(ii k r cos theta)) = ee^(ii k r cos pi) - ee^(ii k r cos 0) = ee^(-ii k r) - ee^(ii k r) = -2 ii sin(k r),
   $
   yielding
   $
-    V_s (vb(r)) & = (2e^2)/(pi r) integral_0^infinity dd(k) (k sin(k r)) / (k^2 + k_"TF"^2).
+    V_"s" (vb(r)) & = (2e^2)/(pi r) integral_0^infinity dd(k) (k sin(k r)) / (k^2 + k_"TF"^2).
   $
   This integrand is an even function in $k$, so we can extend it to the whole real axis and write
   $
-    V_s (vb(r)) & = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k sin(k r)) / (k^2 + k_"TF"^2).
+    V_"s" (vb(r)) & = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k sin(k r)) / (k^2 + k_"TF"^2).
   $
   To evaluate the radial integral by contour integration, we instead consider
   $
-    I(r) = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k e^(i k r)) / (k^2 + k_"TF"^2),
+    I(r) = (e^2)/(pi r) integral_(-infinity)^infinity dd(k) (k ee^(ii k r)) / (k^2 + k_"TF"^2),
   $
-  so that $V_s (vb(r)) = im I(r)$.
+  so that $V_"s" (vb(r)) = im I(r)$.
 
-  The integrand of $I(r)$ has poles at $k = plus.minus i k_"TF"$. For $r > 0$, the factor $e^(i k r)$ decays exponentially in the upper half-plane, so we close the contour there and compute the residue
+  The integrand of $I(r)$ has poles at $k = plus.minus ii k_"TF"$. For $r > 0$, the factor $ee^(ii k r)$ decays exponentially in the upper half-plane, so we close the contour there and compute the residue
   $
-    op("Res", limits: #true)_(k = i k_"TF") (k e^(i k r)) / (k^2 + k_"TF"^2) = lim_(k arrow.r i k_"TF") (k - i k_"TF") (k e^(i k r)) / ((k - i k_"TF")(k + i k_"TF")) = (i k_"TF" e^(-k_"TF" r)) / (2 i k_"TF") = 1/2 e^(-k_"TF" r).
+    op("Res", limits: #true)_(k = ii k_"TF") (k ee^(ii k r)) / (k^2 + k_"TF"^2) = lim_(k arrow.r ii k_"TF") (k - ii k_"TF") (k ee^(ii k r)) / ((k - ii k_"TF")(k + ii k_"TF")) = (ii k_"TF" ee^(-k_"TF" r)) / (2 ii k_"TF") = 1/2 ee^(-k_"TF" r).
   $
   This gives
   $
-    I(r) & = (e^2)/(pi r) 2 pi i op("Res", limits: #true)_(k = i k_"TF") (k e^(i k r)) / (k^2 + k_"TF"^2) = (e^2)/(r) i e^(-k_"TF" r)
+    I(r) & = (e^2)/(pi r) 2 pi ii op("Res", limits: #true)_(k = ii k_"TF") (k ee^(ii k r)) / (k^2 + k_"TF"^2) = (e^2)/(r) ii ee^(-k_"TF" r)
   $
   and therefore
   $
-    V_s (vb(r)) = im I(r) = (e^2) / r e^(-k_"TF" r)
+    V_"s" (vb(r)) = im I(r) = (e^2) / r e^(-k_"TF" r)
   $
 
   For the second part, we proceed exactly as in part a) and write the differential equation
   $
-    (-laplacian + k_"TF"^2) V_s (vb(r)) = 4 pi e^2 delta(vb(r))
+    (-laplacian + k_"TF"^2) V_"s" (vb(r)) = 4 pi e^2 delta(vb(r))
   $
   in Fourier space as
   $
-    (k^2 + k_"TF"^2) V_s (vb(k)) = 4 pi e^2
+    (k^2 + k_"TF"^2) V_"s" (vb(k)) = 4 pi e^2
   $
   which is indeed satisfied by
   $
-    V_s (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2).
+    V_"s" (vb(k)) = (4 pi e^2) / (k^2 + k_"TF"^2).
   $
 ]

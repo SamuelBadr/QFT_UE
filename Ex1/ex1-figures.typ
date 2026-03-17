@@ -97,11 +97,11 @@
 }
 
 #let half_filled_fermi_surface_pair() = grid(
-  columns: (1fr, 1fr),
+  rows: 50pt,
   gutter: 1.1em,
 
   block(width: 100%, height: 170pt)[
-    #align(center + horizon)[
+    #align(center)[
       #plot(
         width: 4.4,
         height: 1.5,
@@ -130,7 +130,7 @@
   ],
 
   block(width: 100%, height: 170pt)[
-    #align(center + horizon)[
+    #align(center)[
       #plot(
         width: 4.4,
         height: 4.4,
