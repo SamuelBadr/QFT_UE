@@ -68,7 +68,7 @@
 ==
 
 #problem[
-  Perform the Matsubara sum in (6) for the case of non-interacting electrons with energy dispersion $epsilon_k$, whose Green's function is given by $G(vb(k), ii omega_n) = 1 / (ii omega_n - epsilon_k)$ [Hint: note that $ii omega_n$ are exactly the simple poles of the Fermi distribution function in the complex plane with residue $-beta^(-1)$. This means that the Matsubara sum can be written as an integral over a contour enclosing all Matsubara frequencies. Note also that the Green's function is analytic in the lower/upper complex half-plane. Exploiting these analytic properties of the integrand, it is convenient to further transform this contour into two disconnected contours extending in the whole complex plane.]
+  Perform the Matsubara sum in (6) for the case of non-interacting electrons with energy dispersion $epsilon_k$, whose Green's function is given by $G(vb(k), ii omega_n) = 1 / (ii omega_n - epsilon_k)$. #hint[note that $ii omega_n$ are exactly the simple poles of the Fermi distribution function in the complex plane with residue $-beta^(-1)$. This means that the Matsubara sum can be written as an integral over a contour enclosing all Matsubara frequencies. Note also that the Green's function is analytic in the lower/upper complex half-plane. Exploiting these analytic properties of the integrand, it is convenient to further transform this contour into two disconnected contours extending in the whole complex plane.]
 ]
 
 ==
@@ -86,7 +86,7 @@
     1 / (L^d) sum_vb(k) 1 / beta sum_n G(vb(k), ii omega_n) G(vb(k) + vb(q), ii omega_n + ii Omega_m),
   $
 
-  where $Omega_m$ is an "external" bosonic Matsubara frequency given by $Omega_m = 2 m pi / beta$. Using the free particle case again, calculate the expression (7) analytically, and discuss explicitly the results for the two limiting cases (i) $Omega_m = 0$, $vb(q) arrow.r 0$ ("static limit"), and (ii) $vb(q) = 0$, $Omega_m arrow.r 0$ ("dynamic limit"). [Hint: a convenient way of proceeding is to use a partial fraction decomposition.]
+  where $Omega_m$ is an "external" bosonic Matsubara frequency given by $Omega_m = 2 m pi / beta$. Using the free particle case again, calculate the expression (7) analytically, and discuss explicitly the results for the two limiting cases (i) $Omega_m = 0$, $vb(q) arrow.r 0$ ("static limit"), and (ii) $vb(q) = 0$, $Omega_m arrow.r 0$ ("dynamic limit"). #hint[a convenient way of proceeding is to use a partial fraction decomposition.]
 ]
 
 ==

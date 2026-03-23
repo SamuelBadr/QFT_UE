@@ -90,6 +90,8 @@
   )[#body]
 ]
 
+#let hint(body) = text(style: "italic")[\[Hint: #body\]]
+
 #let major-section(number, title) = [
   #v(1.25em)
   #grid(
