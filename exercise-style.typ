@@ -267,11 +267,14 @@
   ]
 ]
 
-#let two_panel(left, right, gutter: 0em) = grid(
-  columns: (auto, auto),
-  gutter: gutter,
-)[
-  #left
-][
-  #right
+#let two_panel(left, right, gutter: 0em, left-align: left, right-align: center) = block(width: 100%)[
+  #grid(
+    columns: (1fr, 1fr),
+    gutter: gutter,
+    align: top,
+  )[
+    #align(left-align)[#left]
+  ][
+    #align(right-align)[#right]
+  ]
 ]

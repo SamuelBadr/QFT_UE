@@ -1,4 +1,5 @@
 #import "../exercise-style.typ": *
+#import "./figures-src/phase-space-constraints.typ": phase-space-constraints-figure
 
 #show: exercise-sheet.with(
   "QFT for Many-Body Systems",
@@ -34,10 +35,82 @@
   and use the delta function only as a constraint to set the limits of the two energy integrals. Using Eq. (2) evaluate $gamma$ as a function of $epsilon_1$, $epsilon_"F"$ and interpret the results in terms of the Fermi-liquid theory.
 ]
 
+#solution[
+  #two_panel[
+    To determine the integration limits, note that
+
+    $
+      epsilon_1 & > epsilon_"F" \
+      epsilon_2 & < epsilon_"F" \
+      epsilon_3 & > epsilon_"F" \
+      epsilon_4 & > epsilon_"F"
+    $
+
+    and
+
+    $
+      epsilon_1 + epsilon_2 = epsilon_3 + epsilon_4.
+    $
+  ][
+    #phase-space-constraints-figure()
+  ]
+
+  Therefore, we have integration limits
+
+  $
+                epsilon_2 & < epsilon_"F" \
+                epsilon_3 & > epsilon_"F" \
+    epsilon_2 - epsilon_3 & > epsilon_"F" - epsilon_1
+  $
+
+  which bound a triangle, leading to
+
+  $
+    gamma prop 1/2 (epsilon_"F" - (2epsilon_"F" - epsilon_1)) (epsilon_1 - epsilon_"F") = 1/2 (epsilon_1 - epsilon_"F")^2,
+  $
+
+  showing that excitations near the Fermi surface have long lifetimes
+
+  $
+    tau = 1 / gamma prop 1 / (epsilon_1 - epsilon_"F")^2
+  $
+
+  which diverge as $epsilon_1 arrow epsilon_"F"$. These quasi-particles are one of the key results of the Fermi-liquid theory.
+]
+
 ==
 
 #problem[
   (Bonus points) How would Eq. (1) change in the case $T > 0$? And how would the estimate of 4a) for $gamma$ change, assuming that for $T > 0$ the incoming electron with energy $epsilon_1$ is a thermally activated particle?
+]
+
+#solution[
+  The original integral in Eq. (1) for $T=0$ implicitly includes step functions
+
+  $
+    gamma &prop integral dd(k_2, [d]) dd(k_3, [d]) delta(epsilon_1 + epsilon_2 - epsilon_3 - epsilon_4) theta(epsilon_"F" - epsilon_2) theta(epsilon_3 - epsilon_"F") theta(epsilon_4 - epsilon_"F")
+  $
+
+
+  which in the case of $T > 0$ are replaced by Fermi functions $theta(epsilon - epsilon_"F") arrow 1 - n_"F" (epsilon)$ with $n_"F" (epsilon) = (1 + ee^(frac((epsilon - epsilon_"F"), k_"B" T, style: "horizontal")))^(-1)$, leading to
+
+  $
+    gamma &prop integral dd(k_2, [d]) dd(k_3, [d]) delta(epsilon_1 + epsilon_2 - epsilon_3 - epsilon_4) n_"F" (epsilon_2) [1 - n_"F" (epsilon_3)] [1 - n_"F" (epsilon_4)].
+  $
+
+  The counterpart to (2) then is
+
+  $
+    gamma tilde integral dd(epsilon_2) dd(epsilon_3) n_"F" (epsilon_2) [1 - n_"F" (epsilon_3)] [1 - n_"F" (epsilon_1 + epsilon_2 - epsilon_3)]
+  $
+
+  which is equal to
+
+  $
+    gamma tilde 1/2 1/(1 + ee^(-frac((epsilon_1 - epsilon_"F"), k_"B" T, style: "horizontal"))) [(epsilon_1 - epsilon_"F")^2 + pi^2 (k_"B" T)^2].
+  $
+
+  (Checked with Mathematica and also numerical integration.)
 ]
 
 = How to sum over Matsubara frequencies
@@ -46,10 +119,10 @@
   As it was discussed in the Lecture, the fermionic Green's function in imaginary time reads
 
   $
-    G(vb(k), tau) = -1 / Z op("Tr"){ee^(-beta H) T[c_vb(k) (tau) c_vb(k)^dagger (0)]},
+    G(vb(k), tau) = -1 / Z op("Tr"){ee^(-beta H) cal(T)[c_vb(k) (tau) c_vb(k)^dagger (0)]},
   $
 
-  where $Z = op("Tr") ee^(-beta H)$ is the partition function, $beta$ the inverse temperature and $T$ is the imaginary-time ordering operator. When transforming this expression to frequency space
+  where $Z = op("Tr") ee^(-beta H)$ is the partition function, $beta$ the inverse temperature and $cal(T)$ is the imaginary-time ordering operator. When transforming this expression to frequency space
 
   $
     G(vb(k), tau) = 1 / beta sum_n ee^(-ii omega_n tau) G(vb(k), ii omega_n)
