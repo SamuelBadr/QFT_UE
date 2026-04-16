@@ -1,4 +1,4 @@
-#import "@preview/cetz:0.4.2"
+#import "@preview/cetz:0.5.0"
 
 #let phase-space-constraints-figure(
   fermi: 2.5,

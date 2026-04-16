@@ -1,4 +1,4 @@
-#import "@preview/physica:0.9.5": dd, dv, grad, hbar, laplacian, vb
+#import "@preview/physica:0.9.8": dd, dv, grad, hbar, laplacian, vb
 #let ink = rgb("#181615")
 #let soft = rgb("#867d73")
 #let rule = rgb("#cfc5b8")
@@ -149,7 +149,7 @@
   #v(0.1em)
 ]
 
-#let render-problem-heading(it) = block(sticky: true, width: 100%)[
+#let render-problem-heading() = block(sticky: true, width: 100%)[
   #vertical-label([PROBLEM], fill: accent)
   #sun(size: 0.17cm)
 ]
@@ -171,7 +171,6 @@
 ) = {
   show heading.where(level: 1): render-major-heading
   show heading.where(level: 2): render-part-heading
-  show heading.where(level: 3): render-problem-heading
   show heading.where(level: 4): render-solution-heading
   show title: it => []
 
@@ -232,7 +231,7 @@
     align: top,
   )[
     #align(center)[
-      #heading(level: 3, numbering: none, outlined: false, bookmarked: false)[Problem]
+      #render-problem-heading()
     ]
   ][
     #block[
