@@ -38,9 +38,13 @@
   The columns of the file contain the following: $omega_n$ | $Re Sigma_1 (ii omega_n)$ | $Im Sigma_1 (ii omega_n)$ | $Re Sigma_2 (ii omega_n)$ ...
 ]
 
+==
+
 #problem[
   Plot the real and imaginary parts of the self-energies in all cases, respectively.
 ]
+
+==
 
 #problem[
   For cases one to three numerically extract the quasiparticle weight $Z$, the effective mass $m^* / m$ and $Gamma$.
@@ -53,6 +57,8 @@
     Gamma = -evaluated(Im Sigma(ii omega_n -> 0^+))_(omega_n -> 0^+)
   $
 ]
+
+==
 
 #problem[
   What about the fourth case? See also exercise 6.
@@ -83,10 +89,14 @@
   which represents the empty, singly occupied (up/down) and doubly occupied states, correspondingly.
 ]
 
+==
+
 #problem[
   Show that the states in @eq:basis are also the eigenstates of $H_"at"$ and find the corresponding eigenenergies.
   Show that the partition function at inverse temperature $beta$ is given as $cal(Z) = tr e^(-beta H) = 2 (1 + e^(beta U / 2))$.
 ]
+
+==
 
 #problem[
   Try to express the creation and annihilation operators $hat(c)^dagger_sigma$ and $hat(c)_sigma$ as $4 times 4$ matrices in the above basis.
@@ -101,6 +111,8 @@
 
   where $sigma$ stands for the spin orientation $arrow.t$ (or $arrow.b$).
 ]
+
+==
 
 #problem[
   Fourier transform the imaginary-time Green's function $G_sigma (tau)$ to Matsubara space to get $G_sigma (ii omega_n) = integral_0^beta G_sigma (tau) e^(ii omega_n tau) dd(tau)$ and determine the corresponding spectral function $A_sigma (omega)$ and the self-energy $Sigma_sigma (omega)$.
