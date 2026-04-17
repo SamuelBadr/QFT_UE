@@ -1,4 +1,4 @@
-#import "@preview/physica:0.9.8": dd, dv, grad, hbar, laplacian, vb
+#import "@preview/physica:0.9.8": *
 #let ink = rgb("#181615")
 #let soft = rgb("#867d73")
 #let rule = rgb("#cfc5b8")
