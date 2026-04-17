@@ -297,8 +297,8 @@
 
   This time, the big circle integral vanishes trivially.
 
-  We now have to distinguish two cases:
-  - $z_1 eq.not z_2$: 2 poles of order 1
+  // We now have to distinguish two cases:
+  // - $z_1 eq.not z_2$: 2 poles of order 1
 
   $
     S(vb(k), vb(q), ii Omega_m) &= sum_(i=1)^2 op("Res")(1 / ((z - z_1)(z - z_2)) n_"F" (z), z_i) \
@@ -306,12 +306,12 @@
     &= (n_"F" (epsilon_vb(k)) - n_"F" (epsilon_(vb(k) + vb(q)))) / (epsilon_vb(k) - epsilon_(vb(k) + vb(q)) + ii Omega_m)
   $
 
-  - $z_1 eq z_2$: 1 pole of order 2
-  $
-    S(vb(k), vb(q), ii Omega_m) & = op("Res")(1 / (z - z_1)^2 n_"F" (z), z_1) \
-                                & = lim_(z -> z_1) dv(, z) n_"F" (z) \
-                                & = n'_"F" (epsilon_vb(k)).
-  $
+  // - $z_1 eq z_2$: 1 pole of order 2
+  // $
+  //   S(vb(k), vb(q), ii Omega_m) & = op("Res")(1 / (z - z_1)^2 n_"F" (z), z_1) \
+  //                               & = lim_(z -> z_1) dv(, z) n_"F" (z) \
+  //                               & = n'_"F" (epsilon_vb(k)).
+  // $
 
   === Limiting cases
 
