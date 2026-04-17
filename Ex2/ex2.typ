@@ -110,7 +110,7 @@
   which is equal to
 
   $
-    gamma tilde 1/2 1/(1 + ee^(-frac((epsilon_1 - epsilon_"F"), k_"B" T, style: "horizontal"))) [(epsilon_1 - epsilon_"F")^2 + pi^2 (k_"B" T)^2].
+    gamma tilde 1/2 underbrace(1/(1 + ee^(-frac((epsilon_1 - epsilon_"F"), k_"B" T, style: "horizontal"))), 1 - n_"F" (epsilon_1)) [(epsilon_1 - epsilon_"F")^2 + pi^2 (k_"B" T)^2].
   $
 
   (Checked with Mathematica and also numerical integration.)
@@ -172,7 +172,7 @@
   In our case, we take $g(z) = e^(z tau) G(vb(k), z)$ with $tau > 0$. Hence the Matsubara sum is equal to
 
   $
-    1 / beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n) = lim_(tau arrow 0^+) -1 / (2pi ii) integral.cont_gamma dd(z) ee^(z tau) G(vb(k), z) n_"F" (z)
+    1 / beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n) = -1 / (2pi ii) integral.cont_gamma dd(z) ee^(-z 0^-) G(vb(k), z) n_"F" (z)
   $
 
   where $gamma$ cannot enclose $z = epsilon_vb(k)$.
@@ -227,14 +227,14 @@
     I equiv lim_(n -> infinity) I_n = 0.
   $
 
-  On the other hand the integrand features one pole at $z = epsilon_vb(k)$. Hence, by the residue theorem
+  On the other hand the integrand features one pole at $z = epsilon_vb(k)$. Hence, by the residue theorem (and setting $tau = 0^+$)
 
   $
-    I & = 2 pi ii op("Res")(G n_"F", epsilon_vb(k)) + 2 pi ii sum_n op("Res")(e^(-z 0^-) G(vb(k), z) n_"F" (z), ii omega_n) \
-      & = 2 pi ii n_"F" (epsilon_vb(k)) - 2 pi ii 1/beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n).
+    0 = I & = 2 pi ii op("Res")(G n_"F", epsilon_vb(k)) + 2 pi ii sum_n op("Res")(e^(-z 0^-) G(vb(k), z) n_"F" (z), ii omega_n) \
+    & = 2 pi ii n_"F" (epsilon_vb(k)) - 2 pi ii 1/beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n).
   $
 
-  Taking both facts together, we can conclude
+  So that finally
 
   $
     1 / beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n) = n_"F" (epsilon_vb(k)).
@@ -266,6 +266,8 @@
   $
     1 / beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n) = 1/2 + 1 / beta sum_(n = -M)^M (G(vb(k), ii omega_n) - 1 / (ii omega_n)) + cal(O)(1 / (omega_M)).
   $
+
+  Of course, one doesn't need to stop there. Handling further moments analytically is straightforward and leads to even better convergence.
 ]
 
 ==
@@ -344,7 +346,7 @@
   and plug in to get
 
   $
-    1/beta sum_n ee^(ii omega_n 0^-) G(vb(k), ii omega_n) &= 1/beta sum_n ee^(-ii omega_n 0^-) integral_(bb(R)) dd(omega) A(vb(k), omega) / (ii omega_n - omega) \
+    1/beta sum_n ee^(-ii omega_n 0^-) G(vb(k), ii omega_n) &= 1/beta sum_n ee^(-ii omega_n 0^-) integral_(bb(R)) dd(omega) A(vb(k), omega) / (ii omega_n - omega) \
     &= integral_(bb(R)) dd(omega) A(vb(k), omega) 1/beta sum_n ee^(-ii omega_n 0^-) 1 / (ii omega_n - omega) \
     &= integral_(bb(R)) dd(omega) A(vb(k), omega) n_"F" (omega).
   $
