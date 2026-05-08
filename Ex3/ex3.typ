@@ -119,26 +119,253 @@
 
   === Extraction from the data
 
-  To compute $Z$, we have to extract
+  To compute the Fermi-liquid parameters, we need the low-frequency behavior of the Matsubara self-energy. In particular,
 
   $
-    evaluated(pdv(Im Sigma(ii omega_n), omega_n))_(omega_n -> 0^+)
+    Z = 1 / (1 - evaluated(pdv(Im Sigma(ii omega_n), omega_n))_(omega_n -> 0^+)),
+    quad
+    Gamma = -evaluated(Im Sigma(ii omega_n))_(omega_n -> 0^+).
   $
 
-  from the data. We use the estimator
-  #footnote[
-    Several more sophisticated methods were tried, such as fitting a polynomial like $Im Sigma(ii omega_n) ~ A omega_n + B omega_n^3$ (visually poor fit) or $Im Sigma(ii omega_n) ~ A omega_n log(omega_n) + B omega_n$ (excellent fit, but yields divergent derivative, and so $Z = 0$).
-  ]
+  Since the data is only available at discrete Matsubara frequencies, the zero-frequency limit has to be obtained by extrapolation. For each case, we fit the first $N$ Matsubara points of the imaginary part of the self-energy by a polynomial
 
   $
-    evaluated((Im Sigma(ii omega_n)) / omega_n)_(omega_n -> 0^+) approx (Im Sigma(ii omega_1)) / omega_1,
+    Im Sigma(ii omega_n)
+    approx
+    a_0 + a_1 omega_n + a_2 omega_n^2 + dots.
   $
+
+  The fitted intercept and slope then give
+
+  $
+    Gamma = -a_0,
+    quad
+    Z = 1 / (1 - a_1),
+    quad
+    m^* / m = 1 / Z.
+  $
+
+  To estimate the systematic uncertainty of this extrapolation, we repeat the fit for different polynomial orders and for different numbers of included low-frequency Matsubara points. The matrices below show the resulting stability scan.
+
+  For the final quoted values, we use the median over the relatively stable low-frequency block with polynomial orders $2$ and $3$ and $N = 4, 5, 6$ included Matsubara points. The quoted uncertainty is half the range over this selected block,
+
+  $
+    Delta X =
+    (max(X) - min(X)) / 2,
+  $
+
+  where $X$ denotes $Z$, $m^* / m$, or $Gamma$. This uncertainty should therefore be interpreted as a systematic uncertainty from the extrapolation, not as a statistical error.
+
+  #let round-sig-finite(x, sig: 2) = {
+    // This function assumes x is finite and non-NaN.
+    // Do not call it before checking float.is-nan(x).
+    if x == 0 {
+      0
+    } else {
+      let ax = if x < 0 { -x } else { x }
+
+      let scale = 1.0
+      while ax * scale < calc.pow(10, sig - 1) {
+        scale *= 10
+      }
+      while ax * scale >= calc.pow(10, sig) {
+        scale /= 10
+      }
+
+      calc.round(x * scale) / scale
+    }
+  }
+
+  #let format-number(value, sig: 2) = {
+    let x = float(value)
+
+    if float.is-nan(x) {
+      [--]
+    } else {
+      [#round-sig-finite(x, sig: sig)]
+    }
+  }
+
+  #let matrix-table(path, title) = {
+    let data = csv(path, delimiter: "\t")
+
+    let header = data.at(0)
+    let body = data.slice(1)
+
+    let formatted-body = body.map(row => {
+      row
+        .enumerate()
+        .map(((j, value)) => {
+          if j == 0 {
+            [#value]
+          } else {
+            format-number(value, sig: 2)
+          }
+        })
+    })
+
+    [
+      #title
+
+      #table(
+        columns: header.len(),
+        align: center,
+
+        ..header.map(v => [#v]),
+        ..formatted-body.flatten(),
+      )
+    ]
+  }
+
+  #let final-results-table(path) = {
+    let data = csv(path, delimiter: "\t")
+
+    // Skip header written by Julia.
+    let body = data.slice(1)
+
+    let formatted-body = body.map(row => {
+      let case = row.at(0)
+
+      let z = format-number(row.at(1), sig: 2)
+      let z-err = format-number(row.at(2), sig: 1)
+
+      let mstar = format-number(row.at(3), sig: 2)
+      let mstar-err = format-number(row.at(4), sig: 1)
+
+      let gamma = format-number(row.at(5), sig: 2)
+      let gamma-err = format-number(row.at(6), sig: 1)
+
+      (
+        [#case],
+        [$#z plus.minus #z-err$],
+        [$#mstar plus.minus #mstar-err$],
+        [$#gamma plus.minus #gamma-err$],
+      )
+    })
+
+    [
+      #table(
+        columns: 4,
+        align: center,
+
+        [Case],
+        [$Z$],
+        [$m^* / m$],
+        [$Gamma$],
+
+        ..formatted-body.flatten(),
+      )
+    ]
+  }
+
+  #final-results-table("results/results5b_final.txt")
+
+  The three cases show increasing correlation strength. From case 1 to case 3, the quasiparticle weight $Z$ decreases, while the effective mass $m^* / m = 1 / Z$ increases. This means that the quasiparticles become heavier and less coherent. At the same time, the extrapolated scattering rate $Gamma$ increases, indicating a shorter quasiparticle lifetime. Thus case 1 is closest to a weakly correlated Fermi liquid, case 2 is a more strongly renormalized Fermi liquid, and case 3 is close to the breakdown of the Fermi-liquid picture.
+
+  #matrix-table("results/case1_Z_matrix.txt", [Case 1: $Z$ estimates])
+  #matrix-table("results/case1_mstar_matrix.txt", [Case 1: $m^* / m$ estimates])
+  #matrix-table("results/case1_Gamma_matrix.txt", [Case 1: $Gamma$ estimates])
+
+  #matrix-table("results/case2_Z_matrix.txt", [Case 2: $Z$ estimates])
+  #matrix-table("results/case2_mstar_matrix.txt", [Case 2: $m^* / m$ estimates])
+  #matrix-table("results/case2_Gamma_matrix.txt", [Case 2: $Gamma$ estimates])
+
+  #matrix-table("results/case3_Z_matrix.txt", [Case 3: $Z$ estimates])
+  #matrix-table("results/case3_mstar_matrix.txt", [Case 3: $m^* / m$ estimates])
+  #matrix-table("results/case3_Gamma_matrix.txt", [Case 3: $Gamma$ estimates])
 ]
 
 ==
 
 #problem[
   What about the fourth case? See also exercise 6.
+]
+#solution[
+  Case 4 is qualitatively different from the first three cases. In the plot, the real part is essentially constant,
+
+  $
+    Re Sigma_4(ii omega_n) approx 1.5,
+  $
+
+  while the imaginary part becomes very large and negative as $omega_n -> 0^+$. This behavior is not compatible with a regular Fermi-liquid Taylor expansion around zero frequency.
+
+  Instead, the data suggests a pole-like low-frequency self-energy,
+
+  $
+    Sigma_4(ii omega_n)
+    approx
+    Sigma_0 + frac(C, ii omega_n)
+    =
+    Sigma_0 - ii frac(C, omega_n),
+  $
+
+  with $C > 0$. Therefore,
+
+  $
+    Im Sigma_4(ii omega_n)
+    approx
+    - C / omega_n.
+  $
+
+  This directly explains the strong downturn of the red data points in the plot. It also implies
+
+  $
+    -Im Sigma_4(ii omega_n)
+    approx
+    C / omega_n
+    -> infinity
+    quad "for" quad
+    omega_n -> 0^+.
+  $
+
+  Thus the Fermi-liquid estimate of the scattering rate does not give a finite value. More importantly, the derivative entering the quasiparticle weight diverges,
+
+  $
+    pdv(Im Sigma_4(ii omega_n), omega_n)
+    approx
+    C / omega_n^2
+    -> infinity,
+  $
+
+  and hence
+
+  $
+    Z =
+    1 / (1 - evaluated(pdv(Im Sigma(ii omega_n), omega_n))_(omega_n -> 0^+))
+    -> 0.
+  $
+
+  Consequently,
+
+  $
+    m^* / m = Z^(-1) -> infinity.
+  $
+
+  Therefore case 4 does not describe a Fermi liquid. The quasiparticle weight vanishes, the effective mass diverges, and there is no well-defined finite quasiparticle scattering rate.
+
+  This is consistent with the atomic-limit Hubbard model discussed in exercise 6. At half filling one obtains
+
+  $
+    Sigma(ii omega_n)
+    =
+    U / 2 + frac(U^2, 4 ii omega_n)
+    =
+    U / 2 - ii frac(U^2, 4 omega_n).
+  $
+
+  This has exactly the same structure as case 4: a constant real part and a $1 / omega_n$ divergence in the imaginary part. The constant real part is consistent with the atomic-limit form up to the precise value of the interaction parameter and possible convention-dependent shifts. The important point is the qualitative structure: a constant real part and a $1 / omega_n$ divergence in the imaginary part.
+
+  Thus case 4 can be interpreted as a strongly correlated Mott-insulating or atomic-limit-like case. The pole in the self-energy opens a gap at the Fermi level and destroys Landau quasiparticles.
+
+  In summary,
+
+  $
+    Z = 0,
+    quad
+    m^* / m -> infinity,
+    quad
+    Gamma " is not finite / not a well-defined FL scattering rate."
+  $
 ]
 
 = A simple model with strong correlations
@@ -335,7 +562,7 @@
                              dot, dot, dot, dot
                            ) \
     hat(c)_arrow.b (tau) & = ee^(tau H) hat(c)_arrow.b ee^(-tau H) <--> mat(
-                             dot, ee^(mu tau), dot, dot;
+                             dot, dot, ee^(mu tau), dot;
                              dot, dot, dot, -ee^((-U + mu) tau);
                              dot, dot, dot, dot;
                              dot, dot, dot, dot
