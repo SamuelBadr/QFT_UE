@@ -66,34 +66,43 @@
   $
   and the DOS diverges at the band edges
   $
-    epsilon^*_plus.minus = plus.minus 2t.
+    epsilon^*_1 & = minus 2t \
+    epsilon^*_2 & = + 2t
   $
-  The dispersion has value $epsilon^*_- = - 2t$ at
+  The dispersion has value $epsilon^*_1 = - 2t$ at
   $
-    vb(k^*)_- = 0
+    vb(k^*)_1 = 0
   $
-  and $epsilon^*_+ = + 2t$ at
+  and $epsilon^*_2 = + 2t$ at
   $
-    vb(k^*)_+ = plus.minus pi.
-  $
-
-  Expanding $epsilon_vb(k)$ around $vb(k^*)_- = 0$ gives
-  $
-    epsilon_k = - 2 t + t k^2 + Order(k^4)
-  $
-  which yields for the DOS
-  $
-    N_-(epsilon) = 1 / (4 pi sqrt(t (2t + epsilon))).
+    vb(k^*)_2 = plus.minus pi.
   $
 
-  Expanding $epsilon_vb(k)$ around $vb(k^*)_+ = plus.minus pi$ gives
-  $
-    epsilon_k = 2 t - t (k minus.plus pi)^2 + Order((k minus.plus pi)^4)
-  $
-  which yields for the DOS
-  $
-    N_+(epsilon) = 1 / (4 pi sqrt(t (2t - epsilon))).
-  $
+  - Expanding $epsilon_vb(k)$ around $vb(k^*)_1 = 0$ (a minimum, with $epsilon_(vb(k)^*_1) = -2t$) gives
+    $
+      epsilon_k = - 2 t + k^2 t + Order(k^4)
+    $
+    which yields for the DOS
+    $
+      N_1(epsilon) = cases(
+        0 & "if" epsilon < -2t,
+        1 / (4 pi sqrt(t (2t + epsilon))) & "if" -2t <= epsilon
+      ),
+    $
+    a band-edge singularity at the onset ($epsilon = -2t$) of DOS.
+
+  - Expanding $epsilon_vb(k)$ around $vb(k^*)_2 = plus.minus pi$ (a maximum with $epsilon_(vb(k)^*_2) = 2t$) gives
+    $
+      epsilon_k = 2 t - (k minus.plus pi)^2 t + Order((k minus.plus pi)^4)
+    $
+    which yields for the DOS
+    $
+      N_2(epsilon) = cases(
+        1 / (4 pi sqrt(t (2t - epsilon))) & "if" epsilon <= 2t,
+        0 & "if" 2t < epsilon
+      ),
+    $
+    a band-edge singularity at the cutoff ($epsilon = +2t$) of DOS.
 
   #align(center)[
     #plot(
@@ -139,29 +148,164 @@
 ]
 
 #solution[
+  The dispersion relation has gradient
+  $
+    grad epsilon_vb(k) = 2t vec(sin k_x, sin k_y)
+  $
+  and thus stationary points at
+  $
+    vb(k)_1 = vec(0, 0)
+  $
+  (minimum),
+  $
+    vb(k)_2 = vec(pi, pi)
+  $
+  (maximum) and
+  $
+    vb(k)_3 = vec(0, pi)
+  $
+  (saddle point).
+
+  Note 1: $pi$ should be taken to mean $plus.minus pi$ (periodic BC).
+
+  Note 2: There is also $vec(pi, 0)$, which is equivalent by lattice symmetry to $vb(k)_3$.
+
+  - We first expand around $vb(k)_1$ where $epsilon_(vb(k)_1) = -4t$:
+    $
+      epsilon_vb(k) = -4t + norm(vb(k))^2 t + Order(vb(k)^4)
+    $
+    which yields for the DOS
+    $
+      N_1(epsilon) = cases(
+        0 & "if" epsilon < -4t,
+        1 / (4 pi t) & "if" -4t <= epsilon
+      ),
+    $
+    i.e. a band-edge singularity at DOS onset.
+
+  - We now expand around $vb(k)_2$ where $epsilon_(vb(k)_2) = 4t$:
+    $
+      epsilon_vb(k) = 4t - norm(vb(k) - vb(k)_2)^2 t + Order((vb(k) - vb(k)_2)^4)
+    $
+    which yields for the DOS
+    $
+      N_2(epsilon) = cases(
+        1 / (4 pi t) & "if" epsilon <= 4t,
+        0 & "if" 4t < epsilon,
+      ),
+    $
+    i.e. a band-edge singularity at DOS cutoff.
+
+  - Lastly, we treat the saddle-point $vb(k)_3$ where $epsilon_(vb(k)_3) = 0$:
+    $
+      epsilon_vb(k) = k_x^2 t - (k_y - pi)^2 t + Order((vb(k) - vb(k)_3)^4)
+    $
+    which yields for the DOS
+    $
+      N_3(epsilon) = 1 / (4 pi^2 t) op("arcosh")(pi sqrt(t / abs(epsilon)))
+    $
+    i.e. a logarithmic singularity at $epsilon = 0$. Around $epsilon -> 0$, it has the leading asymptotic form
+    $
+      N_3(epsilon) -> 1 / (4 pi^2 t) log(2 pi sqrt(t / abs(epsilon))) = - 1/(8 pi^2 t) log abs(epsilon) + 1/(8 pi^2 t) log(4pi^2 t).
+    $
+
+    The contribution to the DOS is twice what is stated here because of the aforementioned second saddle point.
+
   From Exercise 1, for $t = 1$ the two-dimensional square-lattice DOS was
   $
-    N_2(epsilon) = cases(
-      1/(2 pi^2) K(1 - epsilon^2 / 16) & "if" abs(epsilon) < 4,
-      0 & "if" abs(epsilon) > 4,
+    N(epsilon) = cases(
+      1/(2 pi^2 t) K(1 - epsilon^2 / (16 t^2)) & "if" abs(epsilon) < 4 t,
+      0 & "if" abs(epsilon) > 4 t,
     ),
   $
   where
   $
     K(m) = integral_0^(pi/2) frac(dif phi, sqrt(1 - m sin^2(phi))).
   $
-  With the present hopping amplitude $t$, this rescales to
-  $
-    N_2(epsilon) = cases(
-      1/(2 pi^2 t) K(1 - epsilon^2 / (16 t^2)) & "if" abs(epsilon) < 4 t,
-      0 & "if" abs(epsilon) > 4 t,
-    ).
-  $
   Thus the singular feature already found in Exercise 1 is a logarithmic Van Hove singularity at
   $
     epsilon = 0,
   $
   while the band edges at $epsilon = plus.minus 4t$ have finite DOS.
+
+  #let elliptic-k(m, steps: 8) = {
+    if m < 0.0 {
+      panic("elliptic-k expects m >= 0")
+    }
+
+    if m >= 1.0 {
+      calc.inf
+    } else {
+      let a = 1.0
+      let b = calc.sqrt(1.0 - m)
+
+      for _ in range(steps) {
+        let an = (a + b) / 2.0
+        let bn = calc.sqrt(a * b)
+        a = an
+        b = bn
+      }
+
+      calc.pi / (2.0 * a)
+    }
+  }
+
+  #let acosh(x) = calc.ln(x + calc.sqrt(x * x - 1))
+
+  #align(center)[
+    #plot(
+      width: 6,
+      height: 4,
+      xmin: -4.2,
+      xmax: 4.2,
+      ymin: 0.0,
+      ymax: 0.6,
+      axis-y-extend: 0.05,
+      show-grid: "none",
+      xlabel: $frac(epsilon, t, style: "horizontal")$,
+      ylabel: $t N(epsilon)$,
+
+
+      // Lower band-edge contribution from the minimum at epsilon = -4t
+      (
+        fn: e => 1.0 / (4 * calc.pi),
+        domain: (-4.0, 4.0),
+        stroke: soft,
+        label: [$N_1$ and $N_2$],
+        label-pos: 0.,
+        label-side: "left",
+      ),
+
+      // Leading Van Hove logarithmic singularity from both saddle points
+      (
+        fn: e => 1.0 / (2 * calc.pow(calc.pi, 2)) * acosh(16 / calc.abs(e)),
+        domain: (-4, -0.000001),
+        stroke: soft,
+      ),
+      (
+        fn: e => 1.0 / (2 * calc.pow(calc.pi, 2)) * acosh(16 / calc.abs(e)),
+        domain: (0.000001, 4),
+        stroke: soft,
+        label: $N_3$,
+      ),
+
+      // Exact 2D square-lattice DOS:
+      // t N(epsilon) = 1/(2 pi^2) K(1 - (epsilon/t)^2 / 16)
+      (
+        fn: e => 1.0 / (2 * calc.pow(calc.pi, 2)) * elliptic-k(1 - calc.pow(e, 2) / 16),
+        domain: (-4, -0.001),
+        stroke: red,
+      ),
+      (
+        fn: e => 1.0 / (2 * calc.pow(calc.pi, 2)) * elliptic-k(1 - calc.pow(e, 2) / 16),
+        domain: (0.001, 4),
+        stroke: red,
+        label: $N$,
+        label-pos: 0.0,
+        label-side: "right",
+      ),
+    )
+  ]
 ]
 
 ==
@@ -171,23 +315,48 @@
 ]
 
 #solution[
-  From Exercise 1, for $d = 3$ the cubic-lattice DOS was evaluated numerically through
-  $
-    N_3(epsilon)
-    = 1/(2 pi) integral_(-pi)^pi dif k_z N_2(epsilon + 2 t cos(k_z)).
-  $
-  It vanishes for $abs(epsilon) > 6t$ and remains finite, but develops non-analytic kinks at
-  $
-    epsilon = plus.minus 2t.
-  $
+  We have that:
+  - Minimum of $epsilon_vb(k)$ $=>$ Singularity at DOS onset
+  - Maximum of $epsilon_vb(k)$ $=>$ Singularity at DOS cutoff
+  - Saddle point of $epsilon_vb(k)$ $=>$ Singularity within DOS
+
+  So, for $d >= 3$:
+  - Minimum at $vb(k) = 0$:
+
+    DOS "starts" at $epsilon = -2 d t$ with a singularity.
+
+  - Maximum at $vb(k) = (pi, pi, dots, pi)^T$:
+
+    DOS "ends" at $epsilon = +2 d t$ with a singularity.
+
+  - Saddle points at $vb(k) = lr(
+      (
+        underbrace(lr(0, dots, 0), p),
+        underbrace(lr(pi, dots, pi), d - p)), size: #1em
+    )^T$ with $1 <= p < d$:
+
+    DOS has a singularity at $epsilon = 2 (d - 2p) t$.
+
+
+  #v(2em)
+
+  Examples:
+
+  - $d = 3$
+
+    Start at $-6t$, singularities at $-2t$ and $2t$, end at $6t$.
+
+  - $d = 4$
+
+    Start at $-8t$, singularities at $-4t$, $0$ and $4t$, end at $8t$.
 ]
 
 ==
 
 #problem[
   _(Bonus points)_ Finally, consider the limit $d -> infinity$.
-  In this case, one has to rescale the hopping amplitude as $t -> t / sqrt(d)$ in order to render the total energy of the system as well as the second moment (standard deviation) of the density of state finite.
-  Show that $N_infinity(epsilon)$ is proportional to a Gauß distribution.
+  In this case, one has to rescale the hopping amplitude as $t -> frac(t, sqrt(d), style: "horizontal")$ in order to render the total energy of the system as well as the second moment (standard deviation) of the density of state finite.
+  Show that $N_infinity (epsilon)$ is proportional to a Gauß distribution.
 ]
 
 = Magnetic susceptibilities in $d$ dimensions
