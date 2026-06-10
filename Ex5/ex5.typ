@@ -48,6 +48,87 @@
   _Hint: Replace $epsilon_vb(k)$ in @eq:dos by a corresponding Taylor-expansion around these points up to second order._
 ]
 
+#solution[
+  From Exercise 1, for $d = 1$ the dispersion is
+  $
+    epsilon_k = -2 t cos(k),
+  $
+  so the density of states is
+  $
+    N(epsilon) = cases(
+      1/(pi sqrt(4 t^2 - epsilon^2)) & "if" abs(epsilon) < 2 t,
+      0 & "if" abs(epsilon) > 2 t,
+    ).
+  $
+  Thus the band is supported on
+  $
+    epsilon in [-2t, 2t]
+  $
+  and the DOS diverges at the band edges
+  $
+    epsilon^*_plus.minus = plus.minus 2t.
+  $
+  The dispersion has value $epsilon^*_- = - 2t$ at
+  $
+    vb(k^*)_- = 0
+  $
+  and $epsilon^*_+ = + 2t$ at
+  $
+    vb(k^*)_+ = plus.minus pi.
+  $
+
+  Expanding $epsilon_vb(k)$ around $vb(k^*)_- = 0$ gives
+  $
+    epsilon_k = - 2 t + t k^2 + Order(k^4)
+  $
+  which yields for the DOS
+  $
+    N_-(epsilon) = 1 / (4 pi sqrt(t (2t + epsilon))).
+  $
+
+  Expanding $epsilon_vb(k)$ around $vb(k^*)_+ = plus.minus pi$ gives
+  $
+    epsilon_k = 2 t - t (k minus.plus pi)^2 + Order((k minus.plus pi)^4)
+  $
+  which yields for the DOS
+  $
+    N_+(epsilon) = 1 / (4 pi sqrt(t (2t - epsilon))).
+  $
+
+  #align(center)[
+    #plot(
+      width: 6,
+      height: 4,
+      xmin: -2.2,
+      xmax: 2.2,
+      ymin: 0.0,
+      ymax: 1.01,
+      axis-y-extend: 0.2,
+      show-grid: "none",
+      xlabel: $frac(epsilon, t, style: "horizontal")$,
+      ylabel: $t N (epsilon)$,
+
+      (
+        fn: e => 1.0 / (calc.pi * calc.sqrt(4 - calc.pow(e, 2))),
+        domain: (-1.999999, 1.999999),
+        stroke: accent,
+      ),
+      (
+        fn: e => 1.0 / (4 * calc.pi * calc.sqrt(2 + e)),
+        domain: (-1.999999, 1.999999),
+        stroke: soft,
+      ),
+      (
+        fn: e => 1.0 / (4 * calc.pi * calc.sqrt(2 - e)),
+        domain: (-1.999999, 1.999999),
+        stroke: plot-gray,
+      ),
+    )
+  ]
+
+  The plot shows that $N_plus.minus (epsilon)$ (grey curves) exhibit the same divergences as $N(epsilon)$.
+]
+
 ==
 
 #problem[
@@ -57,10 +138,48 @@
   Determine the kind of stationary point (i.e., maximum, minimum or saddle point) which generates this so-called Van Hove singularity in the two-dimensional DOS and determine the singular contribution to $N(epsilon)$ by expanding $epsilon_vb(k)$ around the corresponding stationary point in @eq:dos as for the one-dimensional case above.
 ]
 
+#solution[
+  From Exercise 1, for $t = 1$ the two-dimensional square-lattice DOS was
+  $
+    N_2(epsilon) = cases(
+      1/(2 pi^2) K(1 - epsilon^2 / 16) & "if" abs(epsilon) < 4,
+      0 & "if" abs(epsilon) > 4,
+    ),
+  $
+  where
+  $
+    K(m) = integral_0^(pi/2) frac(dif phi, sqrt(1 - m sin^2(phi))).
+  $
+  With the present hopping amplitude $t$, this rescales to
+  $
+    N_2(epsilon) = cases(
+      1/(2 pi^2 t) K(1 - epsilon^2 / (16 t^2)) & "if" abs(epsilon) < 4 t,
+      0 & "if" abs(epsilon) > 4 t,
+    ).
+  $
+  Thus the singular feature already found in Exercise 1 is a logarithmic Van Hove singularity at
+  $
+    epsilon = 0,
+  $
+  while the band edges at $epsilon = plus.minus 4t$ have finite DOS.
+]
+
 ==
 
 #problem[
   Try to predict how the singular behavior of the DOS evolves with the dimensions of the system for $d >= 3$.
+]
+
+#solution[
+  From Exercise 1, for $d = 3$ the cubic-lattice DOS was evaluated numerically through
+  $
+    N_3(epsilon)
+    = 1/(2 pi) integral_(-pi)^pi dif k_z N_2(epsilon + 2 t cos(k_z)).
+  $
+  It vanishes for $abs(epsilon) > 6t$ and remains finite, but develops non-analytic kinks at
+  $
+    epsilon = plus.minus 2t.
+  $
 ]
 
 ==
@@ -121,4 +240,26 @@
   Is there a $Q$-point in the Brillouin zone, $Q in [0, 2 pi]$, for which $epsilon_(k + Q) = -epsilon_k = 0$?
   What is the signature of this “nesting” property in the free (bubble) susceptibility $chi_0(Q, omega = 0)$ (calculated in Exercise 2, Problem 4c)?
   Remember that the sum over $k$, $sum_k$, can be replaced by $integral dif epsilon N(epsilon)$ with the density of states $N(epsilon)$ from Exercise 1.
+]
+
+#solution[
+  From Exercise 1, the one-dimensional nearest-neighbor tight-binding dispersion is
+  $
+    epsilon_k = -2 t cos(k a).
+  $
+  At half filling, the Fermi energy is
+  $
+    epsilon_"F" = 0,
+  $
+  and for $a = 1$ the Fermi points are
+  $
+    k = plus.minus pi/2.
+  $
+  The corresponding one-dimensional DOS from Exercise 1 is
+  $
+    N_1(epsilon) = cases(
+      1/(pi sqrt(4 t^2 - epsilon^2)) & "if" abs(epsilon) < 2 t,
+      0 & "if" abs(epsilon) > 2 t,
+    ).
+  $
 ]
