@@ -30,6 +30,61 @@
   According to Wick's theorem this can be written in terms of connected ($~ expval(T c(tau) c^dagger (0) H_V (tau_1) dots.h.c H_V (tau_m))_0$) and disconnected ($~ expval(T H_V (tau_(m + 1)) dots.h.c H_V (tau_n))_0$) contractions, with $m = 1, dots.h, n$._
 ]
 
+#solution[
+  We start with writing out the numerator for $n = 1$ (omitting the integrals etc.):
+
+  $
+    expval(cal(T) c_k (tau) c_k^dagger (0) H_V (tau_1))_0
+  $
+
+  and plug in (again omitting integrals)
+
+  $
+    H_V = 1 / (2 pi)^9 integral dd(k) integral dd(k') integral dd(q) c_(k + q)^dagger c_(k' - q)^dagger V_q / 2 c_(k') c_(k)
+  $
+
+  to get
+
+  $
+    expval(cal(T) c_k (tau) c_k^dagger (0) c_(k' + q)^dagger (tau_1) c_(k'' - q)^dagger (tau_1) V_q / 2 c_(k'') (tau_1) c_(k') (tau_1))_0.
+  $
+
+  Wick's theorem then yields $3! = 6$ terms
+
+  $
+    -[&+ delta_(k, k) && delta_(k', k'+q) && delta_(k'', k''-q) && G_0 (k, tau - 0) && G_0 (k', tau_1 - tau_1) && G_0 (k'', tau_1 - tau_1) \
+      &- delta_(k, k) && delta_(k', k''-q) && delta_(k'', k'+q) && G_0 (k, tau - 0) && G_0 (k', tau_1 - tau_1) && G_0 (k'', tau_1 - tau_1) \
+      &+ delta_(k, k'+q) && delta_(k', k''-q) && delta_(k'', k) && G_0 (k, tau - tau_1) && G_0 (k', tau_1 - tau_1) && G_0 (k'', tau_1 - 0) \
+      &- delta_(k, k'+q) && delta_(k', k) && delta_(k'', k''-q) && G_0 (k, tau - tau_1) && G_0 (k', tau_1 - 0) && G_0 (k'', tau_1 - tau_1) \
+      &+ delta_(k, k''-q) && delta_(k', k) && delta_(k'', k'+q) && G_0 (k, tau - tau_1) && G_0 (k', tau_1 - 0) && G_0 (k'', tau_1 - tau_1) \
+      &- delta_(k, k''-q) && delta_(k', k'+q) && delta_(k'', k) && G_0 (k, tau - tau_1) && G_0 (k', tau_1 - tau_1) && G_0 (k'', tau_1 - 0)] \
+    & times V_q / 2 \
+    =
+    - 1/2 [&+ sum_(k',k'') V_0 && G_0 (k, tau) && n_(k') && n_(k'') \
+      &- sum_(k',k'') V_(k'' - k') && G_0 (k, tau) && n_(k') && n_(k'') \
+      &+ sum_(k') V_(k - k') && G_0 (k, tau - tau_1) && n_(k') && G_0 (k, tau_1) \
+      &- sum_(k'') V_0 && G_0 (k, tau - tau_1) && G_0 (k, tau_1) && n_(k'') \
+      &+ sum_(k'') V_(k'' - k) && G_0 (k, tau - tau_1) && G_0 (k, tau_1) && n_(k'') \
+      &- sum_(k') V_0 && G_0 (k, tau - tau_1) && n_(k') && G_0 (k, tau_1)]
+  $
+  Writing now $n equiv sum_(k') n_(k')$, we get
+  $
+    n G_0 (k, tau - tau_1) [ - G_0 (k, tau_1 - tau) + G_0 (k, tau_1)]
+  $
+
+  // $
+  //   expval(cal(T) c_k (tau) c_k^dagger (0) H_V (tau_1) H_V (tau_2))_0
+  // $
+  // and plug in (again omitting integrals)
+  // $
+  //   H_V = 1 / (2 pi)^9 integral dd(k) integral dd(k') integral dd(q) c_(k + q)^dagger c_(k' - q)^dagger V_q / 2 c_(k') c_(k)
+  // $
+  // to get
+  // $
+  //   expval(cal(T) c_k (tau) c_k^dagger (0) c_(k' + q)^dagger (tau_1) c_(k'' - q)^dagger (tau_1) V_q / 2 c_(k'') (tau_1) c_(k') (tau_1) c_(k''' + q')^dagger (tau_2) c_(k'''' - q')^dagger (tau_2) V_(q') / 2 c_(k'''') (tau_2) c_(k''') (tau_2))_0
+  // $
+]
+
 = Feynman diagram quiz
 
 #problem[
