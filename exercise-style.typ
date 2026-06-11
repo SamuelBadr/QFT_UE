@@ -6,8 +6,8 @@
 #let accent-soft = rgb("#eadfd0")
 #let plot-gray = rgb("#666b72")
 
-#let ii = $ upright(i) $
-#let ee = $ upright(e) $
+#let ii = $ op("i") $
+#let ee = $ op("e") $
 
 #let ordinal-suffix(number) = {
   let mod100 = calc.rem(number, 100)

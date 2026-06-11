@@ -359,6 +359,25 @@
   Show that $N_infinity (epsilon)$ is proportional to a Gauß distribution.
 ]
 
+#solution[
+  After applying the rescaling, we have
+  $
+    epsilon_vb(k) = -(2 t) / sqrt(d) sum_(i = 1)^d cos k_i
+  $
+  and we will employ the relation
+  $
+    delta(x) = 1 / (2 pi) integral_(-infinity)^(infinity) dd(s) ee^(ii x s),
+  $
+  which yields for the DOS in $d$ dimensions
+  $
+    N(epsilon) &= 1 / (2 pi)^d integral_(-pi)^pi dd(k, [d]) delta(epsilon + (2 t) / sqrt(d) sum_(i = 1)^d cos k_i) \
+    &= 1 / (2 pi)^d integral_(-pi)^pi dd(k, [d]) 1 / (2 pi) integral_(-infinity)^(infinity) dd(s) exp(ii (epsilon + (2 t) / sqrt(d) sum_(i = 1)^d cos k_i) s) \
+    &= 1 / (2 pi) integral_(-infinity)^(infinity) dd(s) ee^(ii epsilon s) lr([underbrace(1 / (2 pi) integral_(-pi)^pi dd(k) exp(ii (2 s t) / sqrt(d) cos k), J_0 ((2 s t) / sqrt(d)) "Bessel function of the first kind")], size: #4em)^d \
+    &limits(=)^(d -> infinity) 1 / (2 pi) integral_(-infinity)^(infinity) dd(s) ee^(ii epsilon s) ee^(-s^2 t^2) \
+    &= 1 / (2 t sqrt(pi)) ee^(- frac(epsilon^2, 4 t^2, style: "horizontal")).
+  $
+]
+
 = Magnetic susceptibilities in $d$ dimensions
 
 #problem[
