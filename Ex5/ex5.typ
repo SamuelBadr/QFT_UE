@@ -87,7 +87,7 @@
     $
       N_1(epsilon) = cases(
         0 & "if" epsilon < -2t,
-        1 / (4 pi sqrt(t (2t + epsilon))) & "if" -2t <= epsilon
+        1 / (2 pi sqrt(t (2t + epsilon))) & "if" -2t <= epsilon
       ),
     $
     a band-edge singularity at the onset ($epsilon = -2t$) of DOS.
@@ -99,7 +99,7 @@
     which yields for the DOS
     $
       N_2(epsilon) = cases(
-        1 / (4 pi sqrt(t (2t - epsilon))) & "if" epsilon <= 2t,
+        1 / (2 pi sqrt(t (2t - epsilon))) & "if" epsilon <= 2t,
         0 & "if" 2t < epsilon
       ),
     $
@@ -124,19 +124,19 @@
         stroke: accent,
       ),
       (
-        fn: e => 1.0 / (4 * calc.pi * calc.sqrt(2 + e)),
+        fn: e => 1.0 / (2 * calc.pi * calc.sqrt(2 + e)),
         domain: (-1.999999, 1.999999),
         stroke: soft,
       ),
       (
-        fn: e => 1.0 / (4 * calc.pi * calc.sqrt(2 - e)),
+        fn: e => 1.0 / (2 * calc.pi * calc.sqrt(2 - e)),
         domain: (-1.999999, 1.999999),
         stroke: plot-gray,
       ),
     )
   ]
 
-  The plot shows that $N_plus.minus (epsilon)$ (grey curves) exhibit the same divergences as $N(epsilon)$.
+  The plot shows that $N_1 (epsilon)$ and $N_2 (epsilon)$ (grey curves) exhibit the same divergences as $N(epsilon)$.
 ]
 
 ==
@@ -203,14 +203,14 @@
     $
     which yields for the DOS
     $
-      N_3(epsilon) = 1 / (4 pi^2 t) op("arcosh")(pi sqrt(t / abs(epsilon)))
+      N_3(epsilon) = 1 / (2 pi^2 t) op("arcosh")(pi sqrt(t / abs(epsilon)))
     $
     i.e. a logarithmic singularity at $epsilon = 0$. Around $epsilon -> 0$, it has the leading asymptotic form
     $
-      N_3(epsilon) -> 1 / (4 pi^2 t) log(2 pi sqrt(t / abs(epsilon))) = - 1/(8 pi^2 t) log abs(epsilon) + 1/(8 pi^2 t) log(4pi^2 t).
+      N_3(epsilon) -> 1 / (2 pi^2 t) log(2 pi sqrt(t / abs(epsilon))) = - 1/(4 pi^2 t) log abs(epsilon) + 1/(4 pi^2 t) log(4pi^2 t).
     $
 
-    The contribution to the DOS is twice what is stated here because of the aforementioned second saddle point.
+    The contribution to the DOS has been doubled here because of the aforementioned second saddle point.
 
   From Exercise 1, for $t = 1$ the two-dimensional square-lattice DOS was
   $
@@ -324,11 +324,11 @@
   So, for $d >= 3$:
   - Minimum at $vb(k) = 0$:
 
-    DOS "starts" at $epsilon = -2 d t$ with a singularity.
+    DOS "starts" at $epsilon = -2 d t$ with a band-edge nonanalyticity.
 
   - Maximum at $vb(k) = (pi, pi, dots, pi)^T$:
 
-    DOS "ends" at $epsilon = +2 d t$ with a singularity.
+    DOS "ends" at $epsilon = +2 d t$ with a band-edge nonanalyticity.
 
   - Saddle points at $vb(k) = lr(
       (
@@ -441,15 +441,17 @@
   $
 
   Antiferromagnetic susceptibility (at $vb(pi)$):
+
+  We work at half filling, i.e. $mu = 0$, so that
+  $
+    epsilon_(vb(k) + vb(pi)) = -epsilon_vb(k).
+  $
+  and then the susceptibility is
   $
     chi_"AF" =chi(vb(pi), 0) & = - hbar^2 / 2 1 / (N beta) sum_(vb(k)) sum_(ii omega_n) G(vb(k), ii omega_n) G(vb(k) + vb(pi), ii omega_n) \
     & = - hbar^2 / 2 1 / N sum_(vb(k)) (n_"F" (epsilon_vb(k)) - n_"F" (epsilon_(vb(k) + vb(pi)))) / (epsilon_vb(k) - epsilon_(vb(k) + vb(pi))) \
     & = - hbar^2 / 2 1 / N sum_(vb(k)) (n_"F" (epsilon_vb(k)) - n_"F" (-epsilon_(vb(k)))) / (2epsilon_vb(k)) \
     & = hbar^2 / 4 1 / N sum_(vb(k)) 1 / epsilon_vb(k) tanh((beta epsilon_vb(k)) / 2)
-  $
-
-  $
-    epsilon_(vb(k) + vb(pi)) = -2t sum_(i = 1)^d cos(k_i + pi) = -epsilon_(vb(k))
   $
 
   // #susceptibility-plot()
@@ -529,13 +531,17 @@
 ]
 
 #solution[
-  In $d >= 3$, the DOS $N(epsilon)$ singularities are no longer divergences, but instead cusps (i.e. discontinuities in derivatives).
-  - In $chi_"F"$, the $d = 2$, $T -> 0$ divergence stems from the $epsilon = 0$ divergence in $N(epsilon)$. So $chi_"F"$ will remain regular in $d >= 3$.
-  - In $chi_"AF"$, the $d = 2$, $T -> 0$ divergence is *also* caused by the
+  In $d >= 3$, the DOS itself is finite at $epsilon = 0$.
+  Therefore $chi_"F"$ remains regular as $T -> 0$.
+
+  However, at half filling the dispersion is perfectly nested,
+  $epsilon_(k + Q) = -epsilon_k$ for $Q = (pi, pi, dots)$.
+  Thus $chi_"AF"$ still diverges, but only logarithmically,
   $
-    1 / epsilon tanh ((beta epsilon) / 2)
+    chi_"AF" ~ log(1 / T),
   $
-  term, and so will persist in $d >= 3$.
+  provided $N(0) != 0$.
+  The stronger $log^2(1 / T)$ divergence in $d = 2$ occurs because perfect nesting coincides with the logarithmic Van Hove singularity of the DOS.
 ]
 
 ==
@@ -548,23 +554,47 @@
 ]
 
 #solution[
-  From Exercise 1, the one-dimensional nearest-neighbor tight-binding dispersion is
+  For $Q = pi$, we have
   $
-    epsilon_k = -2 t cos(k a).
+    epsilon_(k + Q) = -epsilon_(k)
   $
-  At half filling, the Fermi energy is
+  and at $k = plus.minus pi/2$, that becomes
   $
-    epsilon_"F" = 0,
+    epsilon_(k + Q) = -epsilon_(k) = 0.
   $
-  and for $a = 1$ the Fermi points are
+
+  The static susceptibility is given by (c.f. Problem 4c)
   $
-    k = plus.minus pi/2.
+    chi(Q, 0) = integral dd(k) (n_"F" (epsilon_k) - n_"F" (epsilon_(k + Q))) / (epsilon_k - epsilon_(k + Q))
   $
-  The corresponding one-dimensional DOS from Exercise 1 is
+  and at $Q = pi$
   $
-    N_1(epsilon) = cases(
-      1/(pi sqrt(4 t^2 - epsilon^2)) & "if" abs(epsilon) < 2 t,
-      0 & "if" abs(epsilon) > 2 t,
-    ).
+    chi(pi, 0) & = integral dd(k) (n_"F" (epsilon_k) - n_"F" (-epsilon_(k))) / (2epsilon_k) \
+    & = 1/2 integral dd(k) 1 / epsilon_k tanh (beta epsilon_k) / 2 \
+    & = 1/2 integral dd(epsilon) N(epsilon) 1 / epsilon tanh (beta epsilon) / 2 \
+    & = 1/(2 pi) integral_(-2t)^(2t) dd(epsilon) 1 / (sqrt(4t^2 - epsilon^2)) 1 / epsilon tanh (beta epsilon) / 2
   $
+
+
+
+
+  // From Exercise 1, the one-dimensional nearest-neighbor tight-binding dispersion is
+  // $
+  //   epsilon_k = -2 t cos(k a).
+  // $
+  // At half filling, the Fermi energy is
+  // $
+  //   epsilon_"F" = 0,
+  // $
+  // and for $a = 1$ the Fermi points are
+  // $
+  //   k = plus.minus pi/2.
+  // $
+  // The corresponding one-dimensional DOS from Exercise 1 is
+  // $
+  //   N_1(epsilon) = cases(
+  //     1/(pi sqrt(4 t^2 - epsilon^2)) & "if" abs(epsilon) < 2 t,
+  //     0 & "if" abs(epsilon) > 2 t,
+  //   ).
+  // $
 ]
