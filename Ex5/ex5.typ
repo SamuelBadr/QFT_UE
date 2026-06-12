@@ -1,6 +1,7 @@
 #import "../exercise-style.typ": *
 #import "@preview/unify:0.7.1": num, numrange, qty, qtyrange
 #import "@preview/simple-plot:0.3.0": plot
+#import "susceptibility-plot.typ": *
 
 #show: exercise-sheet.with(
   "QFT for Many-Body Systems",
@@ -390,7 +391,7 @@
   Compute the magnetic susceptibility, i.e. the Fourier transform of the spin-spin response function
 
   $
-    chevron.l T_tau S^z (vb(r)_i, tau) S^z (0, 0) chevron.r,
+    expval(T_tau S^z (vb(r)_i, tau) S^z (0, 0)),
   $
 
   with
@@ -406,19 +407,135 @@
   for the frequency $Omega_m = 0$ (static susceptibility), and for the two momenta $vb(Q) = (0, 0, 0, dots)$ (ferromagnetic susceptibility) and $vb(Q) = (pi, pi, pi, dots)$ (antiferromagnetic susceptibility).
 ]
 
+#solution[
+  We combine $(vb(r)_i, tau) equiv r$ and apply Wick's theorem (the system is non-interacting)
+  $
+    chi (r) & = expval(T S^z (r) S^z (0)) \
+    &= hbar^2 / 4 expval(T (c_arrow.t^dagger (r) c_arrow.t (r) - c_arrow.b^dagger (r) c_arrow.b (r)) (c_arrow.t^dagger (0) c_arrow.t (0) - c_arrow.b^dagger (0) c_arrow.b (0))) \
+    &= hbar^2 / 4 sum_sigma expval(T c_sigma^dagger (r) c_sigma (0)) expval(T c_sigma (r) c_sigma^dagger (0))
+  $
+  We can now substitute the Green's function
+  $
+    G_sigma (r) = - expval(T c_sigma (r) c_sigma^dagger (0))
+  $
+  to get
+  $
+    chi (r) = - hbar^2 / 4 sum_sigma G_sigma (-r) G_sigma (r) = - hbar^2 / 2 G (-r) G (r).
+  $
+
+  Fourier transform to get the susceptibility
+  $
+    chi(vb(q), ii Omega_m) & = sum_i integral_0^beta dd(tau) chi(vb(r)_i, tau) ee^(ii vb(q) dot.c vb(r)_i + ii Omega_m tau) \
+    & = - hbar^2 / 2 sum_i integral_0^beta dd(tau) G(-vb(r)_i, -tau) G(vb(r)_i, tau) ee^(ii vb(q) dot.c vb(r)_i + ii Omega_m tau) \
+    &= - hbar^2 / 2 1 / (N beta) sum_(vb(k)) sum_(ii omega_n) G(vb(k), ii omega_n) G(vb(k) + vb(q), ii omega_n + ii Omega_m)
+  $
+  with the non-interacting Green's function
+  $
+    G(vb(k), ii omega_n) = 1 / (ii omega_n - epsilon_vb(k)).
+  $
+
+  Ferromagnetic susceptibility (at $vb(0)$):
+  $
+    chi_"F" =chi(vb(0), 0) & = - hbar^2 / 2 1 / (N beta) sum_(vb(k)) sum_(ii omega_n) G(vb(k), ii omega_n) G(vb(k), ii omega_n) \
+    & = - hbar^2 / 2 1 / N sum_(vb(k)) n'_"F" (epsilon_vb(k))
+  $
+
+  Antiferromagnetic susceptibility (at $vb(pi)$):
+  $
+    chi_"AF" =chi(vb(pi), 0) & = - hbar^2 / 2 1 / (N beta) sum_(vb(k)) sum_(ii omega_n) G(vb(k), ii omega_n) G(vb(k) + vb(pi), ii omega_n) \
+    & = - hbar^2 / 2 1 / N sum_(vb(k)) (n_"F" (epsilon_vb(k)) - n_"F" (epsilon_(vb(k) + vb(pi)))) / (epsilon_vb(k) - epsilon_(vb(k) + vb(pi))) \
+    & = - hbar^2 / 2 1 / N sum_(vb(k)) (n_"F" (epsilon_vb(k)) - n_"F" (-epsilon_(vb(k)))) / (2epsilon_vb(k)) \
+    & = hbar^2 / 4 1 / N sum_(vb(k)) 1 / epsilon_vb(k) tanh((beta epsilon_vb(k)) / 2)
+  $
+
+  $
+    epsilon_(vb(k) + vb(pi)) = -2t sum_(i = 1)^d cos(k_i + pi) = -epsilon_(vb(k))
+  $
+
+  // #susceptibility-plot()
+]
+
 ==
 
 #problem[
   Determine the leading divergences of the ferromagnetic and the antiferromagnetic susceptibilities for $T -> 0$ in $d = 2$ dimensions.
   To this end write the total density of states as a sum of a singular and a regular contribution as calculated in Problem 10b).
 
-  _Hint: It is convenient to write the total density of states as $N(epsilon) = N_"reg"(epsilon) + N_"sing"(epsilon)$, and treat the two contributions separately. For the ferromagnetic case, expand $N_"reg"$ around zero (Sommerfeld-like expansion) and, for the singular part, change variable to $x = beta epsilon$ to make the temperature dependence manifest. For the antiferromagnetic case, (i) differentiate the susceptibility with respect to $beta$ before integrating, (ii) proceed as in the ferromagnetic case, (iii) integrate back over $beta$ at the end._
+  _Hint: It is convenient to write the total density of states as $N(epsilon) = N_"reg" (epsilon) + N_"sing" (epsilon)$, and treat the two contributions separately. For the ferromagnetic case, expand $N_"reg"$ around zero (Sommerfeld-like expansion) and, for the singular part, change variable to $x = beta epsilon$ to make the temperature dependence manifest. For the antiferromagnetic case, (i) differentiate the susceptibility with respect to $beta$ before integrating, (ii) proceed as in the ferromagnetic case, (iii) integrate back over $beta$ at the end._
+]
+
+#solution[
+  We write
+  $
+    N(epsilon) = N_"reg" (epsilon) + N_"sing" (epsilon)
+  $
+  with
+  $
+    N_"sing" (epsilon) = A log abs(epsilon)
+  $
+  where
+  $
+    A = - 1 / (4 pi^2 t).
+  $
+
+  We also rewrite the susceptibilities as
+  $
+     chi_"F" & = - hbar^2 / 2 integral dd(epsilon) N(epsilon) n'_"F" (epsilon) \
+    chi_"AF" & = hbar^2 / 4 integral dd(epsilon) N(epsilon) 1 / epsilon tanh ((beta epsilon) / 2).
+  $
+
+  - Ferromagnetic:
+    Write
+    $
+      n'_"F" (epsilon) = - beta / (4 cosh^2(frac(beta epsilon, 2, style: "horizontal")))
+    $
+    and then, with $x = beta epsilon$,
+    $
+      chi_"F" & ~ - hbar^2 / 2 integral dd(epsilon) N_"sing" (epsilon) n'_"F" (epsilon) \
+              & ~ integral dd(epsilon) log abs(epsilon) beta / (4 cosh^2(frac(beta epsilon, 2, style: "horizontal"))) \
+              & = integral dd(x) 1 / beta log(abs(x) / beta) beta / (4 cosh^2(frac(x, 2, style: "horizontal"))) \
+              & = - log beta integral dd(x) dots + integral dd(x) dots
+    $
+    so we get a
+    $
+      chi_"F" ~ log(frac(1, T, style: "horizontal"))
+    $
+    divergence as $T -> 0$.
+
+  - Antiferromagnetic:
+    We differentiate
+    $
+      pdv(, beta) chi_"AF" & = hbar^2 / 4 integral dd(epsilon) N_"sing" (epsilon) 1 / epsilon pdv(, beta) tanh ((beta epsilon) / 2) \
+      & = hbar^2 / 4 integral dd(epsilon) A log abs(epsilon) 1 / epsilon epsilon / 2 1 / (cosh^2(beta epsilon) / 2) \
+      &~ integral dd(x) 1/beta log(abs(x) / beta) 1 / (cosh^2(x) / 2) \
+      &= - (log beta) / beta underbrace(integral dd(x) dots, C_1) + 1 / beta underbrace(integral dd(x) dots, C_2)
+    $
+    and integrate
+    $
+      chi_"AF" & ~ integral dd(beta) [ -(log beta) / beta C_1 + 1 / beta C_2 ] \
+               & = -1/2 C_1 log^2 beta + C_2 log beta
+    $
+    so the main divergence is
+    $
+      chi_"AF" ~ log^2(frac(1, T, style: "horizontal"))
+    $
+    as $T -> 0$.
 ]
 
 ==
 
 #problem[
   Discuss how the results above are modified in $d >= 3$ dimensions.
+]
+
+#solution[
+  In $d >= 3$, the DOS $N(epsilon)$ singularities are no longer divergences, but instead cusps (i.e. discontinuities in derivatives).
+  - In $chi_"F"$, the $d = 2$, $T -> 0$ divergence stems from the $epsilon = 0$ divergence in $N(epsilon)$. So $chi_"F"$ will remain regular in $d >= 3$.
+  - In $chi_"AF"$, the $d = 2$, $T -> 0$ divergence is *also* caused by the
+  $
+    1 / epsilon tanh ((beta epsilon) / 2)
+  $
+  term, and so will persist in $d >= 3$.
 ]
 
 ==

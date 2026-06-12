@@ -6,7 +6,7 @@
 #let accent-soft = rgb("#eadfd0")
 #let plot-gray = rgb("#666b72")
 
-#let ii = $ op("i") $
+#let ii = $ upright(i) $
 #let ee = $ op("e") $
 
 #let ordinal-suffix(number) = {
