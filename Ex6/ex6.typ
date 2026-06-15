@@ -46,16 +46,103 @@
   $
     G_sigma (vb(k), tau)
     = -1 / Z tr [
-      e^(-beta hat(H))
+      ee^(-beta hat(H))
       hat(c)_(vb(k) sigma) (tau) hat(c)_(vb(k) sigma)^dagger
     ],
     quad beta >= tau >= 0,
   $ <eq:g-tau>
 
   of the Green's function.
-  The partition function is defined as $Z = tr[e^(-beta hat(H))]$.
+  The partition function is defined as $Z = tr[ee^(-beta hat(H))]$.
 
   _Hint: Use the Lehmann representation, i.e. perform the trace over the basis of the eigenvalues and insert the completeness relation, where needed._
+]
+
+#solution[
+  The noninteracting $U = 0$ Hamiltonian
+  $
+    H = sum_(vb(k) sigma) xi_vb(k) c_(vb(k) sigma)^dagger c_(vb(k) sigma) wide xi_vb(k) = epsilon_vb(k) - mu
+  $
+  has eigenstates
+  $
+    ket({n_(vb(k) sigma)}) wide n_(vb(k) sigma) in {0, 1}
+  $
+  with eigenenergies
+  $
+    E_({n}) = sum_(vb(k) sigma) xi_(vb(k)) n_(vb(k) sigma).
+  $
+
+  The partition function is then given by
+  $
+    Z & = sum_({n}) ee^(-beta E_({n})) = product_(vb(k) sigma) sum_(n_(vb(k) sigma) = 0)^1 ee^(-beta xi_(vb(k)) n_(vb(k) sigma)) = product_(vb(k) sigma) (1 + ee^(-beta xi_vb(k))).
+  $
+
+  Green's function:
+  $
+    G_sigma (vb(k), tau) & = -1 / Z sum_({n}) expval(
+                             ee^(-beta H)
+                             c_(vb(k) sigma) (tau) c_(vb(k) sigma)^dagger,
+                             {n}
+                           )
+  $
+  Because $ket({n})$ is an eigenstate of $H$,
+  $
+    G_sigma (vb(k), tau) & = -1 / Z sum_({n}) ee^(-beta E_({n})) expval(
+                             c_(vb(k) sigma) (tau) c_(vb(k) sigma)^dagger,
+                             {n}
+                           ).
+  $
+  Inserting a resolution of unity
+  $
+    1 = sum_({m}) ketbra({m})
+  $
+  we get
+  $
+    G_sigma (vb(k), tau) & = -1 / Z sum_({n},{m})
+                           ee^(-beta E_({n}))
+                           mel({n}, c_(vb(k) sigma) (tau), {m})
+                           mel({m}, c_(vb(k) sigma)^dagger, {n}).
+  $
+  Using
+  $
+    c_(vb(k) sigma) (tau) = ee^(tau H) c_(vb(k) sigma) ee^(-tau H),
+  $
+  the matrix element becomes
+  $
+    mel({n}, c_(vb(k) sigma) (tau), {m}) = ee^(tau (E_({n}) - E_({m}))) mel({n}, c_(vb(k) sigma), {m})
+  $
+  Therefore
+  $
+    G_sigma (vb(k), tau) & = -1 / Z sum_({n},{m})
+                           ee^(-beta E_({n})) ee^(tau (E_({n}) - E_({m})))
+                           mel({n}, c_(vb(k) sigma), {m})
+                           mel({m}, c_(vb(k) sigma)^dagger, {n}).
+  $
+  Now the matrix elements are only nonzero if
+  $
+    n_(vb(k) sigma) = 0 quad "and" quad m_(vb(k) sigma) = 1 quad "and" n_(vb(k') sigma') = m_(vb(k') sigma') "for all" vb(k') sigma' != vb(k) sigma
+  $
+  so we can conclude
+  $
+    E_({m}) = E_({n}) + xi_(vb(k))
+  $
+  and the product of matrix elements gives 1, so
+  $
+    G_sigma (vb(k), tau) & = -1 / Z sum_({n}, n_(vb(k) sigma) = 0)
+                           ee^(-beta E_({n})) ee^(-tau xi_(vb(k))).
+  $
+  We can perform the sum
+  $
+    sum_({n}, n_(vb(k) sigma) = 0) ee^(-beta E_({n})) = product_(vb(k') sigma' != vb(k) sigma) sum_(n_(vb(k') sigma') = 0)^1 ee^(-beta xi_(vb(k')) n_(vb(k') sigma')) = product_(vb(k') sigma' != vb(k) sigma) (1 + ee^(-beta xi_vb(k')))
+  $
+  and then get
+  $
+    G_sigma (vb(k), tau) & = -ee^(-tau xi_(vb(k))) (product_(vb(k') sigma' != vb(k) sigma) (1 + ee^(-beta xi_vb(k')))) / (product_(vb(k') sigma') (1 + ee^(-beta xi_vb(k'))))
+  $
+  and are able to cancel common factors
+  $
+    G_sigma (vb(k), tau) & = -ee^(-tau xi_(vb(k))) / (1 + ee^(-beta xi_vb(k))) = ee^(-tau xi_(vb(k))) [n_"F" (xi_(vb(k))) - 1].
+  $
 ]
 
 ==
@@ -72,7 +159,7 @@
 
   $
     G_sigma (vb(k), ii omega_n)
-    = integral_0^beta dif tau e^(ii omega_n tau) G_sigma (vb(k), tau),
+    = integral_0^beta dif tau ee^(ii omega_n tau) G_sigma (vb(k), tau),
   $ <eq:g-matsu>
 
   where $omega_n = pi / beta (2 n + 1)$, $n in ZZ$ is a fermionic Matsubara frequency.
@@ -94,7 +181,7 @@
     G_(i sigma) (tau)
     = - expval(T_tau hat(c)_(i sigma) (tau) hat(c)_(i sigma)^dagger)
     = -1 / Z tr [
-      e^(-beta hat(H))
+      ee^(-beta hat(H))
       hat(c)_(i sigma) (tau) hat(c)_(i sigma)^dagger
     ],
     quad beta >= tau >= 0.
