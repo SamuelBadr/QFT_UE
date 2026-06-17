@@ -117,7 +117,7 @@
                            ee^(-beta E_({n})) ee^(tau (E_({n}) - E_({m})))
                            mel({n}, c_(vb(k) sigma), {m})
                            mel({m}, c_(vb(k) sigma)^dagger, {n}).
-  $
+  $<eq:lehmann>
   Now the matrix elements are only nonzero if
   $
     n_(vb(k) sigma) = 0 quad "and" quad m_(vb(k) sigma) = 1 quad "and" n_(vb(k') sigma') = m_(vb(k') sigma') "for all" vb(k') sigma' != vb(k) sigma
@@ -141,8 +141,52 @@
   $
   and are able to cancel common factors
   $
-    G_sigma (vb(k), tau) & = -ee^(-tau xi_(vb(k))) / (1 + ee^(-beta xi_vb(k))) = ee^(-tau xi_(vb(k))) [n_"F" (xi_(vb(k))) - 1].
+    G_sigma (vb(k), tau) & = -ee^(-tau xi_(vb(k))) / (1 + ee^(-beta xi_vb(k))) = -ee^(-tau xi_(vb(k))) [1 - n_"F" (xi_(vb(k)))].
   $
+
+  #let t = 1.0
+  #let mu = 0.0
+  #let epsilon(k) = -2 * t * calc.cos(k)
+  #let xi(k) = epsilon(k) - mu
+
+  #let k1 = 0.0
+  #let k2 = calc.pi / 2
+  #let k3 = calc.pi
+
+  #align(center)[
+    #plot(
+      width: 6,
+      height: 4,
+      xmin: -0.1,
+      xmax: 1.1,
+      ymin: -1.0,
+      ymax: 0.1,
+      axis-x-extend: 0.1,
+      axis-y-extend: 0.1,
+      show-grid: "none",
+      xlabel: $frac(tau, beta, style: "horizontal")$,
+      ylabel: $G_(sigma) (vb(k), tau)$,
+
+      (
+        fn: tau => -calc.exp(-tau * xi(k1)) / (1 + calc.exp(-xi(k1))),
+        domain: (0, 1),
+        label: $k = 0$,
+        stroke: red,
+      ),
+      (
+        fn: tau => -calc.exp(-tau * xi(k2)) / (1 + calc.exp(-xi(k2))),
+        domain: (0, 1),
+        label: $k = pi / 2$,
+        stroke: green,
+      ),
+      (
+        fn: tau => -calc.exp(-tau * xi(k3)) / (1 + calc.exp(-xi(k3))),
+        domain: (0, 1),
+        label: $k = pi$,
+        stroke: blue,
+      ),
+    )
+  ]
 ]
 
 ==
@@ -152,6 +196,36 @@
   Give a physical interpretation for the result.
 ]
 
+#solution[
+  From the imaginary-time result for $0 < tau < beta$,
+
+  $
+    G_sigma (vb(k), tau)
+    =
+    -ee^(-tau xi_(vb(k))) / (1 + ee^(-beta xi_(vb(k))))
+    =
+    -ee^(-tau xi_(vb(k))) [1 - n_"F" (xi_(vb(k)))].
+  $
+
+  Performing the inverse Wick rotation $tau -> ii t$ gives
+
+  $
+    G_sigma (vb(k), t)
+    =
+    -ee^(-ii t xi_(vb(k))) / (1 + ee^(-beta xi_(vb(k))))
+    =
+    -ee^(-ii t xi_(vb(k))) [1 - n_"F" (xi_(vb(k)))].
+  $
+
+  This is the continuation of the positive imaginary-time branch. It
+  corresponds to the propagation of an added particle in the state
+  $(vb(k), sigma)$. The phase factor $ee^(-ii t xi_(vb(k)))$ describes
+  free time evolution with energy measured relative to the chemical
+  potential, while the factor $1 - n_"F" (xi_(vb(k)))$ is the probability
+  that the state is initially empty and can therefore accept an added
+  fermion.
+]
+
 ==
 
 #problem[
@@ -159,17 +233,122 @@
 
   $
     G_sigma (vb(k), ii omega_n)
-    = integral_0^beta dif tau ee^(ii omega_n tau) G_sigma (vb(k), tau),
+    = integral_0^beta dd(tau) ee^(ii omega_n tau) G_sigma (vb(k), tau),
   $ <eq:g-matsu>
 
   where $omega_n = pi / beta (2 n + 1)$, $n in ZZ$ is a fermionic Matsubara frequency.
   Then continue the results on the real frequency axis and calculate the corresponding spectral function $A(vb(k), omega)$.
 ]
 
+#solution[
+  We perform the Fourier transform
+  $
+    G_sigma (vb(k), ii omega_n)
+    = integral_0^beta dd(tau) ee^(ii omega_n tau) G_sigma (vb(k), tau),
+  $
+  inserting the result from above
+  $
+    G_sigma (vb(k), ii omega_n) = - [1 - n_"F" (xi_(vb(k)))] integral_0^beta dd(tau) ee^(ii omega_n tau) ee^(-tau xi_(vb(k)))
+  $
+  to get
+  $
+    G_sigma (vb(k), ii omega_n) = 1 / (ii omega_n - xi_vb(k)).
+  $
+
+  To continue the results, we set $ii omega_n -> omega + ii 0^+$ and get
+  $
+    G_sigma (vb(k), omega) = 1 / (omega - xi_vb(k) + ii 0^+)
+  $
+  as well as the spectral function
+  $
+    A(vb(k), omega) = - 1 / pi Im G_sigma (vb(k), omega) = delta(omega - xi_vb(k)).
+  $
+]
+
 ==
 
 #problem[
   Now, consider the opposite limit where the kinetic energy appearing in the Hamiltonian in @eq:hubbard is negligible compared to the interaction, i.e., $epsilon_vb(k) = 0$ (atomic limit).
+]
+
+#solution[
+  In the atomic limit, the Hamiltonian is reduced to
+  $
+    H = sum_i H_i
+  $
+  with
+  $
+    H_i = U n_(i arrow.t) n_(i arrow.b) - mu (n_(i arrow.t) + n_(i arrow.b))
+  $
+  and we work at half filling $mu = U / 2$.
+
+  So it suffices to work in the local site $i$ (the label of which we'll omit), where we write down the Fock basis
+  $
+    ket(0) wide ket(arrow.t) wide ket(arrow.b) wide ket(arrow.t arrow.b) = c_arrow.t^dagger c_arrow.b^dagger ket(0)
+  $
+  which is already an eigenbasis with eigenvalues
+  $
+    0 wide -U/2 wide -U/2 wide 0.
+  $
+
+  We first compute the partition function
+  $
+    Z = sum_n expval(ee^(-beta H), n) = 2 (1 + ee^(frac(beta U, 2, style: "horizontal")))
+  $
+  and then the Green's function.
+  To that end, we start from @eq:lehmann, which we restate here in adapted form for convenience
+  $
+    G_sigma (tau) & = -1 / Z sum_(n,m)
+                    ee^(-beta E_(n)) ee^(tau (E_(n) - E_(m)))
+                    mel(n, c_(sigma), m)
+                    mel(m, c_(sigma)^dagger, n).
+  $
+  and compute the nonzero matrix-elements
+  $
+                      mel(0, c_sigma, sigma) & = 1 wide  &                   mel(sigma, c_sigma^dagger, 0) & = 1 \
+    mel(arrow.b, c_arrow.t, arrow.t arrow.b) & = 1 wide  & mel(arrow.t arrow.b, c_arrow.t^dagger, arrow.b) & = 1 \
+    mel(arrow.t, c_arrow.b, arrow.t arrow.b) & = -1 wide & mel(arrow.t arrow.b, c_arrow.b^dagger, arrow.t) & = -1,
+  $
+  implying for either spin
+  $
+    G_sigma (tau) &= -1 / Z (ee^(frac(tau U, 2, style: "horizontal")) + ee^(frac(beta U, 2, style: "horizontal")) ee^(frac(-tau U, 2, style: "horizontal"))) = - 1/2 (ee^(frac(tau U, 2, style: "horizontal")) + ee^(frac((beta - tau) U, 2, style: "horizontal"))) / (1 + ee^(frac(beta U, 2, style: "horizontal"))).
+  $
+  and defining
+  $
+    f = n_"F" (U / 2) = [1 + ee^(frac(beta U, 2, style: "horizontal"))]^(-1)
+  $
+  we can write
+  $
+    G_sigma (tau) = -1/2 [f ee^(frac(tau U, 2, style: "horizontal")) + (1 - f) ee^(frac(-tau U, 2, style: "horizontal"))].
+  $
+
+  - Continuing to real times $tau -> ii t$ yields
+    $
+      G_sigma (t) = -1/2 [f ee^(frac(ii t U, 2, style: "horizontal")) + (1 - f) ee^(frac(-ii t U, 2, style: "horizontal"))].
+    $
+    This is a superposition of two oscillations, both with frequency $U/2$,
+    $
+      ket(0) <-> ket(sigma),
+    $
+    weighted $f$ and
+    $
+      ket(-sigma) <-> ket(arrow.t arrow.b),
+    $
+    weighted $1 - f$.
+
+  - Fourier transforming yields
+    $
+      G_sigma (ii omega_n) = 1 / 2 [1 / (ii omega_n + U/2) + 1 / (ii omega_n - U/2)] = (ii omega_n) / ((ii omega_n)^2 - U^2 / 4).
+    $
+
+  - Continuing to the real frequency axis then gives
+    $
+      G_sigma (omega) = 1 / 2 [1 / (omega + U/2 + ii 0^+) + 1 / (omega - U/2 + ii 0^+)]
+    $
+    and
+    $
+      A_sigma (omega) = 1 / 2 [delta(omega + U/2) + delta(omega - U/2)].
+    $
 ]
 
 ==
