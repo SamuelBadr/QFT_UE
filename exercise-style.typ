@@ -7,7 +7,7 @@
 #let plot-gray = rgb("#666b72")
 
 #let ii = $ upright(i) $
-#let ee = $ op("e") $
+#let ee = $ upright(e) $
 
 #let ordinal-suffix(number) = {
   let mod100 = calc.rem(number, 100)

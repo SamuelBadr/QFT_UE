@@ -1,6 +1,6 @@
 #import "../exercise-style.typ": *
 #import "@preview/unify:0.7.1": num, numrange, qty, qtyrange
-#import "@preview/simple-plot:0.3.0": plot
+#import "@preview/simple-plot:0.9.0": *
 
 #show: exercise-sheet.with(
   "QFT for Many-Body Systems",
@@ -291,6 +291,30 @@
     0 wide -U/2 wide -U/2 wide 0.
   $
 
+  Since the atoms are independent, the full problem factorizes into identical single-site problems.
+]
+
+==
+
+#problem[
+  The local Green's function for site $i$, $G_(i sigma) (tau)$, is defined as
+
+  $
+    G_(i sigma) (tau)
+    = - expval(T_tau hat(c)_(i sigma) (tau) hat(c)_(i sigma)^dagger)
+    = -1 / Z tr [
+      ee^(-beta hat(H))
+      hat(c)_(i sigma) (tau) hat(c)_(i sigma)^dagger
+    ],
+    quad beta >= tau >= 0.
+  $ <eq:g-local>
+
+  Note that the different atoms are completely independent in this case and the local Green's function is thus the same as already calculated in Problem 6 of Exercise 3.
+  From its Fourier transform $G_(i sigma) (ii omega_n)$, extract the corresponding expression for the self-energy $Sigma_(i sigma) (ii omega_n)$.
+  Is the atomic-limit expression derivable within conventional perturbation theory?
+]
+
+#solution[
   We first compute the partition function
   $
     Z = sum_n expval(ee^(-beta H), n) = 2 (1 + ee^(frac(beta U, 2, style: "horizontal")))
@@ -322,61 +346,150 @@
     G_sigma (tau) = -1/2 [f ee^(frac(tau U, 2, style: "horizontal")) + (1 - f) ee^(frac(-tau U, 2, style: "horizontal"))].
   $
 
-  - Continuing to real times $tau -> ii t$ yields
-    $
-      G_sigma (t) = -1/2 [f ee^(frac(ii t U, 2, style: "horizontal")) + (1 - f) ee^(frac(-ii t U, 2, style: "horizontal"))].
-    $
-    This is a superposition of two oscillations, both with frequency $U/2$,
-    $
-      ket(0) <-> ket(sigma),
-    $
-    weighted $f$ and
-    $
-      ket(-sigma) <-> ket(arrow.t arrow.b),
-    $
-    weighted $1 - f$.
+  // - Continuing to real times $tau -> ii t$ yields
+  //   $
+  //     G_sigma (t) = -1/2 [f ee^(frac(ii t U, 2, style: "horizontal")) + (1 - f) ee^(frac(-ii t U, 2, style: "horizontal"))].
+  //   $
+  //   This is a superposition of two oscillations, both with frequency $U/2$,
+  //   $
+  //     ket(0) <-> ket(sigma),
+  //   $
+  //   weighted $f$ and
+  //   $
+  //     ket(-sigma) <-> ket(arrow.t arrow.b),
+  //   $
+  //   weighted $1 - f$.
 
-  - Fourier transforming yields
-    $
-      G_sigma (ii omega_n) = 1 / 2 [1 / (ii omega_n + U/2) + 1 / (ii omega_n - U/2)] = (ii omega_n) / ((ii omega_n)^2 - U^2 / 4).
-    $
-
-  - Continuing to the real frequency axis then gives
-    $
-      G_sigma (omega) = 1 / 2 [1 / (omega + U/2 + ii 0^+) + 1 / (omega - U/2 + ii 0^+)]
-    $
-    and
-    $
-      A_sigma (omega) = 1 / 2 [delta(omega + U/2) + delta(omega - U/2)].
-    $
-]
-
-==
-
-#problem[
-  The local Green's function for site $i$, $G_(i sigma) (tau)$, is defined as
-
+  Fourier transforming yields
   $
-    G_(i sigma) (tau)
-    = - expval(T_tau hat(c)_(i sigma) (tau) hat(c)_(i sigma)^dagger)
-    = -1 / Z tr [
-      ee^(-beta hat(H))
-      hat(c)_(i sigma) (tau) hat(c)_(i sigma)^dagger
-    ],
-    quad beta >= tau >= 0.
-  $ <eq:g-local>
+    G_sigma (ii omega_n) = 1 / 2 [1 / (ii omega_n + U/2) + 1 / (ii omega_n - U/2)] = (ii omega_n) / ((ii omega_n)^2 - U^2 / 4)
+  $
+  and thus a self-energy of
+  $
+    Sigma_sigma (ii omega_n) = 1 / (G_(0sigma) (ii omega_n)) - 1 / (G_(sigma) (ii omega_n)) = U / 2 + U^2 / (4 ii omega_n).
+  $
+  because
+  $
+    G_(0sigma) (ii omega_n) = 1 / (ii omega_n + mu).
+  $
 
-  Note that the different atoms are completely independent in this case and the local Green's function is thus the same as already calculated in Problem 6 of Exercise 3.
-  From its Fourier transform $G_(i sigma) (ii omega_n)$, extract the corresponding expression for the self-energy $Sigma_(i sigma) (ii omega_n)$.
-  Is the atomic-limit expression derivable within conventional perturbation theory?
+  // - Continuing to the real frequency axis then gives
+  //   $
+  //     G_sigma (omega) = 1 / 2 [1 / (omega + U/2 + ii 0^+) + 1 / (omega - U/2 + ii 0^+)]
+  //   $
+  //   and
+  //   $
+  //     A_sigma (omega) = 1 / 2 [delta(omega + U/2) + delta(omega - U/2)].
+  //   $
+
+  #text(fill: red, size: 14pt)[Important: Answer last question!]
 ]
 
 ==
 
 #problem[
-  Calculate, analogously as above, the local magnetic (spin) $chi^s_i (tau) = expval(T_tau S^z_i (tau) S^z_i)$ and density (charge) $chi^c_i (tau) = expval(T_tau n_i (tau) n_i)$ susceptibilities in the atomic limit of the Hubbard model (with $S^z_i = n_(i arrow.t) - n_(i arrow.b)$ and $n_i = n_(i arrow.t) + n_(i arrow.b)$), as well as their Fourier transform to Matsubara frequencies.
+  Calculate, analogously as above, the local magnetic (spin) $chi^"s"_i (tau) = expval(T_tau S^z_i (tau) S^z_i)$ and density (charge) $chi^"c"_i (tau) = expval(T_tau n_i (tau) n_i)$ susceptibilities in the atomic limit of the Hubbard model (with $S^z_i = n_(i arrow.t) - n_(i arrow.b)$ and $n_i = n_(i arrow.t) + n_(i arrow.b)$), as well as their Fourier transform to Matsubara frequencies.
   Then, analytically continue the expressions to real frequencies.
   What can you say about the temperature dependence?
+]
+
+#solution[
+  We observe, again omitting the site label $i$, that both spin and charge operators commute with the Hamiltonian
+  $
+    [S^z, H] = 0 = [n, H]
+  $
+  because $[n_sigma, n_(sigma')] = 0$ and so both susceptibilities lose their imaginary time dependence and become simple thermal averages
+  $
+    chi^"s" & = expval((S^z)^2) \
+    chi^"c" & = expval(n^2).
+  $
+
+  We start by writing for the local magnetic (spin) susceptibility
+  $
+    chi^"s" = 1 / Z sum_m ee^(-beta E_m) expval(S^z S^z, m)
+  $
+  and expand out
+  $
+    (S^z)^2 = n_arrow.t^2 - 2 n_arrow.t n_arrow.b + n_arrow.b^2
+  $
+  to find
+  $
+                  expval((S^z)^2, 0) & = 0 \
+            expval((S^z)^2, arrow.t) & = 1 \
+            expval((S^z)^2, arrow.b) & = 1 \
+    expval((S^z)^2, arrow.t arrow.b) & = 0
+  $
+  and thus
+  $
+    chi^"s" = 1 / Z 2 ee^(frac(beta U, 2, style: "horizontal")) = ee^(frac(beta U, 2, style: "horizontal")) / (1 + ee^(frac(beta U, 2, style: "horizontal"))) = 1 - f
+  $
+  with
+  $
+    f equiv n_"F" (U/2).
+  $
+
+  The local density (charge) susceptibility, on the other hand, is given by
+  $
+    chi^"c" = 1 / Z sum_m ee^(-beta E_m) expval(n n, m)
+  $
+  and we follow the same path as before
+  $
+    n^2 = n_arrow.t^2 + 2 n_arrow.t n_arrow.b + n_arrow.b^2
+  $
+  $
+                  expval(n^2, 0) & = 0 \
+            expval(n^2, arrow.t) & = 1 \
+            expval(n^2, arrow.b) & = 1 \
+    expval(n^2, arrow.t arrow.b) & = 4
+  $
+  to get
+  $
+    chi^"c" = 1 / Z (4 + 2 ee^(frac(beta U, 2, style: "horizontal"))) = (2 + ee^(frac(beta U, 2, style: "horizontal"))) / (1 + ee^(frac(beta U, 2, style: "horizontal"))) = 1 + f.
+  $
+
+  The Fourier transforms are then easy to compute
+  $
+    chi^"s" (ii omega_n) & = beta (1 - f) delta_(omega_n, 0) \
+    chi^"c" (ii omega_n) & = beta (1 + f) delta_(omega_n, 0)
+  $
+  and continue
+  $
+    chi^"s" (omega) & = (1 - f) delta(omega) \
+    chi^"c" (omega) & = (1 + f) delta(omega).
+  $
+
+  #align(center)[
+    #plot(
+      width: 6,
+      height: 4,
+      xmin: -0.1,
+      xmax: 2.2,
+      ymin: 0.4,
+      ymax: 1.6,
+      axis-x-extend: 0.1,
+      axis-y-extend: 0.1,
+      show-grid: "none",
+      xlabel: $frac(T, U, style: "horizontal")$,
+      ylabel: $$,
+
+      (
+        fn: T => 1 - 1 / (calc.exp(1 / (2 * T)) + 1),
+        domain: (0.0001, 2),
+        label: $chi^"s"$,
+        stroke: red,
+      ),
+      (
+        fn: T => 1 + 1 / (calc.exp(1 / (2 * T)) + 1),
+        domain: (0.0001, 2),
+        label: $chi^"c"$,
+        stroke: green,
+      ),
+      hline(0.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
+      note([$1/2$], (0.0, 0.5), anchor: "east", size: 9pt),
+      hline(1.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
+      note([$3/2$], (0.0, 1.5), anchor: "east", size: 9pt),
+    )
+  ]
 ]
 
 = RPA for the Hubbard model
