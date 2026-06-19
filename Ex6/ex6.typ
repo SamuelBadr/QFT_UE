@@ -1,6 +1,7 @@
 #import "../exercise-style.typ": *
 #import "@preview/unify:0.7.1": num, numrange, qty, qtyrange
 #import "@preview/simple-plot:0.9.0": *
+#import "@preview/cetz:0.5.2": canvas, draw
 
 #show: exercise-sheet.with(
   "QFT for Many-Body Systems",
@@ -485,9 +486,9 @@
         stroke: green,
       ),
       hline(0.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
-      note([$1/2$], (0.0, 0.5), anchor: "east", size: 9pt),
+      note([$lim_(T -> infinity) chi^"s" = 1 / 2$], (0.0, 0.5), anchor: "east", size: 9pt),
       hline(1.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
-      note([$3/2$], (0.0, 1.5), anchor: "east", size: 9pt),
+      note([$lim_(T -> infinity) chi^"c" = 3/2$], (0.0, 1.5), anchor: "east", size: 9pt),
     )
   ]
 ]
@@ -497,20 +498,87 @@
 #problem[
   In the Hubbard model (Hamiltonian in @eq:hubbard), the interaction is purely local and penalizes double occupations: $U sum_i n_(i arrow.t) n_(i arrow.b)$.
   Therefore, the interaction only couples electrons with opposite spin.
-]
 
-==
-
-#problem[
   Then also susceptibilities can acquire a spin-dependence: $chi_(sigma sigma')$.
 
-  Remembering that momentum, energy and spin need to be conserved at each vertex.
+  Remembering that momentum, energy and spin need to be conserved at each vertex:
 ]
 
 ==
 
 #problem[
   Draw the bubble diagram of the free susceptibility $chi_0^(sigma sigma') (vb(q), omega)$ and say which spin-combinations are possible.
+]
+
+#solution[
+  #let chi0-bubble(
+    left-spin: $sigma$,
+    right-spin: $sigma'$,
+    loop-spin: $s$,
+    label: $chi_0^(sigma sigma')$,
+  ) = cetz.canvas({
+    import cetz.draw: *
+
+    // Vertex positions
+    let l = (-1.2, 0)
+    let r = (1.2, 0)
+
+    // Fermion loop: one continuous spin-conserving propagator loop.
+    // The arrows indicate a consistent fermion-flow direction.
+    bezier(l, r, (-0.75, 0.75), (0.75, 0.75), mark: (end: ">"))
+    bezier(r, l, (0.75, -0.75), (-0.75, -0.75), mark: (end: ">"))
+
+    // External density vertices. These conserve spin.
+    circle(l, radius: 0.055, fill: black)
+    circle(r, radius: 0.055, fill: black)
+
+    // External momentum/frequency transfer
+    // line((-2.0, 0), l, mark: (end: ">"))
+    // line(r, (2.0, 0), mark: (end: ">"))
+    content((-1.75, 0.0), $vb(q), omega$)
+    content((1.75, 0.0), $vb(q), omega$)
+
+    // Vertex spin labels: density n_sigma and n_sigma'
+    content((-1.2, -0.35), $n_#left-spin$)
+    content((1.2, -0.35), $n_#right-spin$)
+
+    // Internal spin label: same spin around the whole loop
+    content((0, 0.8), $G_0^#loop-spin$)
+    content((0, -0.8), $G_0^#loop-spin$)
+
+    // Object label
+    // content((0, -1.15), label)
+  })
+
+  #align(center)[
+    #chi0-bubble()
+  ]
+
+  The free susceptibility is diagonal in spin:
+  $
+    chi_0^(sigma sigma') (vb(q), omega)
+    =
+    delta_(sigma sigma') chi_0^sigma(vb(q), omega).
+  $
+
+  This is because the density vertices conserve spin, and the free propagators
+  $G_0$ do not flip spin. Therefore the spin running around the bubble must be
+  the same on both sides.
+
+  Hence the only nonzero components are
+  $
+    chi_0^(arrow.t arrow.t)
+    quad "and" quad
+    chi_0^(arrow.b arrow.b),
+  $
+  while
+  $
+    chi_0^(arrow.t arrow.b)
+    =
+    chi_0^(arrow.b arrow.t)
+    =
+    0.
+  $
 ]
 
 ==
@@ -522,19 +590,255 @@
   In all of this you can omit the labels for momentum and frequency.
 ]
 
+#let rpa-bubble(
+  x: 0,
+  spin: $arrow.t$,
+  left-label: none,
+  right-label: none,
+) = {
+  import cetz.draw: *
+
+  let l = (x - 0.55, 0)
+  let r = (x + 0.55, 0)
+
+  // Fermion loop: one conserved spin sector.
+  bezier(l, r, (x - 0.35, 0.55), (x + 0.35, 0.55), mark: (end: ">"))
+  bezier(r, l, (x + 0.35, -0.55), (x - 0.35, -0.55), mark: (end: ">"))
+
+  // Density vertices
+  circle(l, radius: 0.045, fill: black)
+  circle(r, radius: 0.045, fill: black)
+
+  // Internal spin label
+  content((x, 0.72), $chi_0^#spin$)
+
+  // Optional external spin-density labels
+  if left-label != none {
+    content((x - 0.55, -0.34), left-label)
+  }
+
+  if right-label != none {
+    content((x + 0.55, -0.34), right-label)
+  }
+}
+
+#let hubbard-U(x: 0) = {
+  import cetz.draw: *
+
+  // Hubbard vertex: U n_up n_down.
+  // It connects opposite-spin density bubbles.
+  // line((x, 0.40), (x, -0.40), stroke: (dash: "dashed"))
+  content((x + 0.0, 0), $U$)
+}
+
+#let plus-sign(x: 0) = {
+  import cetz.draw: *
+  content((x, 0), $+$)
+}
+
+#let ellipsis(x: 0) = {
+  import cetz.draw: *
+  content((x, 0), $dots.c$)
+}
+
+
+#solution[
+  The Hubbard interaction has the form
+  $
+    U n_(arrow.t) n_(arrow.b),
+  $
+  so every interaction vertex couples an $arrow.t$ density bubble to an
+  $arrow.b$ density bubble. Thus the RPA chain alternates spin sectors.
+
+
+  #align(center)[
+    #cetz.canvas({
+      import cetz.draw: *
+
+      content((-4.05, 0), $chi_("RPA")^(arrow.t arrow.t) =$)
+
+      // Zeroth-order term: chi_0^{up up}
+      rpa-bubble(
+        x: -2.55,
+        spin: $arrow.t$,
+        left-label: $n_(arrow.t)$,
+        right-label: $n_(arrow.t)$,
+      )
+
+      plus-sign(x: -1.35)
+
+      // Next allowed term:
+      // up -- U -- down -- U -- up
+      rpa-bubble(
+        x: -0.45,
+        spin: $arrow.t$,
+        left-label: $n_(arrow.t)$,
+      )
+
+      hubbard-U(x: 0.30)
+
+      rpa-bubble(
+        x: 1.05,
+        spin: $arrow.b$,
+      )
+
+      hubbard-U(x: 1.80)
+
+      rpa-bubble(
+        x: 2.55,
+        spin: $arrow.t$,
+        right-label: $n_(arrow.t)$,
+      )
+
+      plus-sign(x: 3.55)
+      ellipsis(x: 3.95)
+    })
+  ]
+
+  #v(1em)
+
+  #align(center)[
+    #cetz.canvas({
+      import cetz.draw: *
+
+      content((-4.05, 0), $chi_("RPA")^(arrow.t arrow.b) =$)
+
+      // First allowed term:
+      // up -- U -- down
+      rpa-bubble(
+        x: -2.55,
+        spin: $arrow.t$,
+        left-label: $n_(arrow.t)$,
+      )
+
+      hubbard-U(x: -1.80)
+
+      rpa-bubble(
+        x: -1.05,
+        spin: $arrow.b$,
+        right-label: $n_(arrow.b)$,
+      )
+
+      plus-sign(x: 0.05)
+
+      // Next allowed term:
+      // up -- U -- down -- U -- up -- U -- down
+      rpa-bubble(
+        x: 0.95,
+        spin: $arrow.t$,
+        left-label: $n_(arrow.t)$,
+      )
+
+      hubbard-U(x: 1.70)
+
+      rpa-bubble(
+        x: 2.45,
+        spin: $arrow.b$,
+      )
+
+      hubbard-U(x: 3.20)
+
+      rpa-bubble(
+        x: 3.95,
+        spin: $arrow.t$,
+      )
+
+      hubbard-U(x: 4.70)
+
+      rpa-bubble(
+        x: 5.45,
+        spin: $arrow.b$,
+        right-label: $n_(arrow.b)$,
+      )
+
+      plus-sign(x: 6.45)
+      ellipsis(x: 6.85)
+    })
+  ]
+
+  The same-spin response contains an even number of Hubbard vertices:
+  $
+    chi_("RPA")^(arrow.t arrow.t)
+    =
+    chi_0^(arrow.t)
+    +
+    chi_0^(arrow.t) U chi_0^(arrow.b)
+    U chi_0^(arrow.t)
+    +
+    dots.c
+  $
+
+  The opposite-spin response contains an odd number of Hubbard vertices:
+  $
+    chi_("RPA")^(arrow.t arrow.b)
+    = -
+    chi_0^(arrow.t) U chi_0^(arrow.b)
+    -
+    chi_0^(arrow.t) U chi_0^(arrow.b)
+    U chi_0^(arrow.t) U chi_0^(arrow.b)
+    -
+    dots.c
+  $
+
+  We observe
+  $
+    chi_("RPA")^(arrow.t arrow.t) & = chi_0^(arrow.t) [1 - U chi_("RPA")^(arrow.b arrow.t)] \
+    chi_("RPA")^(arrow.t arrow.b) & = -chi_0^(arrow.t) U chi_"RPA"^(arrow.b arrow.b),
+  $
+  relate by $"SU"(2)$ symmetry
+  $
+    chi_"RPA"^(arrow.b arrow.t) & = chi_"RPA"^(arrow.t arrow.b) \
+    chi_"RPA"^(arrow.b arrow.b) & = chi_"RPA"^(arrow.t arrow.t)
+  $
+  and plug the second equation into the first
+  $
+    chi_("RPA")^(arrow.t arrow.t) & = chi_0^(arrow.t) [1 + U chi_0^(arrow.t) U chi_"RPA"^(arrow.t arrow.t)]
+  $
+  and solve to
+  $
+    chi_"RPA"^(arrow.t arrow.t) & = chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)).
+  $
+  For the other spin channel, we get
+  $
+    chi_("RPA")^(arrow.t arrow.b) & = -(U chi_0^(arrow.t) chi_0^(arrow.t)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)).
+  $
+]
+
 ==
 
 #problem[
   The charge and spin susceptibilities (the local versions of which were already introduced above) are given by
 
   $
-    chi^c = chi^(arrow.t arrow.t) + chi^(arrow.t arrow.b),
-    quad
-    chi^s = chi^(arrow.t arrow.t) - chi^(arrow.t arrow.b).
+    chi^"c" = chi^(arrow.t arrow.t) + chi^(arrow.t arrow.b),
+    wide
+    chi^"s" = chi^(arrow.t arrow.t) - chi^(arrow.t arrow.b).
   $
 
   Using the result from above give expressions for these susceptibilities in the RPA.
   Which of the two $chi$s was discussed in the lecture in the context of screening?
+]
+
+#solution[
+  In RPA, we get
+  $
+    chi^"c" &= chi^(arrow.t arrow.t) + chi^(arrow.t arrow.b) \
+    &= chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) - (U chi_0^(arrow.t) chi_0^(arrow.t)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) \
+    &= chi_0^(arrow.t) (1 - U chi_0^(arrow.t)) / ((1 - U chi_0^(arrow.t)) (1 + U chi_0^(arrow.t))) \
+    &= chi_0^(arrow.t) / (1 + U chi_0^(arrow.t))
+  $
+  and
+  $
+    chi^"s" &= chi^(arrow.t arrow.t) - chi^(arrow.t arrow.b) \
+    &= chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) + (U chi_0^(arrow.t) chi_0^(arrow.t)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) \
+    &= chi_0^(arrow.t) (1 + U chi_0^(arrow.t)) / ((1 - U chi_0^(arrow.t)) (1 + U chi_0^(arrow.t))) \
+    &= chi_0^(arrow.t) / (1 - U chi_0^(arrow.t)).
+  $
+  In the lecture, to derive Thomas-Fermi screening, we used
+  $
+    V_"eff" = V / (1 + V chi_0),
+  $
+  which corresponds to $chi^"c"$.
 ]
 
 ==
