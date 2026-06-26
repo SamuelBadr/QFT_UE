@@ -17,21 +17,19 @@
 
 #set math.equation(numbering: "(1)")
 
-#problem[
-  Consider the Hubbard-Hamiltonian given by
+Consider the Hubbard-Hamiltonian given by
 
-  $
-    hat(H)
-    = sum_(vb(k) sigma) epsilon_vb(k) hat(c)_(vb(k) sigma)^dagger hat(c)_(vb(k) sigma)
-    + U sum_i underbrace(hat(c)_(i arrow.t)^dagger hat(c)_(i arrow.t), hat(n)_(i arrow.t))
-    underbrace(hat(c)_(i arrow.b)^dagger hat(c)_(i arrow.b), hat(n)_(i arrow.b))
-    - mu sum_i underbrace((n_(i arrow.t) + n_(i arrow.b)), hat(n)_i).
-  $ <eq:hubbard>
+$
+  hat(H)
+  = sum_(vb(k) sigma) epsilon_vb(k) hat(c)_(vb(k) sigma)^dagger hat(c)_(vb(k) sigma)
+  + U sum_i underbrace(hat(c)_(i arrow.t)^dagger hat(c)_(i arrow.t), hat(n)_(i arrow.t))
+  underbrace(hat(c)_(i arrow.b)^dagger hat(c)_(i arrow.b), hat(n)_(i arrow.b))
+  - mu sum_i underbrace((n_(i arrow.t) + n_(i arrow.b)), hat(n)_i).
+$ <eq:hubbard>
 
-  The term containing $mu$ fixes the number of particles.
-  Specifically, we consider the case of half-filling where we have $expval(hat(n)_i) = 1$ particle per site.
-  This corresponds to $mu = U / 2$.
-]
+The term containing $mu$ fixes the number of particles.
+Specifically, we consider the case of half-filling where we have $expval(hat(n)_i) = 1$ particle per site.
+This corresponds to $mu = U / 2$.
 
 = The Green's function in limiting cases
 
@@ -256,6 +254,45 @@
     G_sigma (vb(k), ii omega_n) = 1 / (ii omega_n - xi_vb(k)).
   $
 
+  More explicitly,
+  $
+    G_sigma (vb(k), ii omega_n)
+    =
+    -[1 - n_"F" (xi_vb(k))]
+    integral_0^beta dd(tau)
+    ee^((ii omega_n - xi_vb(k)) tau).
+  $
+  Hence
+  $
+    G_sigma (vb(k), ii omega_n)
+    =
+    -[1 - n_"F" (xi_vb(k))]
+    (ee^((ii omega_n - xi_vb(k)) beta) - 1)
+    / (ii omega_n - xi_vb(k)).
+  $
+  Since $omega_n$ is fermionic,
+  $
+    ee^(ii omega_n beta) = -1,
+  $
+  and therefore
+  $
+    ee^((ii omega_n - xi_vb(k)) beta) - 1
+    =
+    - (1 + ee^(-beta xi_vb(k))).
+  $
+  Using
+  $
+    1 - n_"F" (xi_vb(k))
+    =
+    1 / (1 + ee^(-beta xi_vb(k))),
+  $
+  the thermal factors cancel and one obtains
+  $
+    G_sigma (vb(k), ii omega_n)
+    =
+    1 / (ii omega_n - xi_vb(k)).
+  $
+
   To continue the results, we set $ii omega_n -> omega + ii 0^+$ and get
   $
     G_sigma (vb(k), omega) = 1 / (omega - xi_vb(k) + ii 0^+)
@@ -383,7 +420,21 @@
   //     A_sigma (omega) = 1 / 2 [delta(omega + U/2) + delta(omega - U/2)].
   //   $
 
-  #text(fill: red, size: 14pt)[Important: Answer last question!]
+  // #text(fill: red, size: 14pt)[Important: Answer last question!]
+
+  The self-energy contains a pole at zero Matsubara frequency,
+  $
+    Sigma_sigma (ii omega_n)
+    =
+    U / 2 + U^2 / (4 ii omega_n).
+  $
+  This pole is the atomic-limit signature of the splitting into lower and
+  upper Hubbard levels. It is singular at $ii omega_n = 0$ and therefore
+  cannot be obtained from conventional regular perturbation theory around the
+  non-interacting limit. In ordinary weak-coupling perturbation theory one
+  expands in powers of $U$ at fixed non-interacting propagator, whereas the
+  atomic limit is controlled by the local interaction and already contains the
+  non-perturbative separation of the spectrum into two Hubbard peaks.
 ]
 
 ==
@@ -450,13 +501,22 @@
 
   The Fourier transforms are then easy to compute
   $
-    chi^"s" (ii omega_n) & = beta (1 - f) delta_(omega_n, 0) \
-    chi^"c" (ii omega_n) & = beta (1 + f) delta_(omega_n, 0)
+    chi^"s" (ii omega_n) & = beta (1 - f) delta_(n, 0) \
+    chi^"c" (ii omega_n) & = beta (1 + f) delta_(n, 0)
   $
   and continue
   $
     chi^"s" (omega) & = (1 - f) delta(omega) \
     chi^"c" (omega) & = (1 + f) delta(omega).
+  $
+
+  We can also compute the connected charge susceptibility
+  $
+    chi^"c"_"conn" (tau) equiv expval(T_tau n(tau) n(0)) - expval(n)^2 = f
+  $
+  and transform to Matsubara
+  $
+    chi^"c"_"conn" (ii omega_n) = beta f delta_(n, 0).
   $
 
   #align(center)[
@@ -465,44 +525,49 @@
       height: 4,
       xmin: -0.1,
       xmax: 2.2,
-      ymin: 0.4,
-      ymax: 1.6,
+      ymin: 0.0,
+      ymax: 3.6,
       axis-x-extend: 0.1,
       axis-y-extend: 0.1,
       show-grid: "none",
       xlabel: $frac(T, U, style: "horizontal")$,
-      ylabel: $$,
+      ylabel: $chi(ii omega_0) U$,
 
       (
-        fn: T => 1 - 1 / (calc.exp(1 / (2 * T)) + 1),
+        fn: T => (1 - 1 / (calc.exp(1 / (2 * T)) + 1)) / T,
         domain: (0.0001, 2),
         label: $chi^"s"$,
         stroke: red,
       ),
       (
-        fn: T => 1 + 1 / (calc.exp(1 / (2 * T)) + 1),
+        fn: T => (1 + 1 / (calc.exp(1 / (2 * T)) + 1)) / T,
         domain: (0.0001, 2),
         label: $chi^"c"$,
         stroke: green,
       ),
-      hline(0.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
-      note([$lim_(T -> infinity) chi^"s" = 1 / 2$], (0.0, 0.5), anchor: "east", size: 9pt),
-      hline(1.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
-      note([$lim_(T -> infinity) chi^"c" = 3/2$], (0.0, 1.5), anchor: "east", size: 9pt),
+      (
+        fn: T => (1 / (calc.exp(1 / (2 * T)) + 1)) / T,
+        domain: (0.0001, 2),
+        label: $chi^"c"_"conn"$,
+        label-pos: 0.0,
+        stroke: blue,
+      ),
+      // hline(0.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
+      // note([$lim_(T -> infinity) chi^"s" = 1 / 2$], (0.0, 0.5), anchor: "east", size: 9pt),
+      // hline(1.5, xmin: 0, xmax: 2, stroke: gray + 0.8pt),
+      // note([$lim_(T -> infinity) chi^"c" = 3/2$], (0.0, 1.5), anchor: "east", size: 9pt),
     )
   ]
 ]
 
 = RPA for the Hubbard model
 
-#problem[
-  In the Hubbard model (Hamiltonian in @eq:hubbard), the interaction is purely local and penalizes double occupations: $U sum_i n_(i arrow.t) n_(i arrow.b)$.
-  Therefore, the interaction only couples electrons with opposite spin.
+In the Hubbard model (Hamiltonian in @eq:hubbard), the interaction is purely local and penalizes double occupations: $U sum_i n_(i arrow.t) n_(i arrow.b)$.
+Therefore, the interaction only couples electrons with opposite spin.
 
-  Then also susceptibilities can acquire a spin-dependence: $chi_(sigma sigma')$.
+Then also susceptibilities can acquire a spin-dependence: $chi_(sigma sigma')$.
 
-  Remembering that momentum, energy and spin need to be conserved at each vertex:
-]
+Remembering that momentum, energy and spin need to be conserved at each vertex:
 
 ==
 
@@ -785,22 +850,17 @@
     chi_("RPA")^(arrow.t arrow.t) & = chi_0^(arrow.t) [1 - U chi_("RPA")^(arrow.b arrow.t)] \
     chi_("RPA")^(arrow.t arrow.b) & = -chi_0^(arrow.t) U chi_"RPA"^(arrow.b arrow.b),
   $
-  relate by $"SU"(2)$ symmetry
-  $
-    chi_"RPA"^(arrow.b arrow.t) & = chi_"RPA"^(arrow.t arrow.b) \
-    chi_"RPA"^(arrow.b arrow.b) & = chi_"RPA"^(arrow.t arrow.t)
-  $
   and plug the second equation into the first
   $
-    chi_("RPA")^(arrow.t arrow.t) & = chi_0^(arrow.t) [1 + U chi_0^(arrow.t) U chi_"RPA"^(arrow.t arrow.t)]
+    chi_("RPA")^(arrow.t arrow.t) & = chi_0^(arrow.t) [1 + U chi_0^(arrow.b) U chi_"RPA"^(arrow.t arrow.t)]
   $
   and solve to
   $
-    chi_"RPA"^(arrow.t arrow.t) & = chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)).
+    chi_"RPA"^(arrow.t arrow.t) & = chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.b)).
   $
   For the other spin channel, we get
   $
-    chi_("RPA")^(arrow.t arrow.b) & = -(U chi_0^(arrow.t) chi_0^(arrow.t)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)).
+    chi_("RPA")^(arrow.t arrow.b) & = -(U chi_0^(arrow.t) chi_0^(arrow.b)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.b)).
   $
 ]
 
@@ -820,19 +880,23 @@
 ]
 
 #solution[
-  In RPA, we get
+  Here, we will assume $"SU"(2)$ symmetry, which implies
   $
-    chi^"c" &= chi^(arrow.t arrow.t) + chi^(arrow.t arrow.b) \
-    &= chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) - (U chi_0^(arrow.t) chi_0^(arrow.t)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) \
-    &= chi_0^(arrow.t) (1 - U chi_0^(arrow.t)) / ((1 - U chi_0^(arrow.t)) (1 + U chi_0^(arrow.t))) \
-    &= chi_0^(arrow.t) / (1 + U chi_0^(arrow.t))
+    chi_0^(arrow.b) = chi_0^(arrow.t) = chi_0
   $
-  and
+  and then RPA yields for the density susceptibility
   $
-    chi^"s" &= chi^(arrow.t arrow.t) - chi^(arrow.t arrow.b) \
-    &= chi_0^(arrow.t) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) + (U chi_0^(arrow.t) chi_0^(arrow.t)) / (1 - U^2 chi_0^(arrow.t) chi_0^(arrow.t)) \
-    &= chi_0^(arrow.t) (1 + U chi_0^(arrow.t)) / ((1 - U chi_0^(arrow.t)) (1 + U chi_0^(arrow.t))) \
-    &= chi_0^(arrow.t) / (1 - U chi_0^(arrow.t)).
+    chi^"c" & = chi^(arrow.t arrow.t) + chi^(arrow.t arrow.b) \
+            & = chi_0 / (1 - U^2 chi_0^2) - (U chi_0^2) / (1 - U^2 chi_0^2) \
+            & = (chi_0 (1 - U chi_0)) / ((1 - U chi_0) (1 + U chi_0)) \
+            & = chi_0 / (1 + U chi_0)
+  $
+  and for the spin susceptibility
+  $
+    chi^"s" & = chi^(arrow.t arrow.t) - chi^(arrow.t arrow.b) \
+            & = chi_0 / (1 - U^2 chi_0^2) + (U chi_0^2) / (1 - U^2 chi_0^2) \
+            & = (chi_0 (1 + U chi_0)) / ((1 - U chi_0) (1 + U chi_0)) \
+            & = chi_0 / (1 - U chi_0).
   $
   In the lecture, to derive Thomas-Fermi screening, we used
   $
@@ -847,3 +911,78 @@
   _(Bonus points)_ Using the results of Problem 11 of Exercise 5, consider the electronic system for $d = 2$ in presence of the Hubbard interaction $U > 0$, and calculate within the RPA the two (ferromagnetic and antiferromagnetic) spin susceptibilities.
   On the basis of your RPA calculations, make your final considerations about the tendency of the system towards a given magnetic order at $T = 0$.
 ]
+
+#solution[
+  In Problem 11 we found for the non-interacting ferro- and antiferromagnetic susceptibilities of the hypercubic lattice
+  $
+     chi_0^"F" & = hbar^2 / 4 Pi_0^"F" \
+    chi_0^"AF" & = hbar^2 / 4 Pi_0^"AF"
+  $
+  with the bare polarization bubbles
+  $
+     Pi_0^"F" & = 1 / N sum_vb(k) beta / 2 [cosh(frac(beta epsilon_vb(k), 2, style: "vertical"))]^(-2) \
+    Pi_0^"AF" & = 1 / N sum_vb(k) 1 / epsilon_vb(k) tanh((beta epsilon_vb(k)) / 2).
+  $
+  We now add an interaction
+  $
+    H_"int" = U n_arrow.b n_arrow.t
+  $
+  to the Hamiltonian and approximate the susceptibilities in RPA
+  $
+     chi_"RPA"^"F" & = hbar^2 / 4 Pi_0^"F" / (1 - U Pi_0^"F") \
+    chi_"RPA"^"AF" & = hbar^2 / 4 Pi_0^"AF" / (1 - U Pi_0^"AF").
+  $
+
+  === Ferromagnetic
+  Taking the $T -> 0$ (i.e. $beta -> infinity$) limit, we note that
+  $
+    lim_(beta -> infinity) beta / 2 [cosh(frac(beta epsilon, 2, style: "vertical"))]^(-2) = 2delta(epsilon)
+  $
+  and therefore
+  $
+    Pi_0^"F" = 2 / N sum_(vb(k)) delta(epsilon_vb(k)) = 2 N(0),
+  $
+  where $N(0)$ is the DOS at the Fermi level.
+
+  === Antiferromagnetic
+  Because
+  $
+    lim_(beta -> infinity) 1 / epsilon tanh((beta epsilon) / 2) = 1 / abs(epsilon),
+  $
+  we have at $T -> 0$
+  $
+    Pi_0^"AF" = 1 / N sum_(vb(k)) 1 / abs(epsilon_vb(k))
+  $
+
+  In two dimensions at half filling the square lattice is perfectly nested.
+  The nesting vector is
+  $
+    vb(Q) = (pi, pi),
+  $
+  and it satisfies
+  $
+    epsilon_(vb(k) + vb(Q)) = - epsilon_vb(k).
+  $
+  Therefore the antiferromagnetic particle-hole bubble diverges at $T = 0$.
+  In RPA this means that
+  $
+    chi_"RPA"^"AF"
+    =
+    hbar^2 / 4 Pi_0^"AF" / (1 - U Pi_0^"AF")
+  $
+  becomes unstable when
+  $
+    1 - U Pi_0^"AF" = 0.
+  $
+  Since $Pi_0^"AF"$ diverges for $T -> 0$, this instability occurs for
+  arbitrarily small repulsive $U > 0$.
+
+  The ferromagnetic susceptibility is also enhanced because the two-dimensional
+  square lattice has a van-Hove singularity at half filling. However, the
+  antiferromagnetic channel is the dominant one because it is additionally
+  enhanced by perfect nesting.
+
+  Thus, within RPA, the half-filled two-dimensional Hubbard model has a
+  dominant tendency towards antiferromagnetic order at $T = 0$.
+]
+
